@@ -18,7 +18,7 @@
 
 <template>
   <view class="container">
-    <view class="userinfo" @tap="handleViewTap">
+    <view class="userinfo">
       <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
     </view>
@@ -41,13 +41,6 @@
 
     onLoad() {
       let self = this
-      this.$parent.getUserInfo(function (userInfo) {
-        console.log('userInfo', userInfo)
-        if (userInfo) {
-          self.userInfo = userInfo
-        }
-        self.$apply()
-      })
     }
   }
 </script>

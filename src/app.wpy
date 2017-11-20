@@ -12,13 +12,19 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
+import AV from './utils/av-weapp-min'
+import user from './cloud/user'
+
+AV.init({
+  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
+  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
+})
 
 export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
       'pages/mine',
-      'pages/pubTransit',
       'pages/publish'
     ],
     window: {
@@ -28,26 +34,6 @@ export default class extends wepy.app {
       backgroundColor: '#F8F8F8',
       enablePullDownRefresh: true
     },
-//    tabBar: {
-//      selectedColor: '#F6635F',
-//      color: '#2c2c2c',
-//      borderStyle: 'white',
-//      list: [{
-//        pagePath: 'pages/index',
-//        text: '首页',
-//        iconPath: './asset/png/home.png',
-//        selectedIconPath: './asset/png/home_sel.png',
-//      }, {
-//        pagePath: 'pages/pubTransit',
-//        iconPath: './asset/png/publish.png',
-//        selectedIconPath: './asset/png/publish.png',
-//      }, {
-//        pagePath: 'pages/mine',
-//        text: '我的',
-//        iconPath: './asset/png/mine.png',
-//        selectedIconPath: './asset/png/mine_sel.png',
-//      }]
-//    },
     debug: true
   }
 
@@ -58,9 +44,10 @@ export default class extends wepy.app {
   constructor () {
     super()
     this.use('requestfix')
+    this.use('promisify')
   }
 
-  onLaunch() {
+  async onLaunch() {
     this.testAsync()
   }
 
@@ -77,17 +64,15 @@ export default class extends wepy.app {
     console.log(data)
   }
 
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
+  async getUserInfo() {
+    let userInfo = this.globalData.userInfo
+    if (userInfo) {
+      return userInfo
     }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
+    await user.userLogin()
+    let wepyUser = await wepy.getUserInfo()
+    this.globalData.userInfo = wepyUser.userInfo
+    return wepyUser.userInfo
   }
 }
 </script>
