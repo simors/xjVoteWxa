@@ -1,0 +1,28 @@
+<style lang="less">
+  /*@import "../styles/base.less";*/
+</style>
+
+<template>
+  <view>
+    <button type="primary" @tap="gotoHome">取消</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Publish extends wepy.page {
+    config = {
+      navigationBarTitleText: '发布投票'
+    }
+
+    methods = {
+      gotoHome() {
+        this.$switch({url: './index'})
+      }
+    }
+
+    onLoad() {
+    }
+  }
+</script>

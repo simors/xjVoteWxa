@@ -1,0 +1,93 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/mine',
+      'pages/pubTransit',
+      'pages/publish'
+    ],
+    window: {
+      navigationBarTitleText: '小吉互动',
+      navigationBarBackgroundColor: '#F6635F',
+      navigationBarTextStyle: 'white',
+      backgroundColor: '#F8F8F8',
+      enablePullDownRefresh: true
+    },
+//    tabBar: {
+//      selectedColor: '#F6635F',
+//      color: '#2c2c2c',
+//      borderStyle: 'white',
+//      list: [{
+//        pagePath: 'pages/index',
+//        text: '首页',
+//        iconPath: './asset/png/home.png',
+//        selectedIconPath: './asset/png/home_sel.png',
+//      }, {
+//        pagePath: 'pages/pubTransit',
+//        iconPath: './asset/png/publish.png',
+//        selectedIconPath: './asset/png/publish.png',
+//      }, {
+//        pagePath: 'pages/mine',
+//        text: '我的',
+//        iconPath: './asset/png/mine.png',
+//        selectedIconPath: './asset/png/mine_sel.png',
+//      }]
+//    },
+    debug: true
+  }
+
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+
+  onLaunch() {
+    this.testAsync()
+  }
+
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+
+  async testAsync () {
+    const data = await this.sleep(3)
+    console.log(data)
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>
