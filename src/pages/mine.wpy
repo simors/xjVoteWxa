@@ -1,26 +1,40 @@
 <style lang="less">
+  @import "../styles/vars.less";
+  .header-view {
+    width: 100%;
+    height: 300rpx;
+    background: @color-primary;
+  }
   .userinfo {
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
+    margin-top: 50rpx;
   }
 
   .userinfo-avatar {
-    width: 80rpx;
-    height: 80rpx;
+    width: 150rpx;
+    height: 150rpx;
     border-radius: 50%;
   }
 
   .userinfo-nickname {
-    color: #aaa;
+    color: #fff;
   }
 </style>
 
 <template>
   <view class="container">
-    <view class="userinfo">
-      <image class="userinfo-avatar" src="{{ userInfo.avatar }}" background-size="cover"/>
-      <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
+    <view class="header-view">
+      <view class="userinfo">
+        <image class="userinfo-avatar" src="{{ userInfo.avatar }}" background-size="cover"/>
+        <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
+      </view>
+    </view>
+
+    <view>
+
     </view>
   </view>
 </template>
@@ -30,7 +44,8 @@
 
   export default class Mine extends wepy.page {
     config = {
-      navigationBarTitleText: '我的'
+      navigationBarTitleText: '我的',
+      enablePullDownRefresh: false
     }
 
     data = {
