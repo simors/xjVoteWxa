@@ -10,12 +10,13 @@ export default class user {
   static async userLogin() {
     try {
       let leanUser = await AV.User.loginWithWeapp()
-      // await wepy.login()
-      // let wepyUser = await wepy.getUserInfo()
-      // wepy.$instance.globalData.userInfo = wepyUser.userInfo;
-      return leanUser
+      console.log('leanUser', leanUser)
+      let wepyUser = await wepy.getUserInfo({lang: 'zh_CN'})
+      console.log('wepyUser', wepyUser)
+      wepy.$instance.globalData.userInfo = wepyUser.userInfo
+      return wepyUser.userInfo
     } catch (e) {
-      console.log('error in login', e)
+      console.error('error in login', e)
     }
   }
 }

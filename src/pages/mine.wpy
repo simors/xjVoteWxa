@@ -39,8 +39,12 @@
       }
     }
 
-    onLoad() {
-      let self = this
+    async onLoad() {
+      let userInfo = await this.$parent.getUserInfo()
+      if (userInfo) {
+        this.userInfo = userInfo
+      }
+      this.$apply()
     }
   }
 </script>

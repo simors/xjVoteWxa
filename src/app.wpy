@@ -69,10 +69,9 @@ export default class extends wepy.app {
     if (userInfo) {
       return userInfo
     }
-    await user.userLogin()
-    let wepyUser = await wepy.getUserInfo()
-    this.globalData.userInfo = wepyUser.userInfo
-    return wepyUser.userInfo
+    let wepyUser = await user.userLogin()
+    this.globalData.userInfo = wepyUser
+    return wepyUser
   }
 }
 </script>
