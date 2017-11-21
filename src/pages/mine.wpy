@@ -10,7 +10,7 @@
     flex: 1;
     flex-direction: column;
     align-items: center;
-    margin-top: 50rpx;
+    padding-top: 50rpx;
   }
 
   .userinfo-avatar {
@@ -21,6 +21,18 @@
 
   .userinfo-nickname {
     color: #fff;
+    padding-top: 10rpx;
+  }
+
+  .cell_icon {
+    display: flex;
+    align-items: center;
+    margin-right: 10rpx;
+  }
+
+  .item-img {
+    width: 60rpx;
+    height: 60rpx;
   }
 </style>
 
@@ -33,19 +45,41 @@
       </view>
     </view>
 
-    <view>
-
+    <view class="zan-panel">
+      <navigator class="zan-cell zan-cell--access">
+        <view class="cell_icon">
+          <image class="item-img" src="../../asset/png/vote.png"/>
+        </view>
+        <view class="zan-cell__bd">
+          我的投票
+        </view>
+        <view class="zan-cell__ft"></view>
+      </navigator>
+      <navigator class="zan-cell zan-cell--access">
+        <view class="cell_icon">
+          <image class="item-img" src="../../asset/png/wallet.png"/>
+        </view>
+        <view class="zan-cell__bd">
+          我的钱包
+        </view>
+        <view class="zan-cell__ft"></view>
+      </navigator>
     </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import zanSwitch from '../components/zan-switch'
 
   export default class Mine extends wepy.page {
     config = {
       navigationBarTitleText: '我的',
       enablePullDownRefresh: false
+    }
+
+    components = {
+      zanSwitch
     }
 
     data = {
