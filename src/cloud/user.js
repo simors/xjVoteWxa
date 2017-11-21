@@ -9,12 +9,22 @@ export default class user {
   
   static async userLogin() {
     try {
-      let leanUser = await AV.User.loginWithWeapp()
-      console.log('leanUser', leanUser)
+      await AV.User.loginWithWeapp()
       let wepyUser = await wepy.getUserInfo({lang: 'zh_CN'})
-      console.log('wepyUser', wepyUser)
-      wepy.$instance.globalData.userInfo = wepyUser.userInfo
-      return wepyUser.userInfo
+      let wepyUserInfo = wepyUser.userInfo
+      if (!wepyUserInfo) {
+        return undefined
+      }
+      wepy.$instance.globalData.userInfo = wepyUserInfo
+      let params = {
+        nickname: wepyUserInfo.nickName,
+        gender: wepyUserInfo.gender,
+        avatar: wepyUserInfo.avatarUrl,
+        province: wepyUserInfo.province,
+        city: wepyUserInfo.city
+      }
+      let updateUser = await AV.Cloud.run('userUpdateInfo', params)
+      return updateUser
     } catch (e) {
       console.error('error in login', e)
     }

@@ -25,8 +25,8 @@
 <template>
   <view class="container has-toolbar">
     <view class="userinfo" @tap="handleViewTap">
-      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
-      <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+      <image class="userinfo-avatar" src="{{ userInfo.avatar }}" background-size="cover"/>
+      <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
 
     <panel>
