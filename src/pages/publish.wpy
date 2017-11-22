@@ -64,10 +64,8 @@
       </view>
     </view>
 
-    <view class="zan-panel">
-      <view class="zan-btns">
-        <button class="zan-btn zan-btn--primary vote-btn">下一步</button>
-      </view>
+    <view class="zan-btns">
+      <button class="zan-btn zan-btn--primary vote-btn">下一步</button>
     </view>
   </view>
 </template>
@@ -78,7 +76,7 @@
 
   export default class Publish extends wepy.page {
     config = {
-      navigationBarTitleText: '发布投票',
+      navigationBarTitleText: '创建活动',
       enablePullDownRefresh: false
     }
 
