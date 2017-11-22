@@ -1,5 +1,5 @@
 <style lang="less">
-  @import "../styles/vars.less";
+  @import "../../styles/vars.less";
   .header-view {
     width: 100%;
     height: 300rpx;
@@ -70,7 +70,7 @@
 
 <script>
   import wepy from 'wepy'
-  import zanSwitch from '../components/zan-switch'
+  import zanSwitch from '../../components/zan-switch'
 
   export default class Mine extends wepy.page {
     config = {

@@ -87,10 +87,10 @@
         <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
         <view class="toolbar-fontsize">主页</view>
       </view>
-      <navigator class="flex flex-column items-center justify-center" url="./publish">
+      <navigator class="flex flex-column items-center justify-center" url="./publish/publish">
         <image class="toolbar-image" style="width: 32px; height: 32px;" src="../asset/png/publish.png" mode="aspectFill" />
       </navigator>
-      <navigator class="flex flex-column items-center justify-center" url="./mine">
+      <navigator class="flex flex-column items-center justify-center" url="./mine/mine">
         <image class="toolbar-image" src="../asset/png/mine.png" mode="aspectFill" />
         <view class="toolbar-fontsize">我的</view>
       </navigator>

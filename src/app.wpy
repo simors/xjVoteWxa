@@ -40,8 +40,8 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
-      'pages/mine',
-      'pages/publish'
+      'pages/mine/mine',
+      'pages/publish/publish'
     ],
     window: {
       navigationBarTitleText: '小吉互动',

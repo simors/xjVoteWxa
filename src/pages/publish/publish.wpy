@@ -1,5 +1,4 @@
 <style lang="less">
-  /*@import "../styles/base.less";*/
   .cover-view {
     width: 100%;
     height: 500rpx;
@@ -72,8 +71,8 @@
 
 <script>
   import wepy from 'wepy'
-  import ImageUtils from '../utils/imageUtils'
-  import Tips from '../utils/Tips'
+  import ImageUtils from '../../utils/imageUtils'
+  import Tips from '../../utils/Tips'
 
   export default class Publish extends wepy.page {
     config = {
