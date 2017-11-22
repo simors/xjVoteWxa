@@ -54,10 +54,11 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: undefined,
+    userInfo: null,
     editVote: {
-      title: undefined,
-      cover: undefined,
+      title: null,
+      cover: null,
+      notice: null
     }
   }
 

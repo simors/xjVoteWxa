@@ -3,6 +3,7 @@
  */
 import wepy from 'wepy'
 import AV from './av-weapp-min'
+import Tips from './Tips'
 
 export default class ImageUtils{
   /**
@@ -39,6 +40,7 @@ export default class ImageUtils{
     if (!maxSize) {
       maxSize = 1
     }
+    Tips.loading();
     return wepy.chooseImage(param).then(async ({tempFilePaths, tempFiles}) => {
       if (tempFiles && maxSize) {
         const removeIndex = [];
@@ -48,12 +50,16 @@ export default class ImageUtils{
             removeIndex.push(index);
           }
         });
+        const posStr = removeIndex.map(v => v + 1).join(',');
         if (removeIndex.length > 0) {
           removeIndex.forEach(i => tempFilePaths.splice(i, 1));
+          await Tips.alert(`第${posStr}张图超过${maxSize}M`);
         }
       }
+      Tips.loaded();
       return tempFilePaths;
     }).catch(() => {
+      Tips.loaded();
       return [];
     });
   }

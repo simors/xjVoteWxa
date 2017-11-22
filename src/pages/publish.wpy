@@ -54,18 +54,18 @@
     <view class="zan-form">
       <view class="zan-cell zan-form__item">
         <text class="zan-form__title">活动名称</text>
-        <input class="zan-form__input zan-cell__bd" placeholder="请输入活动的名称" />
+        <input class="zan-form__input zan-cell__bd" placeholder="请输入活动的名称" @input="titleInput"/>
       </view>
       <view class="zan-cell zan-form__item zan-cell--last-child">
         <view class="notice-view">
           <text class="notice-tip">活动公告</text>
-          <textarea class="zan-form__input zan-cell__bd notice-text" placeholder="输入滚动公告栏的内容" />
+          <textarea class="zan-form__input zan-cell__bd notice-text" placeholder="输入滚动公告栏的内容" @input="noticeContentInput"/>
         </view>
       </view>
     </view>
 
     <view class="zan-btns">
-      <button class="zan-btn zan-btn--primary vote-btn">下一步</button>
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
   </view>
 </template>
@@ -73,6 +73,7 @@
 <script>
   import wepy from 'wepy'
   import ImageUtils from '../utils/imageUtils'
+  import Tips from '../utils/Tips'
 
   export default class Publish extends wepy.page {
     config = {
@@ -81,7 +82,9 @@
     }
 
     data = {
-      coverPath: null
+      coverPath: null,
+      voteTitle: null,
+      noticeContent: null
     }
 
     methods = {
@@ -91,7 +94,42 @@
         let netCover = await ImageUtils.uploadImage(tempFilesPaths[0])
         wepy.$instance.globalData.editVote.cover = netCover
         this.$apply()
+      },
+
+      titleInput(e) {
+        this.voteTitle = e.detail.value
+        wepy.$instance.globalData.editVote.title = this.voteTitle
+      },
+
+      noticeContentInput(e) {
+        this.noticeContent = e.detail.value
+        wepy.$instance.globalData.editVote.notice = this.noticeContent
+      },
+
+      async jumpNext() {
+        if (!await this.validate()) {
+          return
+        }
       }
+    }
+
+    async validate() {
+      if (!this.coverPath || this.coverPath.length == 0) {
+        Tips.alert('未上传封面')
+        return false
+      }
+
+      if (!this.voteTitle) {
+        Tips.alert('未输入活动名称')
+        return false
+      }
+
+      if (!this.noticeContent) {
+        Tips.alert('未输入公告')
+        return false
+      }
+
+      return true
     }
 
     onLoad() {
