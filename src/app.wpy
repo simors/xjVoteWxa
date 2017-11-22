@@ -1,4 +1,5 @@
 <style lang="less">
+  @import "./styles/vars.less";
   @import "./zanui/index.wxss";
 
   .container {
@@ -16,6 +17,11 @@
     width: 100%;
     background-color: #e2e2e2;
     z-index: 5;
+  }
+
+  .vote-btn {
+    background: @color-secondary;
+    border-color: @color-primary;
   }
 </style>
 
@@ -48,7 +54,11 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: null
+    userInfo: undefined,
+    editVote: {
+      title: undefined,
+      cover: undefined,
+    }
   }
 
   constructor () {
