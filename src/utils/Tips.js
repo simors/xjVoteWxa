@@ -87,9 +87,9 @@ export default class Tips {
   static alert (title) {
     wx.showToast({
       title: title,
-      image: '../asset/png/alert.png',
+      image: '/asset/png/alert.png',
       mask: true,
-      duration: 500
+      duration: 1000
     });
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -104,9 +104,9 @@ export default class Tips {
   static error (title, onHide) {
     wx.showToast({
       title: title,
-      image: '../asset/png/error.png',
+      image: '/asset/png/error.png',
       mask: true,
-      duration: 500
+      duration: 1000
     })
     // 隐藏结束回调
     if (onHide) {

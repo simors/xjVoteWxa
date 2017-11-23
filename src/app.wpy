@@ -41,7 +41,9 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/mine/mine',
-      'pages/publish/publish'
+      'pages/publish/publish',
+      'pages/publish/editRule',
+      'pages/publish/organizer'
     ],
     window: {
       navigationBarTitleText: '小吉互动',
@@ -58,7 +60,9 @@ export default class extends wepy.app {
     editVote: {
       title: null,
       cover: null,
-      notice: null
+      notice: null,
+      rule: null,
+      organizer: null,
     }
   }
 

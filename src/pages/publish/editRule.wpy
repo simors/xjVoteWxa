@@ -1,0 +1,59 @@
+<style lang="less">
+  .rule-text {
+    width: 100%;
+    height: 400px;
+  }
+</style>
+
+<template>
+  <view class="container">
+    <view class="zan-form">
+      <view class="zan-cell zan-form__item zan-cell--last-child">
+        <textarea class="zan-form__input zan-cell__bd rule-text" placeholder="编辑活动规则" @input="ruleInput"/>
+      </view>
+    </view>
+
+    <view class="zan-btns">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tips from '../../utils/Tips'
+
+  export default class EditRule extends wepy.page {
+    config = {
+      navigationBarTitleText: '活动规则',
+      enablePullDownRefresh: false
+    }
+
+    data = {
+      ruleContent: null
+    }
+
+    methods = {
+      ruleInput(e) {
+        this.ruleContent = e.detail.value
+        wepy.$instance.globalData.editVote.rule = this.ruleContent
+      },
+
+      async jumpNext() {
+        if (!await this.validate()) {
+          return
+        }
+        await this.$navigate('./organizer')
+      }
+    }
+
+    async validate() {
+      if (!this.ruleContent) {
+        Tips.alert('未输入活动规则')
+        return false
+      }
+
+      return true
+    }
+  }
+</script>

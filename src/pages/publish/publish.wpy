@@ -106,14 +106,15 @@
       },
 
       async jumpNext() {
-        if (!await this.validate()) {
-          return
-        }
+//        if (!await this.validate()) {
+//          return
+//        }
+        await this.$navigate('./editRule')
       }
     }
 
     async validate() {
-      if (!this.coverPath || this.coverPath.length == 0) {
+      if (!this.coverPath || this.coverPath.length === 0) {
         Tips.alert('未上传封面')
         return false
       }
