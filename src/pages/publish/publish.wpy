@@ -101,6 +101,9 @@
     methods = {
       async chooseCover() {
         let tempFilesPaths = await ImageUtils.chooseImage({count: 1, sizeType: ['compressed']})
+        if (tempFilesPaths.length === 0) {
+          return
+        }
         this.coverPath = tempFilesPaths[0]
         Tips.loading('正在上传图片')
         let netCover = await ImageUtils.uploadImage(tempFilesPaths[0])
