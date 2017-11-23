@@ -1,0 +1,34 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="container">
+    <view class="zan-btns" style="margin-top: 100px">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">完成</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+//  import Tips from '../../utils/Tips'
+
+  export default class GiftAndExpire extends wepy.page {
+    config = {
+      navigationBarTitleText: '礼品及期限',
+      enablePullDownRefresh: false
+    }
+
+    data = {
+      gifts: [],
+      startDate: null,
+      expire: null
+    }
+
+    methods = {
+      async submitForm() {
+      }
+    }
+  }
+</script>

@@ -157,6 +157,7 @@
         if (!await this.validate()) {
           return
         }
+        await this.$navigate('./award')
       }
     }
 

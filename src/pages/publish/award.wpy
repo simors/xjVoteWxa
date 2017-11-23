@@ -1,0 +1,39 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="container">
+    <view class="zan-btns" style="margin-top: 100px">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tips from '../../utils/Tips'
+
+  export default class Award extends wepy.page {
+    config = {
+      navigationBarTitleText: '奖项设置',
+      enablePullDownRefresh: false
+    }
+
+    data = {
+    }
+
+    methods = {
+      async jumpNext() {
+        if (!await this.validate()) {
+          return
+        }
+        await this.$navigate('./gift_expire')
+      }
+    }
+
+    async validate() {
+      return true
+    }
+  }
+</script>
