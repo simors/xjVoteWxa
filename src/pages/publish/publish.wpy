@@ -90,7 +90,9 @@
       async chooseCover() {
         let tempFilesPaths = await ImageUtils.chooseImage({count: 1, sizeType: ['compressed']})
         this.coverPath = tempFilesPaths[0]
+        Tips.loading('正在上传图片')
         let netCover = await ImageUtils.uploadImage(tempFilesPaths[0])
+        Tips.loaded()
         wepy.$instance.globalData.editVote.cover = netCover
         this.$apply()
       },

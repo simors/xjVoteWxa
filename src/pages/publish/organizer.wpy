@@ -1,15 +1,81 @@
 <style lang="less">
+  .view-gap {
+    margin-bottom: 10px;
+  }
+
+  .content-text {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  .tip-img-view {
+    width: 100%;
+    height: 500rpx;
+    background: #F2F2F2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tip-img {
+    width: 100rpx;
+    height: 100rpx;
+  }
+
+  .tip-img-text {
+    font-size: 12px;
+    color: #CD853F;
+    margin-top: 20rpx;
+  }
+
+  .item-view {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .img-view {
+    padding: 12px 15px;
+  }
+
+  .content-img {
+    width: 100%;
+  }
 </style>
 
 <template>
   <view class="container">
     <view class="zan-form">
-      <view class="zan-cell zan-form__item zan-cell--last-child">
-        <textarea class="zan-form__input zan-cell__bd rule-text" placeholder="编辑活动规则" @input="ruleInput"/>
-      </view>
+      <repeat for="{{introduce}}" key="index" index="index" item="item">
+        <view wx:if="{{item.type==='text'}}" class="zan-cell zan-form__item zan-cell--last-child view-gap">
+          <view class="item-view">
+            <textarea id="{{index}}" class="zan-form__input zan-cell__bd content-text view-gap" placeholder="输入正文" maxlength="-1" auto-height @input="contentInput"/>
+            <button class="zan-btn zan-btn--mini zan-btn--danger" @tap.stop="deleteContent({{index}})">删除</button>
+          </view>
+        </view>
+        <view wx:elif="{{item.type==='image'}}">
+          <view wx:if="{{item.url}}" class="img-view" @tap.stop="chooseImage({{index}})">
+            <view class="item-view">
+              <image class="content-img" src="{{item.url}}" mode="widthFix"/>
+              <button class="zan-btn zan-btn--mini zan-btn--danger" @tap.stop="deleteContent({{index}})">删除</button>
+            </view>
+          </view>
+          <view wx:else class="tip-img-view view-gap" @tap.stop="chooseImage({{index}})">
+            <image class="tip-img" src="../../asset/png/photo.png"/>
+            <text class="tip-img-text">请插入图片，最多选择9张</text>
+          </view>
+        </view>
+      </repeat>
     </view>
 
     <view class="zan-btns">
+      <button class="zan-btn zan-btn--primary zan-btn--small" @tap.stop="addImageInput">+ 图片</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small" @tap.stop="addTextInput">+ 文字</button>
+    </view>
+
+    <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
   </view>
@@ -18,6 +84,7 @@
 <script>
   import wepy from 'wepy'
   import Tips from '../../utils/Tips'
+  import ImageUtils from '../../utils/imageUtils'
 
   export default class Organizer extends wepy.page {
     config = {
@@ -29,15 +96,61 @@
       introduce: [
         {
           type: 'text',
-          content: null,
+          content: null
         }
       ]
     }
 
     methods = {
-      ruleInput(e) {
-        this.ruleContent = e.detail.value
-        wepy.$instance.globalData.editVote.rule = this.ruleContent
+      addImageInput() {
+        let imgObj = {
+          type: 'image',
+          url: null
+        }
+        this.introduce.push(imgObj)
+        this.$apply()
+      },
+
+      addTextInput() {
+        let textObj = {
+          type: 'text',
+          content: null
+        }
+        this.introduce.push(textObj)
+        this.$apply()
+      },
+
+      contentInput(e) {
+        let index = e.currentTarget.id
+        if (this.introduce[index].type === 'text') {
+          this.introduce[index].content = e.detail.value
+        }
+        wepy.$instance.globalData.editVote.organizer = this.introduce
+      },
+
+      async chooseImage(index) {
+        let tempFilesPaths = await ImageUtils.chooseImage({count: 9, sizeType: ['compressed']})
+        Tips.loading('正在上传图片')
+        let netImgs = await ImageUtils.uploadBatchImages(tempFilesPaths)
+        Tips.loaded()
+        let chooseImgs = netImgs.map((tmpPath) => {
+          return {
+            type: 'image',
+            url: tmpPath
+          }
+        })
+        if (chooseImgs.length === 0) {
+          return
+        }
+        this.introduce.splice(index, 1, ...chooseImgs)
+        wepy.$instance.globalData.editVote.organizer = this.introduce
+        this.$apply()
+      },
+
+      deleteContent(index) {
+        this.introduce.splice(index, 1)
+        wepy.$instance.globalData.editVote.organizer = this.introduce
+        this.$apply()
       },
 
       async jumpNext() {
@@ -48,7 +161,6 @@
     }
 
     async validate() {
-
       return true
     }
   }

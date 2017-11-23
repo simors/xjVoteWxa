@@ -64,9 +64,29 @@ export default class ImageUtils{
     });
   }
   
+  /**
+   * 上传单张图片
+   * @param filepath
+   * @returns {*}
+   */
   static async uploadImage(filepath) {
-    let file = new AV.File('', {blob: {uri: filepath}})
+    let file = new AV.File('tmpimg', {blob: {uri: filepath}})
     let result = await file.save()
     return result.url()
+  }
+  
+  /**
+   * 批量上传图片
+   * @param imgs
+   * @returns {Array}
+   */
+  static async uploadBatchImages(imgs) {
+    let upimgs = []
+    for (let img of imgs) {
+      let file = new AV.File('tmpimg', {blob: {uri: img}})
+      let result = await file.save()
+      upimgs.push(result.url())
+    }
+    return upimgs
   }
 }

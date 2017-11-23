@@ -9,7 +9,7 @@
   <view class="container">
     <view class="zan-form">
       <view class="zan-cell zan-form__item zan-cell--last-child">
-        <textarea class="zan-form__input zan-cell__bd rule-text" placeholder="编辑活动规则" @input="ruleInput"/>
+        <textarea class="zan-form__input zan-cell__bd rule-text" placeholder="编辑活动规则" maxlength="-1" @input="ruleInput"/>
       </view>
     </view>
 
@@ -40,9 +40,9 @@
       },
 
       async jumpNext() {
-        if (!await this.validate()) {
-          return
-        }
+//        if (!await this.validate()) {
+//          return
+//        }
         await this.$navigate('./organizer')
       }
     }
