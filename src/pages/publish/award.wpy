@@ -4,6 +4,7 @@
 
 <template>
   <view class="container">
+    <awardInput/>
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
@@ -13,11 +14,16 @@
 <script>
   import wepy from 'wepy'
   import Tips from '../../utils/Tips'
+  import AwardInput from '../../components/awardInput'
 
   export default class Award extends wepy.page {
     config = {
       navigationBarTitleText: '奖项设置',
       enablePullDownRefresh: false
+    }
+
+    components = {
+      awardInput: AwardInput
     }
 
     data = {
