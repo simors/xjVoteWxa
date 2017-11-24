@@ -1,9 +1,19 @@
 <style lang="less">
-
+  .gifts-view {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
 </style>
 
 <template>
   <view class="container">
+    <view class="gifts-view">
+      <repeat for="{{gifts}}" key="index" index="index" item="item">
+        <giftItem :gift="item"/>
+      </repeat>
+    </view>
+
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">完成</button>
     </view>
@@ -12,12 +22,18 @@
 
 <script>
   import wepy from 'wepy'
-//  import Tips from '../../utils/Tips'
+  import Tips from '../../utils/Tips'
+  import vote from '../../cloud/vote'
+  import GiftItem from '../../components/giftItem'
 
   export default class GiftAndExpire extends wepy.page {
     config = {
       navigationBarTitleText: '礼品及期限',
       enablePullDownRefresh: false
+    }
+
+    components = {
+      giftItem: GiftItem
     }
 
     data = {
@@ -29,6 +45,13 @@
     methods = {
       async submitForm() {
       }
+    }
+
+    async onLoad() {
+      Tips.loading()
+      this.gifts = await vote.fetchGifts()
+      Tips.loaded()
+      this.$apply()
     }
   }
 </script>

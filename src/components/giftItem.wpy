@@ -1,0 +1,56 @@
+<style type="less">
+  .gift-view {
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gift-img {
+    width: 200rpx;
+    height: 200rpx;
+  }
+
+  .desc-view {
+    display: flex;
+  }
+</style>
+<template>
+  <view class="gift-view" @tap.stop="onChange">
+    <image class="gift-img" src="{{gift.photo}}"/>
+    <view class="desc-view">
+      <text class="zan-font-12 zan-font-bold">{{gift.name}}</text>
+    </view>
+    <view class="desc-view">
+      <text class="zan-font-12">单价：</text>
+      <text class="zan-font-12">{{gift.price}}</text>
+    </view>
+    <view class="desc-view">
+      <text class="zan-font-12">票数：</text>
+      <text class="zan-font-12">{{gift.ballot}}</text>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class GiftItem extends wepy.component {
+    props = {
+      gift: {}
+    }
+
+    data = {
+    }
+
+    methods = {
+      onChange() {
+
+      }
+    }
+
+    onLoad() {
+      console.log('gift', this.gift)
+    }
+  }
+</script>
