@@ -1,10 +1,37 @@
 <style lang="less">
+  .add-view {
+    margin: 15px 0;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
 
+  .add-btn-img {
+    width: 100rpx;
+    height: 100rpx;
+  }
+
+  .add-btn-text {
+    font-size: 12px;
+    color: #CD853F;
+    margin-top: 20rpx;
+  }
 </style>
 
 <template>
   <view class="container">
-    <awardInput/>
+    <repeat for="{{awards}}" key="index" index="index" item="item">
+      <awardInput index="index" :award="item"/>
+    </repeat>
+
+    <view class="add-view" @tap.stop="addAward">
+      <image class="add-btn-img" src="../../asset/png/add.png" />
+      <text class="add-btn-text">添加奖项</text>
+    </view>
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
@@ -26,7 +53,23 @@
       awardInput: AwardInput
     }
 
+    events = {
+      'updateAwards': (index, award) => {
+        this.awards[index] = award
+        wepy.$instance.globalData.editVote.awards = this.awards
+        this.$apply()
+      }
+    }
+
     data = {
+      awards: [
+        {
+          awardPhoto: null,
+          awardName: null,
+          winnerNum: null,
+          description: null
+        }
+      ]
     }
 
     methods = {
@@ -35,6 +78,16 @@
           return
         }
         await this.$navigate('./gift_expire')
+      },
+
+      addAward() {
+        this.awards.push({
+          awardPhoto: null,
+          awardName: null,
+          winnerNum: null,
+          description: null
+        })
+        this.$apply()
       }
     }
 

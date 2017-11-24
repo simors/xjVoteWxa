@@ -64,7 +64,8 @@ export default class extends wepy.app {
       cover: null,
       notice: null,
       rule: null,
-      organizer: null
+      organizer: null,
+      awards: null
     }
   }
 
