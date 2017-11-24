@@ -24,7 +24,7 @@
     </view>
     <view class="desc-view">
       <text class="zan-font-12">单价：</text>
-      <text class="zan-font-12">{{gift.price}}</text>
+      <text class="zan-font-12">¥{{gift.price}}</text>
     </view>
     <view class="desc-view">
       <text class="zan-font-12">票数：</text>
