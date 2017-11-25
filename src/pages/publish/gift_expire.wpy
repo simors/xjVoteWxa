@@ -8,6 +8,15 @@
   .gift-cb {
     display: none;
   }
+
+  .picker-style {
+    display: flex;
+    flex: 1;
+  }
+
+  .picker {
+    width: 200px;
+  }
 </style>
 
 <template>
@@ -22,6 +31,25 @@
       </view>
     </checkbox-group>
 
+    <view class="zan-form" style="margin-top: 50rpx">
+      <view class="zan-cell zan-form__item">
+        <text class="zan-form__title">起始日期</text>
+        <picker class="picker-style" mode="date" value="{{startDate}}" start="2017-01-01" end="2050-01-01" bindchange="bindDateChange">
+          <view class="picker">
+            {{startDate}}
+          </view>
+        </picker>
+      </view>
+      <view class="zan-cell zan-form__item zan-cell--last-child">
+        <text class="zan-form__title">投票天数</text>
+        <picker class="picker-style" mode="selector" range="{{validExpire}}" value="{{index}}" bindchange="bindExpireChange">
+          <view class="picker">
+            {{validExpire[index]}}
+          </view>
+        </picker>
+      </view>
+    </view>
+
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">完成</button>
     </view>
@@ -33,6 +61,7 @@
   import Tips from '../../utils/Tips'
   import vote from '../../cloud/vote'
   import GiftItem from '../../components/giftItem'
+  import DateTime from '../../utils/dateTime'
 
   export default class GiftAndExpire extends wepy.page {
     config = {
@@ -48,7 +77,9 @@
       gifts: [],
       selectedGifts: [],
       startDate: null,
-      expire: null
+      expire: 5,
+      validExpire: [5, 8, 10],
+      index: 0,
     }
 
     events = {
@@ -67,7 +98,19 @@
     }
 
     methods = {
+      bindDateChange(e) {
+        this.startDate = e.detail.value
+        wepy.$instance.globalData.editVote.startDate = this.startDate
+      },
+
+      bindExpireChange(e) {
+        this.index = e.detail.value
+        this.expire = this.validExpire[this.index]
+        wepy.$instance.globalData.editVote.expire = this.expire
+      },
+
       async submitForm() {
+        console.log('editVote', wepy.$instance.globalData.editVote)
       }
     }
 
@@ -81,7 +124,12 @@
         gift.checked = true
         return gift
       })
+
       wepy.$instance.globalData.editVote.gifts = this.selectedGifts
+
+      this.startDate = DateTime.addDate(5)
+      wepy.$instance.globalData.editVote.startDate = this.startDate
+      wepy.$instance.globalData.editVote.expire = this.expire
       this.$apply()
     }
   }
