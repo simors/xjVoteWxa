@@ -25,7 +25,7 @@
 <template>
   <view class="container">
     <repeat for="{{awards}}" key="index" index="index" item="item">
-      <awardInput index="index" :award="item"/>
+      <awardInput :index="index" :award="item"/>
     </repeat>
 
     <view class="add-view" @tap.stop="addAward">

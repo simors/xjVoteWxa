@@ -92,7 +92,6 @@
 
     methods = {
       awardNameInput(e) {
-        console.log('index, award', this.index, this.award)
         let newAward = this.award
         newAward['awardName'] = e.detail.value
         this.$emit('updateAwards', this.index, newAward)

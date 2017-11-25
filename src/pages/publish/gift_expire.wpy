@@ -4,15 +4,23 @@
     flex-wrap: wrap;
     justify-content: space-around;
   }
+
+  .gift-cb {
+    display: none;
+  }
 </style>
 
 <template>
   <view class="container">
-    <view class="gifts-view">
-      <repeat for="{{gifts}}" key="index" index="index" item="item">
-        <giftItem :gift="item"/>
-      </repeat>
-    </view>
+
+    <checkbox-group>
+      <view class="gifts-view">
+        <repeat for="{{gifts}}" key="index" index="index" item="item">
+          <giftItem :index="index" :gift="item"/>
+          <checkbox class="gift-cb" value="{{item.id}}" checked="{{item.checked}}"/>
+        </repeat>
+      </view>
+    </checkbox-group>
 
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">完成</button>
@@ -38,8 +46,24 @@
 
     data = {
       gifts: [],
+      selectedGifts: [],
       startDate: null,
       expire: null
+    }
+
+    events = {
+      'checkGift': (index) => {
+        let isChecked = this.gifts[index].checked !== undefined ? !!this.gifts[index].checked : false
+        this.gifts[index].checked = !isChecked
+        if (this.gifts[index].checked) {
+          this.selectedGifts.push(this.gifts[index].id)
+        } else {
+          let pos = this.selectedGifts.indexOf(this.gifts[index].id)
+          this.selectedGifts.splice(pos, 1)
+        }
+        wepy.$instance.globalData.editVote.gifts = this.selectedGifts
+        this.$apply()
+      }
     }
 
     methods = {
@@ -51,6 +75,13 @@
       Tips.loading()
       this.gifts = await vote.fetchGifts()
       Tips.loaded()
+      // 默认全部选中
+      this.gifts = this.gifts.map((gift) => {
+        this.selectedGifts.push(gift.id)
+        gift.checked = true
+        return gift
+      })
+      wepy.$instance.globalData.editVote.gifts = this.selectedGifts
       this.$apply()
     }
   }
