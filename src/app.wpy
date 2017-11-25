@@ -30,6 +30,7 @@ import wepy from 'wepy'
 import 'wepy-async-function'
 import AV from './utils/av-weapp-min'
 import user from './cloud/user'
+import vote from './cloud/vote'
 
 AV.init({
   appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
@@ -69,6 +70,7 @@ export default class extends wepy.app {
       gifts: null,
       startDate: null,
       expire: null,
+      status: null
     }
   }
 
@@ -80,6 +82,7 @@ export default class extends wepy.app {
 
   async onLaunch() {
     this.testAsync()
+    this.saveVoteTimer()
   }
 
   sleep (s) {
@@ -95,6 +98,20 @@ export default class extends wepy.app {
     console.log(data)
   }
 
+  async saveVoteDraft() {
+    if (this.globalData.editVote.title) {
+      this.globalData.editVote.status = vote.VOTE_STATUS.EDITING
+      let voteInfo = await vote.createOrUpdateVote(this.globalData.editVote)
+      this.globalData.editVote.id = voteInfo.objectId
+    }
+  }
+
+  saveVoteTimer() {
+    setInterval(() => {
+      this.saveVoteDraft()
+    }, 10000)
+  }
+
   async getUserInfo() {
     let userInfo = this.globalData.userInfo
     if (userInfo) {
@@ -103,6 +120,20 @@ export default class extends wepy.app {
     let wepyUser = await user.userLogin()
     this.globalData.userInfo = wepyUser
     return wepyUser
+  }
+
+  clearVoteInfo() {
+    this.globalData.editVote.id = null
+    this.globalData.editVote.title = null
+    this.globalData.editVote.cover = null
+    this.globalData.editVote.notice = null
+    this.globalData.editVote.rule = null
+    this.globalData.editVote.organizer = null
+    this.globalData.editVote.awards = null
+    this.globalData.editVote.gifts = null
+    this.globalData.editVote.startDate = null
+    this.globalData.editVote.expire = null
+    this.globalData.editVote.status = null
   }
 }
 </script>

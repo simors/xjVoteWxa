@@ -51,7 +51,7 @@
     </view>
 
     <view class="zan-btns" style="margin-top: 100px">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">完成</button>
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">去支付</button>
     </view>
   </view>
 </template>
@@ -111,8 +111,10 @@
 
       async submitForm() {
         try {
-          await vote.createVote(wepy.$instance.globalData.editVote)
+          wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.PAYING
+          await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
           Tips.success('创建投票成功')
+          this.$parent.clearVoteInfo()
         } catch (e) {
           Tips.error('创建失败')
         }
