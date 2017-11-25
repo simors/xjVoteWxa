@@ -110,7 +110,12 @@
       },
 
       async submitForm() {
-        console.log('editVote', wepy.$instance.globalData.editVote)
+        try {
+          await vote.createVote(wepy.$instance.globalData.editVote)
+          Tips.success('创建投票成功')
+        } catch (e) {
+          Tips.error('创建失败')
+        }
       }
     }
 

@@ -10,6 +10,16 @@ export default class vote {
       return awards
     } catch (e) {
       console.error('error in fetch awards', e)
+      throw e
+    }
+  }
+  
+  static async createVote(payload) {
+    try {
+      let vote = await AV.Cloud.run('voteCreateVote', payload)
+      return vote
+    } catch (e) {
+      throw e
     }
   }
 }
