@@ -164,5 +164,12 @@
     async validate() {
       return true
     }
+
+    onLoad() {
+      if (wepy.$instance.globalData.editVote.organizer != null) {
+        this.introduce = wepy.$instance.globalData.editVote.organizer
+        this.$apply()
+      }
+    }
   }
 </script>

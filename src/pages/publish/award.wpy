@@ -94,5 +94,12 @@
     async validate() {
       return true
     }
+
+    onLoad() {
+      if (wepy.$instance.globalData.editVote.awards != null) {
+        this.awards = wepy.$instance.globalData.editVote.awards
+        this.$apply()
+      }
+    }
   }
 </script>
