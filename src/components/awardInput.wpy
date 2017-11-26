@@ -58,16 +58,16 @@
     <view class="zan-form">
       <view class="zan-cell zan-form__item">
         <text class="zan-form__title">奖项名称</text>
-        <input class="zan-form__input zan-cell__bd" placeholder="请输入奖项名称" @input="awardNameInput"/>
+        <input class="zan-form__input zan-cell__bd" value="{{award.awardName}}" placeholder="请输入奖项名称" @input="awardNameInput"/>
       </view>
       <view class="zan-cell zan-form__item">
         <text class="zan-form__title">中奖人数</text>
-        <input class="zan-form__input zan-cell__bd" type="number" placeholder="请输入中奖人数" @input="winnerNumInput"/>
+        <input class="zan-form__input zan-cell__bd" type="number" value="{{award.winnerNum}}" placeholder="请输入中奖人数" @input="winnerNumInput"/>
       </view>
       <view class="zan-cell zan-form__item zan-cell--last-child">
         <view class="desc-view">
           <text class="desc-tip">奖项说明</text>
-          <textarea class="zan-form__input zan-cell__bd desc-text" placeholder="编辑奖项说明" maxlength="-1" @input="awardDescInput"/>
+          <textarea class="zan-form__input zan-cell__bd desc-text" value="{{award.description}}" placeholder="编辑奖项说明" maxlength="-1" @input="awardDescInput"/>
         </view>
       </view>
     </view>

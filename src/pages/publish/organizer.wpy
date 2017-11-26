@@ -51,7 +51,7 @@
       <repeat for="{{introduce}}" key="index" index="index" item="item">
         <view wx:if="{{item.type==='text'}}" class="zan-cell zan-form__item zan-cell--last-child view-gap">
           <view class="item-view">
-            <textarea id="{{index}}" class="zan-form__input zan-cell__bd content-text view-gap" placeholder="输入正文" maxlength="-1" auto-height @input="contentInput"/>
+            <textarea id="{{index}}" class="zan-form__input zan-cell__bd content-text view-gap" value="{{item.content}}" placeholder="输入正文" maxlength="-1" auto-height @input="contentInput"/>
             <button class="zan-btn zan-btn--mini zan-btn--danger" @tap.stop="deleteContent({{index}})">删除</button>
           </view>
         </view>
