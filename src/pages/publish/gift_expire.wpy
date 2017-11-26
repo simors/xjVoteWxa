@@ -159,6 +159,7 @@
       } else {
         this.expire = wepy.$instance.globalData.editVote.expire
       }
+      this.index = this.validExpire.indexOf(this.expire)
       this.$apply()
     }
   }
