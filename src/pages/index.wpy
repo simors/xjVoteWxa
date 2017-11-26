@@ -127,6 +127,7 @@
   import WxcCc from '../components/wxc-cc';
   import WxcFlex from '../components/wxc-flex';
   import WxcListItem from '../components/wxc-listitem';
+  import Tips from '../utils/Tips';
 
   export default class Index extends wepy.page {
     config = {
@@ -275,6 +276,12 @@
       }, 3000)
 
       self.$apply()
+    }
+
+    onShareAppMessage () {
+      const title = '小吉互动';
+      const url = '/pages/index';
+      return Tips.share(title, url, title);
     }
   }
 </script>
