@@ -71,7 +71,8 @@ export default class extends wepy.app {
       startDate: null,
       expire: null,
       status: null
-    }
+    },
+    lastVote: ''
   }
 
   constructor () {
@@ -81,6 +82,7 @@ export default class extends wepy.app {
   }
 
   async onLaunch() {
+    this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
     this.testAsync()
     this.saveVoteTimer()
   }
@@ -99,10 +101,11 @@ export default class extends wepy.app {
   }
 
   async saveVoteDraft() {
-    if (this.globalData.editVote.title) {
+    if (this.globalData.lastVote !== JSON.stringify(this.globalData.editVote)) {
       this.globalData.editVote.status = vote.VOTE_STATUS.EDITING
       let voteInfo = await vote.createOrUpdateVote(this.globalData.editVote)
       this.globalData.editVote.id = voteInfo.objectId
+      this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
     }
   }
 
@@ -134,6 +137,8 @@ export default class extends wepy.app {
     this.globalData.editVote.startDate = null
     this.globalData.editVote.expire = null
     this.globalData.editVote.status = null
+
+    this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
   }
 }
 </script>
