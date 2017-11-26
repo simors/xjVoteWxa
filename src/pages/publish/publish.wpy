@@ -160,6 +160,7 @@
     }
 
     onLoad() {
+      this.$parent.clearVoteInfo()
     }
   }
 </script>
