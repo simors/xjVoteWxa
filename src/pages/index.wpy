@@ -29,6 +29,16 @@
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
 
+    <wxcCc>
+      <view><text>居中布局</text></view>
+      <view><text>居中布局</text></view>
+      <view><text>居中布局</text></view>
+    </wxcCc>
+    <wxcFlex main="around">
+      <view><text>居中布局</text></view>
+      <view><text>居中布局</text></view>
+      <view><text>居中布局</text></view>
+    </wxcFlex>
     <panel>
       <view class="title" slot="title">测试数据绑定</view>
 
@@ -106,6 +116,8 @@
   import Group from '../components/group'
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
+  import WxcCc from '../components/wxc-cc';
+  import WxcFlex from '../components/wxc-flex';
 
   export default class Index extends wepy.page {
     config = {
@@ -117,7 +129,9 @@
       counter2: Counter,
       list: List,
       group: Group,
-      toast: Toast
+      toast: Toast,
+      wxcCc: WxcCc,
+      wxcFlex: WxcFlex
     }
 
     mixins = [testMixin]

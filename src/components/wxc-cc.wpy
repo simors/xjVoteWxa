@@ -1,0 +1,23 @@
+<template>
+  <wxcFlex class="cc" main="center" cross="center">
+    <view>
+      <slot></slot>
+    </view>
+  </wxcFlex>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import WxcFlex from './wxc-flex';
+  export default class WxcCc extends wepy.component {
+    components = {
+      wxcFlex: WxcFlex
+    };
+    data = {};
+    methods = {};
+    events = {};
+    props = {};
+}
+</script>
+
+<style></style>
