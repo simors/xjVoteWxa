@@ -39,6 +39,14 @@
       <view><text>居中布局</text></view>
       <view><text>居中布局</text></view>
     </wxcFlex>
+    <wxcListItem title="投票1" desc="投票简介blabla">
+      <image src="https://s10.mogucdn.com/mlcdn/c45406/171116_62f571l0ki0ffcg94h6kg6452h497_356x356.png"
+             mode="aspectFit" />
+    </wxcListItem>
+    <wxcListItem2 title="投票2" desc="投票简介blabla">
+      <image src="https://s10.mogucdn.com/mlcdn/c45406/171116_3a30h33df8cj7f651al68hdh7bki7_528x528.png"
+             mode="aspectFit" />
+    </wxcListItem2>
     <panel>
       <view class="title" slot="title">测试数据绑定</view>
 
@@ -118,6 +126,7 @@
   import testMixin from '../mixins/test'
   import WxcCc from '../components/wxc-cc';
   import WxcFlex from '../components/wxc-flex';
+  import WxcListItem from '../components/wxc-listitem';
 
   export default class Index extends wepy.page {
     config = {
@@ -131,7 +140,9 @@
       group: Group,
       toast: Toast,
       wxcCc: WxcCc,
-      wxcFlex: WxcFlex
+      wxcFlex: WxcFlex,
+      wxcListItem: WxcListItem,
+      wxcListItem2: WxcListItem
     }
 
     mixins = [testMixin]
