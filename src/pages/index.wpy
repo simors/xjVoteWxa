@@ -1,5 +1,6 @@
 <style lang="less">
   @import "../styles/base.less";
+  @import "../minui/wxc-flex.wxss";
   @import "../minui/wxc-list.less";
   .userinfo {
     display: flex;
@@ -30,16 +31,12 @@
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
 
-    <wxcCc>
+    <view class="flex dir--left main--around cross--center wrap--nowrap">
       <view><text>居中布局</text></view>
       <view><text>居中布局</text></view>
       <view><text>居中布局</text></view>
-    </wxcCc>
-    <wxcFlex main="around">
-      <view><text>居中布局</text></view>
-      <view><text>居中布局</text></view>
-      <view><text>居中布局</text></view>
-    </wxcFlex>
+    </view>
+
     <view class="list--wrap">
       <view class="list__head">
         <view class="list__head--title">标题</view>
@@ -150,8 +147,6 @@
   import Group from '../components/group'
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
-  import WxcCc from '../components/wxc-cc';
-  import WxcFlex from '../components/wxc-flex';
   import Tips from '../utils/Tips';
 
   export default class Index extends wepy.page {
@@ -164,9 +159,7 @@
       counter2: Counter,
       list: List,
       group: Group,
-      toast: Toast,
-      wxcCc: WxcCc,
-      wxcFlex: WxcFlex,
+      toast: Toast
     }
 
     mixins = [testMixin]
