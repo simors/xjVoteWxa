@@ -34,7 +34,7 @@
     <view class="zan-form" style="margin-top: 50rpx">
       <view class="zan-cell zan-form__item">
         <text class="zan-form__title">起始日期</text>
-        <picker class="picker-style" mode="date" value="{{startDate}}" start="2017-01-01" end="2050-01-01" bindchange="bindDateChange">
+        <picker class="picker-style" mode="date" value="{{startDate}}" start="{{startDateInput}}" end="{{endDateInput}}" bindchange="bindDateChange">
           <view class="picker">
             {{startDate}}
           </view>
@@ -77,6 +77,8 @@
       gifts: [],
       selectedGifts: [],
       startDate: null,
+      startDateInput: null,
+      endDateInput: null,
       expire: 5,
       validExpire: [5, 8, 10],
       index: 0,
@@ -122,6 +124,8 @@
     }
 
     async onLoad() {
+      this.startDateInput = DateTime.addDate(1)
+      this.endDateInput = DateTime.addDate(10)
       Tips.loading()
       this.gifts = await vote.fetchGifts()
       Tips.loaded()
