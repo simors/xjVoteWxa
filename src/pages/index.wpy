@@ -44,30 +44,9 @@
         <view class="list__head--desc">描述</view>
       </view>
 
-      <view class="list-item--wrap">
-        <view class="list-item">
-          <view class="item-inner">
-            <image src="https://s10.mogucdn.com/mlcdn/c45406/171116_62f571l0ki0ffcg94h6kg6452h497_356x356.png"
-                   mode="aspectFit" />
-          </view>
-        </view>
-        <view class="list-item-meta">
-          <view class="list-item-meta-title">投票1</view>
-          <view class="list-item-meta-desc">投票简介blabla</view>
-        </view>
-      </view>
-      <view class="list-item--wrap">
-        <view class="list-item">
-          <view class="list-item-inner">
-            <image src="https://s10.mogucdn.com/mlcdn/c45406/171116_3a30h33df8cj7f651al68hdh7bki7_528x528.png"
-                   mode="aspectFit" />
-          </view>
-        </view>
-        <view class="list-item-meta">
-          <view class="list-item-meta-title">投票2</view>
-          <view class="list-item-meta-desc">投票简介blabla</view>
-        </view>
-      </view>
+      <repeat for="{{list}}" key="index" index="index" item="item">
+        <voteBrief :vote="item"></voteBrief>
+      </repeat>
     </view>
 
     <panel>
@@ -148,6 +127,7 @@
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
   import Tips from '../utils/Tips';
+  import VoteBrief from '@/components/VoteBrief';
 
   export default class Index extends wepy.page {
     config = {
@@ -159,12 +139,26 @@
       counter2: Counter,
       list: List,
       group: Group,
-      toast: Toast
+      toast: Toast,
+      voteBrief: VoteBrief
     }
 
     mixins = [testMixin]
 
     data = {
+      list: [{
+        id: 1,
+        title: 'xx投票1',
+        cover: 'https://s10.mogucdn.com/mlcdn/c45406/171116_62f571l0ki0ffcg94h6kg6452h497_356x356.png',
+        voted: 100,
+        pv: 1000
+      }, {
+        id: 2,
+        title: 'xx投票2',
+        cover: 'https://s10.mogucdn.com/mlcdn/c45406/171116_3a30h33df8cj7f651al68hdh7bki7_528x528.png',
+        voted: 101,
+        pv: 1001
+      }],
       mynum: 20,
       userInfo: {
         nickName: '加载中...'
