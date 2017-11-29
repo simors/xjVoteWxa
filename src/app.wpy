@@ -140,5 +140,26 @@ export default class extends wepy.app {
 
     this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
   }
+
+  initVoteInfo(voteInfo) {
+    this.globalData.editVote.id = voteInfo.id
+    this.globalData.editVote.title = voteInfo.title
+    this.globalData.editVote.cover = voteInfo.cover
+    this.globalData.editVote.notice = voteInfo.notice
+    this.globalData.editVote.rule = voteInfo.rule
+    this.globalData.editVote.organizer = voteInfo.organizer
+    this.globalData.editVote.awards = voteInfo.awards
+    this.globalData.editVote.startDate = voteInfo.startDate
+    this.globalData.editVote.expire = voteInfo.expire
+    this.globalData.editVote.status = voteInfo.status
+    if (voteInfo.gifts.length > 0) {
+      this.globalData.editVote.gifts = []
+      voteInfo.gifts.forEach((gift) => {
+        this.globalData.editVote.gifts.push(gift.id)
+      })
+    }
+
+    this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
+  }
 }
 </script>

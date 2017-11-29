@@ -164,7 +164,8 @@
       if (!option.voteId) {
         this.$parent.clearVoteInfo()
       } else {
-        // TODO: 根据投票活动id获取相应信息并完成初始化
+        let voteInfo = await vote.fetchVoteInfoById({voteId: option.voteId, updateStatus: false})
+        this.$parent.initVoteInfo(voteInfo)
       }
 
       if (wepy.$instance.globalData.editVote.rule === null) {

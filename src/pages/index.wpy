@@ -31,6 +31,10 @@
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
 
+    <navigator class="flex flex-column items-center justify-center" url="./publish/publish?voteId=5a1adcb9570c350067db0acf">
+      <text>跳转到编辑投票，测试用，不要删</text>
+    </navigator>
+
     <view class="flex dir--left main--around cross--center wrap--nowrap">
       <view><text>居中布局</text></view>
       <view><text>居中布局</text></view>

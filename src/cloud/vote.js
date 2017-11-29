@@ -38,4 +38,12 @@ export default class vote {
     }
     return await AV.Cloud.run('voteGetRuleTemplate', params)
   }
+  
+  static async fetchVoteInfoById(payload) {
+    let params = {
+      voteId: payload.voteId,
+      updateStatus: payload.updateStatus
+    }
+    return await AV.Cloud.run('voteFetchById', params)
+  }
 }
