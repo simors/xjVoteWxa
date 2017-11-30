@@ -31,7 +31,7 @@
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
 
-    <navigator class="flex flex-column items-center justify-center" url="./publish/publish?voteId=5a1adcb9570c350067db0acf">
+    <navigator class="flex flex-column items-center justify-center" url="./vote/index?voteId=5a1adcb9570c350067db0acf">
       <text>跳转到编辑投票，测试用，不要删</text>
     </navigator>
 
@@ -109,7 +109,7 @@
     <view class="toolbar toolbar-bottom">
       <view class="flex flex-column items-center justify-center">
         <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
-        <view class="toolbar-fontsize">主页</view>
+        <view class="toolbar-fontsize-selected">主页</view>
       </view>
       <navigator class="flex flex-column items-center justify-center" url="./publish/publish">
         <image class="toolbar-image" style="width: 32px; height: 32px;" src="../asset/png/publish.png" mode="aspectFill" />

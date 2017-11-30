@@ -1,0 +1,41 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="container">
+    <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import VoteTabbar from '../../components/voteTabbar'
+  import Tips from '../../utils/Tips'
+
+  export default class ApplyPage extends wepy.page {
+    config = {
+      navigationBarTitleText: '我要报名',
+      enablePullDownRefresh: false
+    }
+
+    components = {
+      voteTabbar: VoteTabbar
+    }
+
+    data = {
+      voteDetail: null,
+      status: null,
+      selectedTabName: '报名'
+    }
+
+    onLoad() {
+      Tips.loading()
+      let voteInfo = wepy.$instance.globalData.activeVote
+      Tips.loaded()
+      this.voteDetail = voteInfo
+      this.status = voteInfo.status
+      this.$apply()
+    }
+  }
+</script>

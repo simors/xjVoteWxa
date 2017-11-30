@@ -1,0 +1,108 @@
+<style lang="less">
+  @import "../styles/base.less";
+
+  .toolbar-image {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 2px;
+  }
+</style>
+
+<template>
+  <view class="toolbar toolbar-bottom">
+    <repeat for="{{tabbarItems}}" key="index" index="index" item="item">
+      <view class="flex flex-column items-center justify-center" @tap.stop="pageRedirect({{item.text}}, {{item.pagePath}})">
+        <view wx:if="{{item.selected}}" class="flex flex-column items-center justify-center">
+          <image class="toolbar-image" src="{{item.selectedIcon}}" mode="aspectFill" />
+          <view class="toolbar-fontsize-selected">{{item.text}}</view>
+        </view>
+        <view wx:else class="flex flex-column items-center justify-center">
+          <image class="toolbar-image" src="{{item.unSelectedIcon}}" mode="aspectFill" />
+          <view class="toolbar-fontsize">{{item.text}}</view>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class VoteTabbar extends wepy.component {
+    props = {
+      status: {
+        type: Number,
+        default: 1
+      },
+      selectedTabName: {
+        type: String,
+        default: '活动首页'
+      }
+    }
+
+    data = {
+      tabbarItems: [
+        {
+          text: '活动首页',
+          pagePath: '/pages/vote/index',
+          selected: true,
+          selectedIcon: '/asset/png/home_sel.png',
+          unSelectedIcon: '/asset/png/home_unsel.png'
+        },
+        {
+          text: '报名',
+          pagePath: '/pages/vote/apply',
+          selected: false,
+          selectedIcon: '/asset/png/apply_sel.png',
+          unSelectedIcon: '/asset/png/apply_unsel.png'
+        },
+        {
+          text: '奖品',
+          pagePath: '/pages/vote/award',
+          selected: false,
+          selectedIcon: '/asset/png/award_sel.png',
+          unSelectedIcon: '/asset/png/award_unsel.png'
+        },
+        {
+          text: '榜单',
+          pagePath: '/pages/vote/rank',
+          selected: false,
+          selectedIcon: '/asset/png/rank_sel.png',
+          unSelectedIcon: '/asset/png/rank_unsel.png'
+        }
+      ]
+    }
+
+    methods = {
+      pageRedirect(selected, url) {
+        if (selected === this.selectedTabName) {
+          return
+        }
+        this.$root.$redirect({url: url})
+      }
+    }
+
+    watch = {
+      status (newValue, oldValue) {
+        if (newValue > 3) {
+          this.tabbarItems.splice(1, 1)
+          this.$apply()
+        }
+      }
+    }
+
+    onLoad() {
+      if (this.status > 3) {
+        this.tabbarItems.splice(1, 1)
+      }
+      this.tabbarItems.map((item) => {
+        if (item.text === this.selectedTabName) {
+          item.selected = true
+        } else {
+          item.selected = false
+        }
+      })
+      this.$apply()
+    }
+  }
+</script>
