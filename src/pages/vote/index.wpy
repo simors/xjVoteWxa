@@ -34,6 +34,12 @@
       selectedTabName: '活动首页'
     }
 
+    onShareAppMessage () {
+      const title = this.voteDetail.title;
+      const url = '/pages/vote/index?voteId=' + this.voteDetail.id;
+      return Tips.share(title, url, title);
+    }
+
     async onLoad(option) {
       let voteInfo = null
       Tips.loading()
