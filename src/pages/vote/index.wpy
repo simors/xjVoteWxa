@@ -3,11 +3,34 @@
     width: 100%;
     height: 500rpx;
   }
+
+  .view-padding {
+    padding: 10px 15px;
+  }
+
+  .title-view {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .title-font {
+    font-size: 16px;
+    font-weight: bold;
+  }
 </style>
 
 <template>
   <view class="container">
     <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+    <view class="view-padding">
+      <view class="title-view">
+        <text class="title-font">{{voteDetail.title}}</text>
+      </view>
+    </view>
 
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
   </view>
