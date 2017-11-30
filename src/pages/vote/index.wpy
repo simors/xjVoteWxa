@@ -25,6 +25,7 @@
 
 <template>
   <view class="container">
+    <zannoticebar text="voteDetail.notice" componentId="movable"/>
     <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
     <view class="view-padding">
       <view class="title-view">
@@ -41,6 +42,7 @@
   import Tips from '../../utils/Tips'
   import vote from '../../cloud/vote'
   import VoteTabbar from '../../components/voteTabbar'
+  import zanNoticebar from '../../components/zan-noticebar'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -48,7 +50,8 @@
     }
 
     components = {
-      voteTabbar: VoteTabbar
+      voteTabbar: VoteTabbar,
+      zannoticebar: zanNoticebar
     }
 
     data = {
@@ -61,6 +64,10 @@
       const title = this.voteDetail.title;
       const url = '/pages/vote/index?voteId=' + this.voteDetail.id;
       return Tips.share(title, url, title);
+    }
+
+    onShow() {
+      this.$invoke('zannoticebar', 'initZanNoticeBarScroll', 'movable')
     }
 
     async onLoad(option) {
@@ -77,6 +84,7 @@
       this.status = voteInfo.status
       console.log('voteDetail', this.voteDetail)
       wepy.setNavigationBarTitle({title: voteInfo.title})
+
       this.$apply()
     }
   }
