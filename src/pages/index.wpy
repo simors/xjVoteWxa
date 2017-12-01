@@ -35,12 +35,6 @@
       <text>跳转到编辑投票，测试用，不要删</text>
     </navigator>
 
-    <view class="flex dir--left main--around cross--center wrap--nowrap">
-      <view><text>居中布局</text></view>
-      <view><text>居中布局</text></view>
-      <view><text>居中布局</text></view>
-    </view>
-
     <view class="list--wrap">
       <view class="list__head">
         <view class="list__head--title">标题</view>
@@ -48,7 +42,7 @@
         <view class="list__head--desc">描述</view>
       </view>
 
-      <repeat for="{{list}}" key="index" index="index" item="item">
+      <repeat for="{{votes}}" key="index" index="index" item="item">
         <voteBrief :vote="item"></voteBrief>
       </repeat>
     </view>
@@ -150,19 +144,7 @@
     mixins = [testMixin]
 
     data = {
-      list: [{
-        id: 1,
-        title: 'xx投票1',
-        cover: 'https://s10.mogucdn.com/mlcdn/c45406/171116_62f571l0ki0ffcg94h6kg6452h497_356x356.png',
-        voted: 100,
-        pv: 1000
-      }, {
-        id: 2,
-        title: 'xx投票2',
-        cover: 'https://s10.mogucdn.com/mlcdn/c45406/171116_3a30h33df8cj7f651al68hdh7bki7_528x528.png',
-        voted: 101,
-        pv: 1001
-      }],
+      votes: [],
       mynum: 20,
       userInfo: {
         nickName: '加载中...'
@@ -281,6 +263,9 @@
       if (userInfo) {
         self.userInfo = userInfo
       }
+
+      self.votes = await this.$parent.fetchVotes();
+
       self.normalTitle = '标题已被修改'
 
       self.setTimeoutTitle = '标题三秒后会被修改'
