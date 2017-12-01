@@ -16,4 +16,10 @@ export default class DateTime {
     let aDate = (new Date(Date.parse(nowDate) + days * 24 * 3600 * 1000)).toLocaleDateString()
     return DateTime.format(aDate)
   }
+  
+  static addDateWithBegin(beginDate, days) {
+    let nowDate = (new Date(beginDate)).toLocaleDateString()
+    let aDate = (new Date(Date.parse(nowDate) + days * 24 * 3600 * 1000)).toLocaleDateString()
+    return DateTime.format(aDate)
+  }
 }

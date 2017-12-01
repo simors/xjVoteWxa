@@ -1,0 +1,110 @@
+<style type="less">
+  .counter-down {
+    width: 100%;
+    height: 80px;
+    background: #f2efe6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter-view {
+    display: flex;
+  }
+
+  .num-vew {
+    background: #37c6c0;
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 5px;
+    min-width: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+  }
+</style>
+
+<template>
+  <view class="counter-down">
+    <view style="margin-bottom: 10px">
+      <text class="zan-font-16 zan-c-gray-dark zan-font-bold">活动结束倒计时</text>
+    </view>
+    <view class="counter-view">
+      <view class="num-vew">
+        {{counter.days}}
+      </view>
+      <text>天</text>
+      <view class="num-vew">
+        {{counter.hours}}
+      </view>
+      <text>时</text>
+      <view class="num-vew">
+        {{counter.mins}}
+      </view>
+      <text>分</text>
+      <view class="num-vew">
+        {{counter.secs}}
+      </view>
+      <text>秒</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class TimerCounterDown extends wepy.component {
+    props = {
+      beginCounter: {
+        type: Number,
+        default: 0
+      },
+    }
+
+    data = {
+      counter: {},
+      timer: null
+    }
+
+    onLoad() {
+      this.timer = setInterval(() => {
+        this.beginCounter--
+        this.counter = this.calCounter(this.beginCounter)
+        this.$apply()
+      }, 1000)
+    }
+
+    onUnload() {
+      clearInterval(this.timer)
+    }
+
+    calCounter(count) {
+      const oneday = 24 * 60 * 60
+      const onehour = 60 * 60
+      const onemin = 60
+      let days = parseInt(count / oneday)
+      if (days < 10) {
+        days = '0' + days
+      }
+      let hours = parseInt((count - days * oneday) / onehour)
+      if (hours < 10) {
+        hours = '0' + hours
+      }
+      let mins = parseInt((count - days * oneday - hours * onehour) / onemin)
+      if (mins < 10) {
+        mins = '0' + mins
+      }
+      let secs = count - days * oneday - hours * onehour - mins * 60
+      if (secs < 10) {
+        secs = '0' + secs
+      }
+      return {
+        days,
+        hours,
+        mins,
+        secs
+      }
+    }
+  }
+</script>

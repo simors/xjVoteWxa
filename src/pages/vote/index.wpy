@@ -42,6 +42,9 @@
       <view class="up-down-padding">
         <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
       </view>
+      <view>
+        <timerCounterDown :beginCounter.sync="counter"/>
+      </view>
     </view>
 
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
@@ -52,9 +55,11 @@
   import wepy from 'wepy'
   import Tips from '../../utils/Tips'
   import vote from '../../cloud/vote'
+  import DateTime from '../../utils/dateTime'
   import VoteTabbar from '../../components/voteTabbar'
   import zanNoticebar from '../../components/zan-noticebar'
   import VoteStat from '../../components/voteStat'
+  import TimerCounterDown from '../../components/timerCountDown'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -64,7 +69,8 @@
     components = {
       voteTabbar: VoteTabbar,
       zanNoticebar,
-      voteStat: VoteStat
+      voteStat: VoteStat,
+      timerCounterDown: TimerCounterDown
     }
 
     data = {
@@ -74,6 +80,7 @@
       applyNum: null,
       voteNum: null,
       pv: null,
+      counter: 0,
       selectedTabName: '活动首页'
     }
 
@@ -106,6 +113,10 @@
       this.applyNum = voteInfo.applyNum
       this.voteNum = voteInfo.voteNum
       this.pv = voteInfo.pv
+
+      let nowtime = (new Date()).getTime()
+      let endtime = (new Date(DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire))).getTime()
+      this.counter = parseInt((endtime - nowtime) / 1000)
       console.log('voteDetail', this.voteDetail)
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
