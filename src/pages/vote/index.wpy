@@ -29,8 +29,12 @@
 
 <template>
   <view class="container">
-    <zannoticebar :text.sync="notice" componentId="movable"/>
-    <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+    <zanNoticebar :text.sync="notice"/>
+
+    <view>
+      <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+    </view>
+
     <view class="view-padding">
       <view class="title-view">
         <text class="title-font">{{voteDetail.title}}</text>
@@ -59,7 +63,7 @@
 
     components = {
       voteTabbar: VoteTabbar,
-      zannoticebar: zanNoticebar,
+      zanNoticebar,
       voteStat: VoteStat
     }
 
@@ -80,7 +84,9 @@
     }
 
     onShow() {
-      this.$invoke('zannoticebar', 'initZanNoticeBarScroll', 'movable')
+      setTimeout(() => {
+        this.$invoke('zanNoticebar', 'initZanNoticeBarScroll')
+      }, 2000)
     }
 
     async onLoad(option) {
