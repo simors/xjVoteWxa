@@ -3,7 +3,7 @@
     <view class="list-item">
       <view class="item-inner">
         <view class="flex main--center cross--center">
-          <navigator hoverClass="none">
+          <navigator hoverClass="none" url="./vote/index?voteId={{vote.id}}">
             <image src="{{vote.cover}}" mode="aspectFit" />
           </navigator>
         </view>
@@ -12,7 +12,7 @@
     <view class="list-item-meta">
       <view class="list-item-meta-title">{{vote.title}}</view>
       <view class="flex main--around cross--center list-item-meta-desc">
-        <view>voted: {{vote.voted}}</view>
+        <view>voted: {{vote.voteNum}}</view>
         <view>pv: {{vote.pv}}</view>
       </view>
     </view>
@@ -33,7 +33,7 @@
           return {
             title: '',
             cover: '',
-            voted: 0,
+            voteNum: 0,
             pv: 0
           }
         }

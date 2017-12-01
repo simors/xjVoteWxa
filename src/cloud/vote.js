@@ -11,7 +11,7 @@ export default class vote {
     STARTING: 4,    // 正在进行
     DONE: 5,        // 已结束
   }
-  
+
   static async fetchGifts() {
     try {
       let awards = await AV.Cloud.run('voteFetchGifts')
@@ -21,24 +21,36 @@ export default class vote {
       throw e
     }
   }
-  
+
   static async createVote(payload) {
     let vote = await AV.Cloud.run('voteCreateVote', payload)
     return vote
   }
-  
+
   static async createOrUpdateVote(payload) {
     let vote = await AV.Cloud.run('voteCreateOrUpdateVote', payload)
     return vote
   }
-  
+
   static async getRuleTemplate(payload) {
     let params = {
       tempName: payload.tempName
     }
     return await AV.Cloud.run('voteGetRuleTemplate', params)
   }
-  
+
+  static async fetchVotes(payload) {
+    const params = {
+    };
+    ({
+      searchType: params.searchType,
+      lastTime: params.lastTime,
+      limit: params.limit
+    } = payload);
+
+    return await AV.Cloud.run('voteFetchSet', params);
+  }
+
   static async fetchVoteInfoById(payload) {
     let params = {
       voteId: payload.voteId,
@@ -46,7 +58,7 @@ export default class vote {
     }
     return await AV.Cloud.run('voteFetchById', params)
   }
-  
+
   static async incVotePv(payload) {
     let params = {
       voteId: payload.voteId

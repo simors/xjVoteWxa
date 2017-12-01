@@ -78,6 +78,7 @@ export default class extends wepy.app {
     },
     lastVote: '',
     activeVote: null,
+    votes: [],
   }
 
   constructor () {
@@ -128,6 +129,12 @@ export default class extends wepy.app {
     let wepyUser = await user.userLogin()
     this.globalData.userInfo = wepyUser
     return wepyUser
+  }
+
+  async fetchVotes() {
+    const votes = await vote.fetchVotes({});
+    this.globalData.votes = votes;
+    return votes;
   }
 
   clearVoteInfo() {
