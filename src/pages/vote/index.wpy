@@ -5,7 +5,11 @@
   }
 
   .view-padding {
-    padding: 10px 15px;
+    padding: 10px 12px;
+  }
+
+  .up-down-padding {
+    padding: 10px 0;
   }
 
   .title-view {
@@ -25,11 +29,14 @@
 
 <template>
   <view class="container">
-    <zannoticebar text="voteDetail.notice" componentId="movable"/>
+    <zannoticebar :text.sync="notice" componentId="movable"/>
     <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
     <view class="view-padding">
       <view class="title-view">
         <text class="title-font">{{voteDetail.title}}</text>
+      </view>
+      <view class="up-down-padding">
+        <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
       </view>
     </view>
 
@@ -43,6 +50,7 @@
   import vote from '../../cloud/vote'
   import VoteTabbar from '../../components/voteTabbar'
   import zanNoticebar from '../../components/zan-noticebar'
+  import VoteStat from '../../components/voteStat'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -51,12 +59,17 @@
 
     components = {
       voteTabbar: VoteTabbar,
-      zannoticebar: zanNoticebar
+      zannoticebar: zanNoticebar,
+      voteStat: VoteStat
     }
 
     data = {
       voteDetail: null,
+      notice: null,
       status: null,
+      applyNum: null,
+      voteNum: null,
+      pv: null,
       selectedTabName: '活动首页'
     }
 
@@ -76,12 +89,17 @@
       if (option.voteId) {
         voteInfo = await vote.fetchVoteInfoById({voteId: option.voteId, updateStatus: true})
         wepy.$instance.globalData.activeVote = voteInfo
+        vote.incVotePv({voteId: option.voteId})
       } else {
         voteInfo = wepy.$instance.globalData.activeVote
       }
       Tips.loaded()
       this.voteDetail = voteInfo
+      this.notice = voteInfo.notice
       this.status = voteInfo.status
+      this.applyNum = voteInfo.applyNum
+      this.voteNum = voteInfo.voteNum
+      this.pv = voteInfo.pv
       console.log('voteDetail', this.voteDetail)
       wepy.setNavigationBarTitle({title: voteInfo.title})
 

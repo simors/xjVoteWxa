@@ -46,4 +46,11 @@ export default class vote {
     }
     return await AV.Cloud.run('voteFetchById', params)
   }
+  
+  static async incVotePv(payload) {
+    let params = {
+      voteId: payload.voteId
+    }
+    return await AV.Cloud.run('voteIncVotePv', params)
+  }
 }
