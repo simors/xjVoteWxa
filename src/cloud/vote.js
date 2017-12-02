@@ -44,6 +44,8 @@ export default class vote {
     };
     ({
       searchType: params.searchType,
+      status: params.status,
+      orderedBy: params.orderedBy,
       lastTime: params.lastTime,
       limit: params.limit
     } = payload);
