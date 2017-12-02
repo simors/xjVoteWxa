@@ -31,10 +31,10 @@
 </style>
 
 <template>
-  <scroll-view scroll-y enable-back-to-top class="container has-toolbar" style="background: #fff">
+  <scroll-view scroll-y enable-back-to-top class="container" style="background: #fff">
     <zanNoticebar :text.sync="notice"/>
 
-    <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+    <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
 
     <view class="title-view">
       <text class="title-font">{{voteDetail.title}}</text>
@@ -58,6 +58,8 @@
     <view class="view-padding">
 
     </view>
+
+    <view style="height: 96rpx"/>
 
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
   </scroll-view>
