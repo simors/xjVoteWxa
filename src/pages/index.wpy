@@ -70,7 +70,7 @@
 
     <toast />
 
-    <view style="height: 96rpx"/>
+    <view style="height: 120rpx"/>
 
     <view class="toolbar toolbar-bottom">
       <view class="flex flex-column items-center justify-center">

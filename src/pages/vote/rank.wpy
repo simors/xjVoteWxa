@@ -4,6 +4,9 @@
 
 <template>
   <view class="container">
+
+    <view style="height: 120rpx"/>
+
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
   </view>
 </template>
