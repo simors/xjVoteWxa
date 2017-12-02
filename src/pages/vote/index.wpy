@@ -114,9 +114,8 @@
       this.voteNum = voteInfo.voteNum
       this.pv = voteInfo.pv
 
-      let nowtime = (new Date()).getTime()
-      let endtime = (new Date(DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire))).getTime()
-      this.counter = parseInt((endtime - nowtime) / 1000)
+      let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
+      this.counter = DateTime.minusDateTime(endDate)
       console.log('voteDetail', this.voteDetail)
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
