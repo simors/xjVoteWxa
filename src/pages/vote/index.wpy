@@ -86,7 +86,7 @@
         <organizerShower :organizer.sync="organizer"/>
       </view>
 
-      <view style="height: 120rpx"/>
+      <view style="height: 120rpx; background: transparent"/>
 
       <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
     </scroll-view>

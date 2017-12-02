@@ -1,0 +1,53 @@
+<style type="less">
+  .award {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .content-img {
+    width: 100%;
+  }
+
+  .name-view {
+    display: flex;
+    justify-content: center;
+    padding: 18px 12px;
+  }
+
+  .padding-view {
+    padding: 10px 12px 0 12px;
+  }
+</style>
+
+<template>
+  <view class="award">
+    <view class="name-view">
+      <text class="zan-font-18 zan-c-red">{{award.awardName}}</text>
+    </view>
+    <image class="content-img" src="{{award.awardPhoto}}" mode="widthFix"/>
+    <view class="padding-view">
+      <text class="zan-font-16" style="margin-right: 5px">中奖人数</text>
+      <text class="zan-font-16 zan-c-red zan-font-bold" style="margin-right: 5px">{{award.winnerNum}}</text>
+      <text class="zan-font-16">人</text>
+    </view>
+    <view class="padding-view">
+      <text class="zan-font-16" style="line-height: 1.4">{{award.description}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class AwardShow extends wepy.component {
+    props = {
+      award: {}
+    }
+
+    data = {
+    }
+
+    methods = {
+    }
+  }
+</script>

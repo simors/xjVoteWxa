@@ -4,8 +4,11 @@
 
 <template>
   <view class="container">
+    <repeat for="{{voteDetail.awards}}" key="index" index="index" item="item">
+      <awardShow :award.sync="item"/>
+    </repeat>
 
-    <view style="height: 120rpx"/>
+    <view style="height: 120rpx; background: transparent"/>
 
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
   </view>
@@ -15,6 +18,7 @@
   import wepy from 'wepy'
   import VoteTabbar from '../../components/voteTabbar'
   import Tips from '../../utils/Tips'
+  import AwardShow from '../../components/awardShow'
 
   export default class AwardPage extends wepy.page {
     config = {
@@ -23,7 +27,8 @@
     }
 
     components = {
-      voteTabbar: VoteTabbar
+      voteTabbar: VoteTabbar,
+      awardShow: AwardShow
     }
 
     data = {
