@@ -11,29 +11,27 @@
 </style>
 <template>
   <view class="container has-toolbar">
-    <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
-      <view class="list--wrap">
-        <repeat for="{{votes}}" key="index" index="index" item="item">
-          <voteBrief :vote="item"></voteBrief>
-        </repeat>
-      </view>
+    <view class="list--wrap">
+      <repeat for="{{votes}}" key="index" index="index" item="item">
+        <voteBrief :vote="item"></voteBrief>
+      </repeat>
+    </view>
 
-      <view style="height: 120rpx; background: transparent"/>
+    <view style="height: 120rpx; background: transparent"/>
 
-      <view class="toolbar toolbar-bottom">
-        <view class="flex flex-column items-center justify-center">
-          <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
-          <view class="toolbar-fontsize-selected">主页</view>
-        </view>
-        <navigator class="flex flex-column items-center justify-center" url="./publish/publish">
-          <image class="toolbar-image" style="width: 32px; height: 32px;" src="../asset/png/publish.png" mode="aspectFill" />
-        </navigator>
-        <navigator class="flex flex-column items-center justify-center" url="./mine/mine">
-          <image class="toolbar-image" src="../asset/png/mine.png" mode="aspectFill" />
-          <view class="toolbar-fontsize">我的</view>
-        </navigator>
+    <view class="toolbar toolbar-bottom">
+      <view class="flex flex-column items-center justify-center">
+        <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
+        <view class="toolbar-fontsize-selected">主页</view>
       </view>
-    </scroll-view>
+      <navigator class="flex flex-column items-center justify-center" url="./publish/publish">
+        <image class="toolbar-image" style="width: 32px; height: 32px;" src="../asset/png/publish.png" mode="aspectFill" />
+      </navigator>
+      <navigator class="flex flex-column items-center justify-center" url="./mine/mine">
+        <image class="toolbar-image" src="../asset/png/mine.png" mode="aspectFill" />
+        <view class="toolbar-fontsize">我的</view>
+      </navigator>
+    </view>
   </view>
 </template>
 
