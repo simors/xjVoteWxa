@@ -132,12 +132,6 @@ export default class extends wepy.app {
     return wepyUser
   }
 
-  async fetchVotes() {
-    const votes = await vote.fetchVotes({});
-    this.globalData.votes = votes;
-    return votes;
-  }
-
   clearVoteInfo() {
     this.globalData.editVote.id = null
     this.globalData.editVote.title = null
