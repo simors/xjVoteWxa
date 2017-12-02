@@ -57,6 +57,7 @@
 
     async onLoad() {
       Tips.loading();
+      await this.$parent.getUserInfo();
       this.votes = await this.fetchVotes();
       Tips.loaded();
 
