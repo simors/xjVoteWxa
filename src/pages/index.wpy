@@ -70,6 +70,8 @@
 
     <toast />
 
+    <view style="height: 96rpx"/>
+
     <view class="toolbar toolbar-bottom">
       <view class="flex flex-column items-center justify-center">
         <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
