@@ -1,0 +1,46 @@
+<style type="less">
+  .organizer-view {
+
+  }
+
+  .view-gap {
+    margin-bottom: 10px;
+  }
+
+  .content-img {
+    width: 100%;
+  }
+
+  .content-text {
+    color: #59534e;
+  }
+</style>
+
+<template>
+  <view class="organizer-view">
+    <repeat for="{{organizer}}" key="index" index="index" item="item">
+      <view wx:if="{{item.type==='text'}}" class="view-gap">
+        <text class="zan-font-16 content-text">{{item.content}}</text>
+      </view>
+      <view wx:elif="{{item.type==='image'}}">
+        <image class="content-img" src="{{item.url}}" mode="widthFix"/>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class OrganizerShower extends wepy.component {
+    props = {
+      organizer: {}
+    }
+
+    data = {
+    }
+
+    methods = {
+    }
+  }
+</script>

@@ -81,7 +81,11 @@
       <text class="item-tip-text">主办方介绍</text>
     </view>
 
-    <view style="height: 96rpx"/>
+    <view class="view-padding">
+      <organizerShower :organizer.sync="organizer"/>
+    </view>
+
+    <view style="height: 120rpx"/>
 
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
   </scroll-view>
@@ -96,6 +100,7 @@
   import zanNoticebar from '../../components/zan-noticebar'
   import VoteStat from '../../components/voteStat'
   import TimerCounterDown from '../../components/timerCountDown'
+  import OrganizerShower from '../../components/organizerShow'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -106,7 +111,8 @@
       voteTabbar: VoteTabbar,
       zanNoticebar,
       voteStat: VoteStat,
-      timerCounterDown: TimerCounterDown
+      timerCounterDown: TimerCounterDown,
+      organizerShower: OrganizerShower
     }
 
     data = {
@@ -117,6 +123,7 @@
       voteNum: null,
       pv: null,
       counter: 0,
+      organizer: null,
       selectedTabName: '活动首页'
     }
 
@@ -155,6 +162,7 @@
       this.applyNum = voteInfo.applyNum
       this.voteNum = voteInfo.voteNum
       this.pv = voteInfo.pv
+      this.organizer = voteInfo.organizer
 
       let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
       this.counter = DateTime.minusDateTime(endDate)
