@@ -58,10 +58,9 @@
     async onLoad() {
       Tips.loading();
       await this.$parent.getUserInfo();
-      this.votes = await this.fetchVotes();
+      this.votes = await this.refreshVotes();
+      this.$apply();
       Tips.loaded();
-
-      this.$apply()
     }
 
     onShareAppMessage() {
@@ -70,15 +69,46 @@
       return Tips.share(title, url, title);
     }
 
-    async fetchVotes() {
+    async onPullDownRefresh() {
+      this.votes = await this.refreshVotes();
+      wx.stopPullDownRefresh();
+      this.$apply();
+    }
+
+    async onReachBottom() {
+      const moreVotes = await this.fetchMoreVotes();
+      if (moreVotes.length === 0) {
+        return;
+      }
+      this.votes.push(...moreVotes);
+      this.$apply();
+    }
+
+    async refreshVotes() {
       const payload = {
         status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
         orderedBy: 'createdAt',
         limit: 10
       };
-      const votes = await cloud.fetchVotes(payload);
-      this.votes = votes;
-      return votes;
+
+      return await cloud.fetchVotes(payload);
+    }
+
+    async fetchMoreVotes() {
+      if (this.votes.length === 0) {
+        return [];
+      }
+
+      const lastVote = this.votes[this.votes.length - 1];
+      const lastCreatedAt = lastVote.createdAt;
+      const payload = {
+        status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
+        orderedBy: 'createdAt',
+        lastTime: lastCreatedAt,
+        limit: 10
+      };
+
+      return await cloud.fetchVotes(payload);
     }
   }
 </script>
