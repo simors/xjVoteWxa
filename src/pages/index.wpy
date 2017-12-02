@@ -11,10 +11,6 @@
 </style>
 <template>
   <scroll-view scroll-y enable-back-to-top class="container has-toolbar">
-    <navigator class="flex flex-column items-center justify-center" url="./vote/index?voteId=5a1adcb9570c350067db0acf">
-      <text>跳转到编辑投票，测试用，不要删</text>
-    </navigator>
-
     <view class="list--wrap">
       <repeat for="{{votes}}" key="index" index="index" item="item">
         <voteBrief :vote="item"></voteBrief>
