@@ -26,6 +26,8 @@
   .tip-view {
     display: flex;
     margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
   }
 
   .tip-img {

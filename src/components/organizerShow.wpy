@@ -20,7 +20,7 @@
   <view class="organizer-view">
     <repeat for="{{organizer}}" key="index" index="index" item="item">
       <view wx:if="{{item.type==='text'}}" class="view-gap">
-        <text class="zan-font-16 content-text">{{item.content}}</text>
+        <text class="zan-font-16 content-text" style="line-height: 1.4">{{item.content}}</text>
       </view>
       <view wx:elif="{{item.type==='image'}}">
         <image class="content-img" src="{{item.url}}" mode="widthFix"/>
