@@ -1,9 +1,14 @@
 <style lang="less">
-
+  .up-down-padding {
+    padding: 10px 0 0 0;
+  }
 </style>
 
 <template>
   <view class="container">
+    <view class="up-down-padding">
+      <timerCounterDown :beginCounter.sync="counter"/>
+    </view>
 
     <view style="height: 120rpx; background: transparent"/>
 
@@ -13,8 +18,10 @@
 
 <script>
   import wepy from 'wepy'
+  import DateTime from '../../utils/dateTime'
   import VoteTabbar from '../../components/voteTabbar'
   import Tips from '../../utils/Tips'
+  import TimerCounterDown from '../../components/timerCountDown'
 
   export default class RankPage extends wepy.page {
     config = {
@@ -23,11 +30,13 @@
     }
 
     components = {
-      voteTabbar: VoteTabbar
+      voteTabbar: VoteTabbar,
+      timerCounterDown: TimerCounterDown
     }
 
     data = {
       voteDetail: null,
+      counter: 0,
       status: null,
       selectedTabName: '榜单'
     }
@@ -36,9 +45,16 @@
       Tips.loading()
       let voteInfo = wepy.$instance.globalData.activeVote
       Tips.loaded()
+      let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
+      this.counter = DateTime.minusDateTime(endDate)
+
       this.voteDetail = voteInfo
       this.status = voteInfo.status
       this.$apply()
+    }
+
+    onUnload() {
+      this.$invoke('timerCounterDown', 'clearTimer')
     }
   }
 </script>
