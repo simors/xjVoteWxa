@@ -10,6 +10,12 @@
       <timerCounterDown :beginCounter.sync="counter"/>
     </view>
 
+    <view class="up-down-padding">
+      <repeat for="{{rank}}" key="index" index="index" item="item">
+        <rankItem :rank="index" :player="item" />
+      </repeat>
+    </view>
+
     <view style="height: 120rpx; background: transparent"/>
 
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
@@ -18,10 +24,12 @@
 
 <script>
   import wepy from 'wepy'
+  import vote from '../../cloud/vote'
   import DateTime from '../../utils/dateTime'
   import VoteTabbar from '../../components/voteTabbar'
   import Tips from '../../utils/Tips'
   import TimerCounterDown from '../../components/timerCountDown'
+  import RankItem from '../../components/rankItem'
 
   export default class RankPage extends wepy.page {
     config = {
@@ -31,19 +39,22 @@
 
     components = {
       voteTabbar: VoteTabbar,
-      timerCounterDown: TimerCounterDown
+      timerCounterDown: TimerCounterDown,
+      rankItem: RankItem
     }
 
     data = {
       voteDetail: null,
       counter: 0,
       status: null,
+      rank: null,
       selectedTabName: '榜单'
     }
 
-    onLoad() {
+    async onLoad() {
       Tips.loading()
       let voteInfo = wepy.$instance.globalData.activeVote
+      this.rank = await vote.fetchVoteRank({voteId: voteInfo.id})
       Tips.loaded()
       let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
       this.counter = DateTime.minusDateTime(endDate)

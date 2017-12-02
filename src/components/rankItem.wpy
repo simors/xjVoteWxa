@@ -1,0 +1,48 @@
+<style type="less">
+
+</style>
+
+<template>
+  <view class="zan-panel">
+    <view class="zan-card">
+      <view class="zan-card__thumb">
+        <image class="zan-card__img" src="{{player.album[0]}}" mode="aspectFit"></image>
+      </view>
+      <view class="zan-card__detail">
+        <view class="zan-card__detail-row">
+          <view class="zan-card__right-col">第 {{rank+1}} 名</view>
+          <view class="zan-card__left-col zan-ellipsis--l2">
+            编号：{{player.number}}
+          </view>
+        </view>
+
+        <view class="zan-card__detail-row zan-c-gray-darker">
+          <view class="zan-card__left-col">
+            选手：{{player.name}}
+          </view>
+        </view>
+
+        <view class="zan-card__detail-row zan-c-gray-darker">
+          <view class="zan-card__left-col zan-c-red">票数：{{player.voteNum}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class RankItem extends wepy.component {
+    props = {
+      rank: Number,
+      player: {}
+    }
+
+    data = {
+    }
+
+    methods = {
+    }
+  }
+</script>
