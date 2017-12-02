@@ -73,6 +73,9 @@
 
     scrollZanNoticeBar(mstime) {
       var currentComponent = this.zanNoticeBarNode;
+      if (!currentComponent) {
+        return
+      }
       var _this = this;
       if (this.moveWidth >= currentComponent.width) {
         var resetAnimationData = currentComponent.resetAnimation.translateX(currentComponent.wrapWidth).step();

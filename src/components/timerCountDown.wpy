@@ -32,8 +32,8 @@
 </style>
 
 <template>
-  <view class="counter-down">
-    <view wx:if="{{beginCounter > 0}}">
+  <view>
+    <view wx:if="{{beginCounter > 0}}" class="counter-down">
       <view style="margin-bottom: 10px">
         <text class="zan-font-16 zan-c-gray-dark zan-font-bold">活动结束倒计时</text>
       </view>
@@ -56,7 +56,7 @@
         <text class="zan-font-12 zan-c-gray-dark tip-text">秒</text>
       </view>
     </view>
-    <view wx:else>
+    <view wx:else class="counter-down">
       <text class="zan-font-30 zan-c-red zan-font-bold">活动已结束</text>
     </view>
   </view>
