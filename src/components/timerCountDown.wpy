@@ -73,7 +73,18 @@
       timer: null
     }
 
+    methods = {
+      clearTimer() {
+        if (this.timer) {
+          clearInterval(this.timer)
+        }
+      }
+    }
+
     onLoad() {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
       this.timer = setInterval(() => {
         this.beginCounter--
         this.counter = this.calCounter(this.beginCounter)
@@ -82,7 +93,7 @@
     }
 
     onUnload() {
-      clearInterval(this.timer)
+      this.clearTimer()
     }
 
     calCounter(count) {

@@ -31,7 +31,7 @@
 </style>
 
 <template>
-  <view class="container has-toolbar" style="background: #fff">
+  <scroll-view scroll-y enable-back-to-top class="container has-toolbar" style="background: #fff">
     <zanNoticebar :text.sync="notice"/>
 
     <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
@@ -44,14 +44,23 @@
       <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
     </view>
 
-    <view class="view-padding">
-      <view>
-        <timerCounterDown :beginCounter.sync="counter"/>
+    <view class="up-down-padding">
+      <timerCounterDown :beginCounter.sync="counter"/>
+    </view>
+
+    <view wx:if="{{status < 4}}">
+      <view class="zan-btns">
+        <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpToApply">我要报名</button>
       </view>
     </view>
 
+
+    <view class="view-padding">
+
+    </view>
+
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
-  </view>
+  </scroll-view>
 </template>
 
 <script>
@@ -85,6 +94,12 @@
       pv: null,
       counter: 0,
       selectedTabName: '活动首页'
+    }
+
+    methods = {
+      jumpToApply() {
+        this.$redirect({url: './apply'})
+      }
     }
 
     onShareAppMessage () {
@@ -123,6 +138,10 @@
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
       this.$apply()
+    }
+
+    onUnload() {
+      this.$invoke('timerCounterDown', 'clearTimer')
     }
   }
 </script>
