@@ -63,7 +63,6 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: null,
     editVote: {
       id: null,
       title: null,
@@ -120,16 +119,6 @@ export default class extends wepy.app {
     setInterval(() => {
       this.saveVoteDraft()
     }, 10000)
-  }
-
-  async getUserInfo() {
-    let userInfo = this.globalData.userInfo
-    if (userInfo) {
-      return userInfo
-    }
-    let wepyUser = await user.userLogin()
-    this.globalData.userInfo = wepyUser
-    return wepyUser
   }
 
   clearVoteInfo() {
