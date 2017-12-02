@@ -73,7 +73,7 @@
 
     scrollZanNoticeBar(mstime) {
       var currentComponent = this.zanNoticeBarNode;
-      if (!currentComponent) {
+      if (!currentComponent || ! currentComponent.resetAnimation || !currentComponent.animation) {
         return
       }
       var _this = this;
