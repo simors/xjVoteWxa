@@ -134,6 +134,7 @@
 
       let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
       this.counter = DateTime.minusDateTime(endDate)
+      this.counter = -32313
       console.log('voteDetail', this.voteDetail)
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
