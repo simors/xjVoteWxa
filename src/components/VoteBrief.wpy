@@ -3,7 +3,7 @@
     <view class="list-item">
       <view class="item-inner">
         <view class="flex main--center cross--center">
-          <navigator lazy-load hoverClass="none" url="./vote/index?voteId={{vote.id}}">
+          <navigator hoverClass="none" url="./vote/index?voteId={{vote.id}}">
             <image src="{{vote.cover}}" mode="aspectFit" />
           </navigator>
         </view>
