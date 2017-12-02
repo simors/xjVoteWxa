@@ -25,7 +25,7 @@
   }
 </style>
 <template>
-  <view class="container has-toolbar">
+  <scroll-view scroll-y enable-back-to-top class="container has-toolbar">
     <view class="userinfo" @tap="handleViewTap">
       <image class="userinfo-avatar" src="{{ userInfo.avatar }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
@@ -113,7 +113,7 @@
         <view class="toolbar-fontsize">我的</view>
       </navigator>
     </view>
-  </view>
+  </scroll-view>
 </template>
 
 <script>
