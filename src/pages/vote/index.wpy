@@ -9,7 +9,7 @@
   }
 
   .up-down-padding {
-    padding: 10px 0;
+    padding: 10px 0 0 0;
   }
 
   .title-view {
@@ -19,29 +19,32 @@
     word-break: break-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 10px 12px;
   }
 
   .title-font {
     font-size: 16px;
     font-weight: bold;
+    color: #59534e;
   }
 </style>
 
 <template>
-  <view class="container">
+  <view class="container has-toolbar" style="background: #fff">
     <zanNoticebar :text.sync="notice"/>
 
-    <view>
-      <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+    <image class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+
+    <view class="title-view">
+      <text class="title-font">{{voteDetail.title}}</text>
+    </view>
+
+    <view class="up-down-padding">
+      <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
     </view>
 
     <view class="view-padding">
-      <view class="title-view">
-        <text class="title-font">{{voteDetail.title}}</text>
-      </view>
-      <view class="up-down-padding">
-        <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
-      </view>
       <view>
         <timerCounterDown :beginCounter.sync="counter"/>
       </view>

@@ -1,5 +1,6 @@
 <style lang="less">
   @import "./styles/vars.less";
+  @import "./styles/base.less";
   @import "./zanui/index.wxss";
 
   .container {

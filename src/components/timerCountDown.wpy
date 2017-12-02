@@ -2,11 +2,12 @@
   .counter-down {
     width: 100%;
     height: 80px;
-    background: #f2efe6;
+    background: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .counter-view {
@@ -23,6 +24,11 @@
     margin-right: 5px;
     text-align: center;
   }
+
+  .tip-text {
+    display: flex;
+    align-items: flex-end;
+  }
 </style>
 
 <template>
@@ -34,19 +40,19 @@
       <view class="num-vew">
         {{counter.days}}
       </view>
-      <text>天</text>
+      <text class="zan-font-12 zan-c-gray-dark tip-text">天</text>
       <view class="num-vew">
         {{counter.hours}}
       </view>
-      <text>时</text>
+      <text class="zan-font-12 zan-c-gray-dark tip-text">时</text>
       <view class="num-vew">
         {{counter.mins}}
       </view>
-      <text>分</text>
+      <text class="zan-font-12 zan-c-gray-dark tip-text">分</text>
       <view class="num-vew">
         {{counter.secs}}
       </view>
-      <text>秒</text>
+      <text class="zan-font-12 zan-c-gray-dark tip-text">秒</text>
     </view>
   </view>
 </template>
