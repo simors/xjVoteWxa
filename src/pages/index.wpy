@@ -248,7 +248,9 @@
         self.userInfo = userInfo
       }
 
-      self.votes = await this.fetchVotes();
+      Tips.loading();
+      this.votes = await this.fetchVotes();
+      Tips.loaded();
 
       self.normalTitle = '标题已被修改'
 
