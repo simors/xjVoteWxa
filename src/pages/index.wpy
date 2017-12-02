@@ -70,6 +70,12 @@
       return Tips.share(title, url, title);
     }
 
+    async onPullDownRefresh() {
+      this.votes = await this.fetchVotes();
+      wx.stopPullDownRefresh();
+      this.$apply();
+    }
+
     async fetchVotes() {
       const payload = {
         status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
