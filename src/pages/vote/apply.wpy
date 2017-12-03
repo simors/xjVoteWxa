@@ -1,9 +1,74 @@
 <style lang="less">
+  .declare-view {
+    width: 100%;
+  }
 
+  .declare-tip {
+    font-size: 14px;
+    width: 60px;
+  }
+
+  .declare-text {
+    width: 100%;
+    height: 80px;
+  }
+
+  .tip-img-view {
+    width: 100%;
+    height: 500rpx;
+    background: #F2F2F2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tip-img {
+    width: 100rpx;
+    height: 100rpx;
+  }
+
+  .tip-img-text {
+    font-size: 12px;
+    color: #CD853F;
+    margin-top: 20rpx;
+  }
+
+  .view-gap {
+    margin-bottom: 10px;
+  }
 </style>
 
 <template>
   <view class="container">
+
+    <view class="zan-form">
+      <view class="zan-cell zan-form__item">
+        <text class="zan-form__title">姓名</text>
+        <input class="zan-form__input zan-cell__bd" value="{{applyName}}" placeholder="请输入参赛者姓名" @input="applyNameInput"/>
+      </view>
+      <view class="zan-cell zan-form__item">
+        <view class="declare-view">
+          <text class="declare-tip">参赛宣言</text>
+          <textarea class="zan-form__input zan-cell__bd declare-text" value="{{declaration}}" placeholder="输入参赛宣言" @input="declarationInput"/>
+        </view>
+      </view>
+      <view class="zan-cell zan-form__item zan-cell--last-child">
+        <view wx:if="{{album.length === 0}}" class="tip-img-view view-gap" @tap.stop="chooseImage">
+          <image class="tip-img" src="../../asset/png/photo.png"/>
+          <text class="tip-img-text">请插入参赛图片，最多3张</text>
+        </view>
+        <view wx:else class="view-gap" style="width: 100%;">
+          <repeat for="{{album}}" key="index" index="index" item="item">
+            <image src="{{item}}" style="width: 100%;" mode="widthFix"/>
+          </repeat>
+        </view>
+      </view>
+    </view>
+
+    <view class="zan-btns">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitApply">提交</button>
+    </view>
 
     <view style="height: 120rpx; background: transparent"/>
 
@@ -15,6 +80,7 @@
   import wepy from 'wepy'
   import VoteTabbar from '../../components/voteTabbar'
   import Tips from '../../utils/Tips'
+  import ImageUtils from '../../utils/imageUtils'
 
   export default class ApplyPage extends wepy.page {
     config = {
@@ -29,7 +95,40 @@
     data = {
       voteDetail: null,
       status: null,
+      applyName: null,
+      declaration: null,
+      album: [],
       selectedTabName: '报名'
+    }
+
+    methods = {
+      submitApply() {
+
+      },
+
+      applyNameInput(e) {
+        this.applyName = e.detail.value
+        this.$apply()
+      },
+
+      declarationInput(e) {
+        this.declaration = e.detail.value
+        this.$apply()
+      },
+
+      async chooseImage() {
+        let cnt = 3 - this.album.length
+        let tempFilesPaths = await ImageUtils.chooseImage({count: cnt, sizeType: ['compressed']})
+        Tips.loading('正在上传图片')
+        let netImgs = await ImageUtils.uploadBatchImages(tempFilesPaths)
+        Tips.loaded()
+        if (netImgs.length === 0) {
+          return
+        }
+        this.album = netImgs
+        console.log('album', this.album)
+        this.$apply()
+      },
     }
 
     onLoad() {
