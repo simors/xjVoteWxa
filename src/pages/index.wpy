@@ -1,7 +1,43 @@
 <style lang="less">
   @import "../styles/base.less";
   @import "../minui/wxc-flex.wxss";
-  @import "../minui/wxc-list.less";
+
+  .list--wrap {
+    padding: 0;
+  }
+
+  .list__head {
+    padding: 30rpx 30rpx 0;
+    text-align: center;
+    &--title {
+      display: inline-block;
+      padding: 0 40rpx 10rpx 40rpx;
+      font-size: 32rpx;
+      color: #9B9B9B;
+    }
+    &--line {
+      margin: 0 auto;
+      width: 150rpx;
+      height: 2rpx;
+      background-color: #D8D8D8;
+    }
+    &--desc {
+      padding-top: 13rpx;
+      color: #BEBEBE;
+      font-size: 26rpx;
+    }
+  }
+
+  .list__foot {
+    margin: 100rpx 0 30rpx 0;
+    text-align: center;
+    color: #1aad19;
+    font-size: 0;
+    &--icon {
+      width: 152rpx;
+      height: 23rpx;
+    }
+  }
 
   .toolbar-image {
     width: 24px;
@@ -13,7 +49,7 @@
   <view class="container has-toolbar">
     <view class="list--wrap">
       <repeat for="{{votes}}" key="index" index="index" item="item">
-        <voteBrief :vote="item"></voteBrief>
+        <voteItem :vote="item"></voteItem>
       </repeat>
     </view>
 
@@ -38,7 +74,7 @@
 <script>
   import wepy from 'wepy'
   import Tips from '../utils/Tips';
-  import VoteBrief from '@/components/VoteBrief';
+  import VoteItem from '@/components/VoteItem';
   import cloud from '@/cloud/vote';
 
   export default class Index extends wepy.page {
@@ -46,7 +82,7 @@
       navigationBarTitleText: '小吉互动'
     };
     components = {
-      voteBrief: VoteBrief
+      voteItem: VoteItem
     };
     data = {
       votes: []
