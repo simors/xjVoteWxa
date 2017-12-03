@@ -74,4 +74,15 @@ export default class vote {
     }
     return await AV.Cloud.run('voteFetchRank', params)
   }
+  
+  static async joinVoteApply(payload) {
+    let params = {
+      voteId: payload.voteId,
+      name: payload.name,
+      declaration: payload.declaration,
+      album: payload.album
+    }
+    console.log('apply params', params)
+    return await AV.Cloud.run('voteCreatePlayerApply', params)
+  }
 }

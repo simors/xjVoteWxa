@@ -90,6 +90,7 @@
   import VoteTabbar from '../../components/voteTabbar'
   import Tips from '../../utils/Tips'
   import ImageUtils from '../../utils/imageUtils'
+  import vote from '../../cloud/vote'
 
   export default class ApplyPage extends wepy.page {
     config = {
@@ -111,8 +112,21 @@
     }
 
     methods = {
-      submitApply() {
-
+      async submitApply() {
+        try {
+          Tips.loading('正在提交')
+          await vote.joinVoteApply({
+            voteId: this.voteDetail.id,
+            name: this.applyName,
+            declaration: this.declaration,
+            album: this.album
+          })
+          Tips.loaded()
+          Tips.success('提交成功')
+          this.$redirect({url: '/pages/vote/index?voteId='+this.voteDetail.id})
+        } catch (e) {
+          Tips.error('提交失败')
+        }
       },
 
       applyNameInput(e) {
