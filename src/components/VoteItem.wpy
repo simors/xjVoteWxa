@@ -12,8 +12,14 @@
     <view class="list-item-meta">
       <view class="list-item-meta-title">{{vote.title}}</view>
       <view class="flex main--around cross--center list-item-meta-desc">
-        <view>voted: {{vote.voteNum}}</view>
-        <view>pv: {{vote.pv}}</view>
+        <view>
+          <image src="../../asset/svg/vote_count.svg" />
+          <text>{{vote.voteNum}}投票</text>
+        </view>
+        <view>
+          <image src="../../asset/svg/pv.svg" />
+          <text>{{vote.pv}}热度</text>
+        </view>
       </view>
     </view>
   </view>
@@ -75,10 +81,10 @@
 
   .list-item-meta-title {
     position: absolute;
-    top: -24rpx;
-    line-height: 26rpx;
+    top: -30rpx;
+    line-height: 36rpx;
     padding: 10rpx 14rpx;
-    font-size: 26rpx;
+    font-size: 36rpx;
     color: #555;
     border-radius: 8rpx;
     background: #f2f2f2;
@@ -87,7 +93,14 @@
 
   .list-item-meta-desc {
     margin-top: 20rpx;
-    color: #777;
-    font-size: 24rpx;
+    background: rgba(0,0,0,0.02);
+    border: 1rpx solid rgba(0,0,0,0.05);
+    border-radius: 10rpx;
+    padding: 8rpx 0;
+
+    image {
+      height: 48rpx;
+      width: 48rpx;
+    }
   }
 </style>
