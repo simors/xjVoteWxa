@@ -130,6 +130,9 @@
 
       async chooseImage(index) {
         let tempFilesPaths = await ImageUtils.chooseImage({count: 9, sizeType: ['compressed']})
+        if (tempFilesPaths.length <= 0) {
+          return
+        }
         Tips.loading('正在上传图片')
         let netImgs = await ImageUtils.uploadBatchImages(tempFilesPaths)
         Tips.loaded()

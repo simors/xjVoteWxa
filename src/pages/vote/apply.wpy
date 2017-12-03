@@ -54,13 +54,22 @@
         </view>
       </view>
       <view class="zan-cell zan-form__item zan-cell--last-child">
-        <view wx:if="{{album.length === 0}}" class="tip-img-view view-gap" @tap.stop="chooseImage">
+        <view wx:if="{{album.length === 0}}" class="tip-img-view view-gap" @tap.stop="chooseImage({{false}})">
           <image class="tip-img" src="../../asset/png/photo.png"/>
-          <text class="tip-img-text">请插入参赛图片，最多3张</text>
+          <text class="tip-img-text">请上传参赛图片，最多3张</text>
+        </view>
+        <view wx:elif="{{album.length < 3}}" class="view-gap" style="width: 100%;">
+          <repeat for="{{album}}" key="index" index="index" item="item">
+            <image src="{{item}}" style="width: 100%;" mode="widthFix" @tap.stop="chooseSingleImage({{index}})"/>
+          </repeat>
+          <view class="tip-img-view view-gap" @tap.stop="chooseImage({{true}})">
+            <image class="tip-img" src="../../asset/png/photo.png"/>
+            <text class="tip-img-text">还可以上传{{3-album.length}}张</text>
+          </view>
         </view>
         <view wx:else class="view-gap" style="width: 100%;">
           <repeat for="{{album}}" key="index" index="index" item="item">
-            <image src="{{item}}" style="width: 100%;" mode="widthFix"/>
+            <image src="{{item}}" style="width: 100%;" mode="widthFix" @tap.stop="chooseSingleImage({{index}})"/>
           </repeat>
         </view>
       </view>
@@ -116,17 +125,35 @@
         this.$apply()
       },
 
-      async chooseImage() {
+      async chooseSingleImage(index) {
+        let tempFilesPaths = await ImageUtils.chooseImage({count: 1, sizeType: ['compressed']})
+        if (tempFilesPaths.length <= 0) {
+          return
+        }
+        Tips.loading('正在上传图片')
+        let netImgs = await ImageUtils.uploadImage(tempFilesPaths[0])
+        Tips.loaded()
+        this.album[index] = netImgs
+        this.$apply()
+      },
+
+      async chooseImage(isOther) {
         let cnt = 3 - this.album.length
         let tempFilesPaths = await ImageUtils.chooseImage({count: cnt, sizeType: ['compressed']})
+        if (tempFilesPaths.length <= 0) {
+          return
+        }
         Tips.loading('正在上传图片')
         let netImgs = await ImageUtils.uploadBatchImages(tempFilesPaths)
         Tips.loaded()
         if (netImgs.length === 0) {
           return
         }
-        this.album = netImgs
-        console.log('album', this.album)
+        if (isOther) {
+          this.album.push(...netImgs)
+        } else {
+          this.album = netImgs
+        }
         this.$apply()
       },
     }
