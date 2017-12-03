@@ -13,7 +13,7 @@
   <view class="container has-toolbar">
     <view class="list--wrap">
       <repeat for="{{votes}}" key="index" index="index" item="item">
-        <voteBrief :vote="item"></voteBrief>
+        <voteItem :vote="item"></voteItem>
       </repeat>
     </view>
 
@@ -38,7 +38,7 @@
 <script>
   import wepy from 'wepy'
   import Tips from '../utils/Tips';
-  import VoteBrief from '@/components/VoteBrief';
+  import VoteItem from '@/components/VoteItem';
   import cloud from '@/cloud/vote';
 
   export default class Index extends wepy.page {
@@ -46,7 +46,7 @@
       navigationBarTitleText: '小吉互动'
     };
     components = {
-      voteBrief: VoteBrief
+      voteItem: VoteItem
     };
     data = {
       votes: []
