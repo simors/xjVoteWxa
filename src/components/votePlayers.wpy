@@ -1,0 +1,117 @@
+<style type="less">
+  .players-view {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+
+  .player-item-view {
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .player-img {
+    width: 340rpx;
+    height: 400rpx;
+  }
+
+  .player-text-view {
+    height: 40px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-top-width: 0;
+  }
+
+</style>
+
+<template>
+  <view class="players-view">
+    <repeat for="{{players}}" key="index" index="index" item="item">
+      <view class="player-item-view">
+        <image src="{{item.album[0]}}" class="player-img" mode="aspectFill"/>
+        <view style="width: 100%">
+          <view class="player-text-view">
+            <view style="display: flex; flex-direction: column;">
+              <text class="zan-font-12" style="margin-bottom: 2px">{{item.number}}号</text>
+              <text class="zan-font-12 zan-font-bold">{{item.name}}</text>
+            </view>
+            <view>
+              <button class="zan-btn zan-btn--small zan-btn--primary">投票</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </repeat>
+
+    <view wx:if="{{hasMore}}" class="zan-btns" style="width: 100%">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="loadMorePlayers">加载更多</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import vote from '../cloud/vote'
+
+  export default class VotePlayers extends wepy.component {
+    props = {
+      voteId: String
+    }
+
+    data = {
+      lastNumber: null,
+      players: [],
+      hasMore: true,
+      limit: 10
+    }
+
+    methods = {
+      async loadMorePlayers() {
+        let morePlayers = await vote.fetchVotePlayers({
+          voteId: this.voteId,
+          lastNumber: this.lastNumber,
+          limit: this.limit
+        })
+        let dataSize = morePlayers.length
+        if (dataSize < this.limit) {
+          this.hasMore = false
+        }
+        if (dataSize > 0) {
+          this.lastNumber = morePlayers[dataSize-1].number
+          this.players.push(...morePlayers)
+        }
+        this.$apply()
+      }
+    }
+
+    watch = {
+      voteId(newValue, oldValue) {
+        this.refreshPlayers()
+      }
+    }
+
+    async refreshPlayers() {
+      this.players = await vote.fetchVotePlayers({voteId: this.voteId, limit: this.limit})
+      let dataSize = this.players.length
+      if (dataSize < this.limit) {
+        this.hasMore = false
+      }
+      if (dataSize > 0) {
+        this.lastNumber = this.players[dataSize-1].number
+      }
+      this.$apply()
+    }
+
+    async onLoad() {
+      if (this.voteId) {
+        await this.refreshPlayers()
+      }
+    }
+  }
+</script>

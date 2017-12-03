@@ -70,6 +70,8 @@
         </view>
       </view>
 
+      <votePlayers :voteId.sync="voteId"/>
+
       <view class="item-tip-view">
         <text class="item-tip-text">投票规则</text>
       </view>
@@ -103,6 +105,7 @@
   import VoteStat from '../../components/voteStat'
   import TimerCounterDown from '../../components/timerCountDown'
   import OrganizerShower from '../../components/organizerShow'
+  import VotePlayers from '../../components/votePlayers'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -114,10 +117,12 @@
       zanNoticebar,
       voteStat: VoteStat,
       timerCounterDown: TimerCounterDown,
-      organizerShower: OrganizerShower
+      organizerShower: OrganizerShower,
+      votePlayers: VotePlayers
     }
 
     data = {
+      voteId: null,
       voteDetail: null,
       notice: null,
       status: null,
@@ -159,6 +164,7 @@
       }
       Tips.loaded()
       this.voteDetail = voteInfo
+      this.voteId = voteInfo.id
       this.notice = voteInfo.notice
       this.status = voteInfo.status
       this.applyNum = voteInfo.applyNum

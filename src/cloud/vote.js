@@ -82,7 +82,15 @@ export default class vote {
       declaration: payload.declaration,
       album: payload.album
     }
-    console.log('apply params', params)
     return await AV.Cloud.run('voteCreatePlayerApply', params)
+  }
+  
+  static async fetchVotePlayers(payload) {
+    let params = {
+      voteId: payload.voteId,
+      lastNumber: payload.lastNumber,
+      limit: payload.limit
+    }
+    return await AV.Cloud.run('voteFetchVotePlayers', params)
   }
 }
