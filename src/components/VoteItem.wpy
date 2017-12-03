@@ -31,6 +31,7 @@
         type: Object,
         default: function () {
           return {
+            id: '',
             title: '',
             cover: '',
             voteNum: 0,
