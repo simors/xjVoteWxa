@@ -12,13 +12,13 @@
         <view class="zan-card__detail-row">
           <view class="zan-card__right-col">第 {{rank+1}} 名</view>
           <view class="zan-card__left-col zan-ellipsis--l2">
-            编号：{{player.number}}
+            {{player.name}} {{player.number}} 号
           </view>
         </view>
 
         <view class="zan-card__detail-row zan-c-gray-darker">
-          <view class="zan-card__left-col">
-            选手：{{player.name}}
+          <view class="zan-ellipsis--l2">
+            {{player.declaration}}
           </view>
         </view>
 
