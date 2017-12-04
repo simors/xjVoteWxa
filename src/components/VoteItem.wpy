@@ -13,11 +13,11 @@
       <view class="list-item-meta-title">{{vote.title}}</view>
       <view class="flex main--around cross--center list-item-meta-desc">
         <view>
-          <image src="../../asset/svg/vote_count.svg" />
+          <image src="/asset/svg/vote_count.svg" />
           <text>{{vote.voteNum}}投票</text>
         </view>
         <view>
-          <image src="../../asset/svg/pv.svg" />
+          <image src="/asset/svg/pv.svg" />
           <text>{{vote.pv}}热度</text>
         </view>
       </view>
