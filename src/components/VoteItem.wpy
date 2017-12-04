@@ -12,13 +12,16 @@
     <view class="list-item-meta">
       <view class="list-item-meta-title">{{vote.title}}</view>
       <view class="flex main--around cross--center list-item-meta-desc">
-        <view>
+        <view class="flex main--center cross--center">
           <image src="/asset/svg/vote_count.svg" />
-          <text>{{vote.voteNum}}投票</text>
+          <text>{{vote.voteNum}} 投票</text>
         </view>
         <view>
+          <text style="line-height: 26rpx; color: rgba(0,0,0,0.03)">|</text>
+        </view>
+        <view class="flex main--center cross--center">
           <image src="/asset/svg/pv.svg" />
-          <text>{{vote.pv}}热度</text>
+          <text>{{vote.pv}} 热度</text>
         </view>
       </view>
     </view>
@@ -54,9 +57,9 @@
 
   .list-item--wrap {
     overflow: hidden;
-    border: 1rpx solid #e0e0e0;
+    border-bottom: 1rpx solid #e0e0e0;
     border-radius: 7rpx;
-    margin: 5rpx 0 0;
+    margin: 1rpx 0 0;
     transition: all .2s ease;
     box-shadow: 0 0 6rpx rgba(0, 0, 0, .15);
     z-index: 10;
@@ -73,34 +76,32 @@
   }
 
   .list-item-meta {
-    position: relative;
     margin-top: 40rpx;
     border-top: 1rpx solid #e9e9e9;
-    padding: 20rpx 15rpx 25rpx 20rpx;
+    padding: 20rpx 24rpx 25rpx 24rpx;
   }
 
   .list-item-meta-title {
-    position: absolute;
-    top: -30rpx;
-    line-height: 36rpx;
-    padding: 10rpx 14rpx;
-    font-size: 36rpx;
+    line-height: 48rpx;
+    padding: 20rpx 0;
+    font-size: 48rpx;
+    font-weight: bold;
     color: #555;
     border-radius: 8rpx;
-    background: #f2f2f2;
     transition: background-color .4s ease;
   }
 
   .list-item-meta-desc {
     margin-top: 20rpx;
     background: rgba(0,0,0,0.02);
-    border: 1rpx solid rgba(0,0,0,0.05);
+    border: 1rpx solid rgba(0,0,0,0.08);
     border-radius: 10rpx;
-    padding: 8rpx 0;
+    padding: 9rpx 0;
 
     image {
       height: 48rpx;
       width: 48rpx;
+      margin-right: 24rpx;
     }
   }
 </style>
