@@ -37,7 +37,7 @@
 <template>
   <view class="toolbar-bottom tool-view">
     <view class="tool-item-view">
-      <view class="flex flex-column items-center justify-center">
+      <view class="flex flex-column items-center justify-center" @tap.stop="backToHome">
         <view class="flex flex-column items-center justify-center">
           <image class="toolbar-image" src="/asset/png/back.png" mode="aspectFill" />
           <view class="toolbar-fontsize">回首页</view>
@@ -61,12 +61,21 @@
 
   export default class PlayerToolbar extends wepy.component {
     props = {
+      scene: String,
+      voteId: String
     }
 
     data = {
     }
 
     methods = {
+      backToHome() {
+        if (this.scene === 'share') {
+          this.$root.$redirect({url: '/pages/vote/index?voteId' + this.voteId})
+        } else if (this.scene === 'inner') {
+          wx.navigateBack()
+        }
+      }
     }
 
     onLoad() {

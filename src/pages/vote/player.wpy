@@ -67,13 +67,14 @@
 
     <view style="height: 120rpx; background: transparent"/>
 
-    <playerToolbar />
+    <playerToolbar :voteId.sync="voteId" :scene.sync="scene"/>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import vote from '../../cloud/vote'
+  import Tips from '../../utils/Tips'
   import PlayerStat from '../../components/playerStat'
   import PlayerToolbar from '../../components/playerToolbar'
 
@@ -83,10 +84,12 @@
     }
 
     data = {
+      voteId: null,
       player: null,
       voteNum: null,
       giftNum: null,
-      pv: null
+      pv: null,
+      scene: null
     }
 
     components = {
@@ -100,15 +103,25 @@
 
     async onLoad(option) {
       let playerId = option.playerId
+      this.scene = option.scene
       this.player = this.$parent.getGlobalPlayer(playerId)
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
       }
+      this.voteId = this.player.voteId
       this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
       this.pv = this.player.pv
       vote.incPlayerPv({playerId: playerId})
+
+      wepy.setNavigationBarTitle({title: '给'+this.player.name+'投票'})
       this.$apply()
+    }
+
+    onShareAppMessage () {
+      const title = '给'+this.player.name+'投票';
+      const url = '/pages/vote/player?playerId=' + this.player.id + '&&scene=share';
+      return Tips.share(title, url, title);
     }
   }
 </script>
