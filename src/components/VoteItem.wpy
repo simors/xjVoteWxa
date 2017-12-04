@@ -84,8 +84,8 @@
   }
 
   .list-item-meta-title {
-    padding: 20rpx 0;
-    font-size: 48rpx;
+    padding: 12rpx 0;
+    font-size: 40rpx;
     font-weight: 500;
     color: #555;
     border-radius: 8rpx;
