@@ -1,10 +1,4 @@
 <style lang="less">
-  .header-view {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px 12px;
-  }
 
   .swiper-view {
     height: 300px;
@@ -29,15 +23,6 @@
 
 <template>
   <view class="container" style="background: #fff">
-    <view class="header-view">
-      <view class="number-tip-view">
-        <text class="zan-font-12" style="color: #fff">{{player.number}}号</text>
-      </view>
-      <view class="zan-font-18 zan-font-bold">
-        {{player.name}}
-      </view>
-    </view>
-
     <swiper indicator-dots autoplay class="swiper-view">
       <repeat for="{{player.album}}" key="index" index="index" item="item">
         <swiper-item>
@@ -47,7 +32,16 @@
     </swiper>
 
     <view style="margin-top: 10px">
-      <playerStat :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
+      <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
+    </view>
+
+    <view class="padding-view">
+      <view>
+        <text class="zan-font-18" style="color: #ff9d4e">「参赛选手」</text>
+      </view>
+      <view>
+        <text class="zan-font-16">{{player.name}}</text>
+      </view>
     </view>
 
     <view class="padding-view">
@@ -65,7 +59,7 @@
       </view>
     </view>
 
-    <view style="height: 120rpx; background: transparent"/>
+    <view style="height: 180rpx; background: transparent"/>
 
     <playerToolbar :voteId.sync="voteId" :scene.sync="scene"/>
   </view>
@@ -87,6 +81,7 @@
     data = {
       voteId: null,
       player: null,
+      number: null,
       voteNum: null,
       giftNum: null,
       pv: null,
@@ -126,6 +121,7 @@
         this.player = await vote.fetchPlayerById({playerId: playerId})
       }
       this.voteId = this.player.voteId
+      this.number = this.player.number
       this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
       this.pv = this.player.pv
