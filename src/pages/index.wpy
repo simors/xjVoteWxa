@@ -105,15 +105,15 @@
     </view>
 
     <view class="loadmore">
-      <block wx:if="{{!moreVotes}}">
+      <view wx:if="{{loading}}" class="loadmore__wrap">
+        <image class="loadmore__loading-icon" src="../asset/png/loading.png"></image>
+        <text class="loadmore__loading-text">加载中...</text>
+      </view>
+      <block wx:elif="{{!moreVotes}}">
         <view class="loadmore__line"></view>
         <text class="loadmore__text">到底啦</text>
         <view class="loadmore__line"></view>
       </block>
-      <view wx:else class="loadmore__wrap">
-        <image class="loadmore__loading-icon" src="../asset/png/loading.png"></image>
-        <text class="loadmore__loading-text">加载中...</text>
-      </view>
     </view>
 
     <view style="height: 120rpx; background: transparent"/>
@@ -148,15 +148,18 @@
     };
     data = {
       votes: [],
-      moreVotes: true
+      loading: false,
+      moreVotes: false
     };
     computed = {};
     methods = {};
     events = {};
 
     async onLoad() {
+      this.loading = true;
       await this.$parent.getUserInfo();
       this.votes = await this.refreshVotes();
+      this.loading = false;
       this.$apply();
     }
 
@@ -173,14 +176,16 @@
     }
 
     async onReachBottom() {
-      this.moreVotes = true;
+      this.loading = true;
       const moreVotes = await this.fetchMoreVotes();
+      this.loading = false;
       if (moreVotes.length === 0) {
         this.moreVotes = false;
         this.$apply();
         return;
       }
 
+      this.moreVotes = true;
       this.votes.push(...moreVotes);
       this.$apply();
     }
