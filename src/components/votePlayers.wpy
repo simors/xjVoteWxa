@@ -33,7 +33,7 @@
 <template>
   <view class="players-view">
     <repeat for="{{players}}" key="index" index="index" item="item">
-      <view class="player-item-view">
+      <navigator class="player-item-view" url="/pages/vote/player?playerId={{item.id}}">
         <image src="{{item.album[0]}}" class="player-img" mode="aspectFill"/>
         <view style="width: 100%">
           <view class="player-text-view">
@@ -46,7 +46,7 @@
             </view>
           </view>
         </view>
-      </view>
+      </navigator>
     </repeat>
 
     <view wx:if="{{hasMore}}" class="zan-btns" style="width: 100%">
@@ -85,6 +85,7 @@
         if (dataSize > 0) {
           this.lastNumber = morePlayers[dataSize-1].number
           this.players.push(...morePlayers)
+          wepy.$instance.saveGlobalPlayers(this.players)
         }
         this.$apply()
       }
@@ -104,6 +105,7 @@
       }
       if (dataSize > 0) {
         this.lastNumber = this.players[dataSize-1].number
+        wepy.$instance.globalData.players = this.players
       }
       this.$apply()
     }

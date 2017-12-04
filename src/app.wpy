@@ -50,7 +50,8 @@ export default class extends wepy.app {
       'pages/vote/index',
       'pages/vote/award',
       'pages/vote/apply',
-      'pages/vote/rank'
+      'pages/vote/rank',
+      'pages/vote/player'
     ],
     window: {
       navigationBarTitleText: '小吉互动',
@@ -80,6 +81,7 @@ export default class extends wepy.app {
     lastVote: '',
     activeVote: null,
     votes: [],
+    players: []
   }
 
   constructor () {
@@ -167,6 +169,29 @@ export default class extends wepy.app {
     }
 
     this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
+  }
+
+  getGlobalPlayer(playerId) {
+    let players = this.globalData.players
+    let player = players.find((value) => value.id === playerId)
+    return player
+  }
+
+  getGlobalPlayerIndex(playerId) {
+    let players = this.globalData.players
+    let index = players.findIndex((value) => value.id === playerId)
+    return index
+  }
+
+  saveGlobalPlayers(newPlayers) {
+    newPlayers.forEach((player) => {
+      let pos = this.getGlobalPlayerIndex(player.id)
+      if (pos >= 0) {
+        this.globalData.players[pos] = player
+      } else {
+        this.globalData.players.push(player)
+      }
+    })
   }
 }
 </script>

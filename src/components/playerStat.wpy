@@ -1,0 +1,87 @@
+<style type="less">
+  .player-stat {
+    height: 65px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .item-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    height: 100%;
+  }
+
+  .num-color {
+    color: #ff9d4e;
+  }
+
+  .tip-view {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tip-img {
+    width: 16px;
+    height: 16px;
+  }
+</style>
+
+<template>
+  <view class="player-stat">
+    <view class="item-view">
+      <view class="tip-view">
+        <image class="tip-img" src="/asset/svg/player.svg"/>
+        <text class="zan-font-12 zan-c-gray-dark zan-font-bold">编号</text>
+      </view>
+      <text class="zan-font-15 num-color">{{number}}</text>
+    </view>
+    <view class="item-view">
+      <view class="tip-view">
+        <image class="tip-img" src="/asset/svg/gift.svg"/>
+        <text class="zan-font-12 zan-c-gray-dark zan-font-bold">礼物</text>
+      </view>
+      <text class="zan-font-15 num-color">{{giftNum}}</text>
+    </view>
+    <view class="item-view" style="border-right: 0px">
+      <view class="tip-view">
+        <image class="tip-img" src="/asset/svg/popular_32.svg"/>
+        <text class="zan-font-12 zan-c-gray-dark zan-font-bold">热度</text>
+      </view>
+      <text class="zan-font-15 num-color">{{pv}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class PlayerStat extends wepy.component {
+    props = {
+      number: {
+        type: Number,
+        default: 0
+      },
+      giftNum: {
+        type: Number,
+        default: 0
+      },
+      pv: {
+        type: Number,
+        default: 0
+      }
+    }
+
+    data = {
+    }
+  }
+</script>
