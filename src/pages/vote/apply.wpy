@@ -113,6 +113,9 @@
 
     methods = {
       async submitApply() {
+        if (!this.inputValidation()) {
+          return
+        }
         try {
           Tips.loading('正在提交')
           await vote.joinVoteApply({
@@ -170,6 +173,23 @@
         }
         this.$apply()
       },
+    }
+
+    inputValidation() {
+      if (!this.applyName || this.applyName.length === 0) {
+        Tips.alert('请填写姓名')
+        return false
+      }
+      if (!this.declaration || this.declaration.length === 0) {
+        Tips.alert('请填写参赛宣言')
+        return false
+      }
+      if (this.album.length === 0) {
+        Tips.alert('至少上传一张照片')
+        return false
+      }
+
+      return true
     }
 
     onLoad() {
