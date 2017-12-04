@@ -1,0 +1,75 @@
+<style lang="less">
+  @import "../styles/base.less";
+
+  .tool-view {
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    background: transparent;
+  }
+
+  .tool-item-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: @toolbar-height;
+    background: #fcfcfc;
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .toolbar-image {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 2px;
+  }
+
+  .big-img {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: -10px;
+    background: #fff;
+  }
+</style>
+
+<template>
+  <view class="toolbar-bottom tool-view">
+    <view class="tool-item-view">
+      <view class="flex flex-column items-center justify-center">
+        <view class="flex flex-column items-center justify-center">
+          <image class="toolbar-image" src="/asset/png/back.png" mode="aspectFill" />
+          <view class="toolbar-fontsize">回首页</view>
+        </view>
+      </view>
+      <view class="flex flex-column items-center justify-center">
+        <image class="big-img" src="/asset/png/vote_active.png" mode="aspectFill" />
+      </view>
+      <view class="flex flex-column items-center justify-center">
+        <view class="flex flex-column items-center justify-center">
+          <image class="toolbar-image" src="/asset/svg/gift.svg" mode="aspectFill" />
+          <view class="toolbar-fontsize">礼物</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+
+  export default class PlayerToolbar extends wepy.component {
+    props = {
+    }
+
+    data = {
+    }
+
+    methods = {
+    }
+
+    onLoad() {
+    }
+  }
+</script>

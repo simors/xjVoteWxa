@@ -67,6 +67,7 @@
 
     <view style="height: 120rpx; background: transparent"/>
 
+    <playerToolbar />
   </view>
 </template>
 
@@ -74,6 +75,7 @@
   import wepy from 'wepy'
   import vote from '../../cloud/vote'
   import PlayerStat from '../../components/playerStat'
+  import PlayerToolbar from '../../components/playerToolbar'
 
   export default class PlayerPage extends wepy.page {
     config = {
@@ -88,7 +90,8 @@
     }
 
     components = {
-      playerStat: PlayerStat
+      playerStat: PlayerStat,
+      playerToolbar: PlayerToolbar
     }
 
     methods = {
