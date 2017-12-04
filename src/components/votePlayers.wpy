@@ -28,6 +28,19 @@
     border-top-width: 0;
   }
 
+  .vote-num-view {
+    position: relative;
+    top: -490rpx;
+    left: 200rpx;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    width: 60px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 </style>
 
 <template>
@@ -45,6 +58,9 @@
               <button class="zan-btn zan-btn--small zan-btn--primary">投票</button>
             </view>
           </view>
+        </view>
+        <view class="vote-num-view">
+          <text class="zan-font-10" style="color: #fff">{{item.voteNum}}票</text>
         </view>
       </navigator>
     </repeat>
