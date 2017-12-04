@@ -41,9 +41,9 @@
     <view class="item-view">
       <view class="tip-view">
         <image class="tip-img" src="/asset/svg/player.svg"/>
-        <text class="zan-font-12 zan-c-gray-dark zan-font-bold">编号</text>
+        <text class="zan-font-12 zan-c-gray-dark zan-font-bold">票数</text>
       </view>
-      <text class="zan-font-15 num-color">{{number}}</text>
+      <text class="zan-font-15 num-color">{{voteNum}}</text>
     </view>
     <view class="item-view">
       <view class="tip-view">
@@ -67,7 +67,7 @@
 
   export default class PlayerStat extends wepy.component {
     props = {
-      number: {
+      voteNum: {
         type: Number,
         default: 0
       },

@@ -1,7 +1,8 @@
 <style lang="less">
   .header-view {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     padding: 5px 12px;
   }
 
@@ -17,17 +18,23 @@
   .padding-view {
     padding: 10px 12px;
   }
+
+  .number-tip-view {
+    background: #ff9d4e;
+    padding: 1px 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
 </style>
 
 <template>
   <view class="container" style="background: #fff">
     <view class="header-view">
-      <view class="zan-font-16">
-        {{player.number}}号   {{player.name}}
+      <view class="number-tip-view">
+        <text class="zan-font-12" style="color: #fff">{{player.number}}号</text>
       </view>
-      <view>
-        <text class="zan-font-20" style="color: #ff9d4e; margin-right: 5px">{{player.voteNum}}</text>
-        <text class="zan-font-12">票</text>
+      <view class="zan-font-18 zan-font-bold">
+        {{player.name}}
       </view>
     </view>
 
@@ -40,7 +47,7 @@
     </swiper>
 
     <view style="margin-top: 10px">
-      <playerStat :number.sync="number" :giftNum.sync="giftNum" :pv.sync="pv"/>
+      <playerStat :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
     </view>
 
     <view class="padding-view">
@@ -75,7 +82,7 @@
 
     data = {
       player: null,
-      number: null,
+      voteNum: null,
       giftNum: null,
       pv: null
     }
@@ -94,7 +101,7 @@
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
       }
-      this.number = this.player.number
+      this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
       this.pv = this.player.pv
       vote.incPlayerPv({playerId: playerId})

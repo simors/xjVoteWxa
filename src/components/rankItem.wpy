@@ -12,7 +12,7 @@
         <view class="zan-card__detail-row">
           <view class="zan-card__right-col">第 {{rank+1}} 名</view>
           <view class="zan-card__left-col zan-ellipsis--l2">
-            {{player.name}} {{player.number}} 号
+            {{player.number}}号, {{player.name}}
           </view>
         </view>
 
