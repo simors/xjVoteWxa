@@ -13,6 +13,11 @@ export default class vote {
     ACCOUNTED: 6,   // 已结算
   }
 
+  static VOTE_SEARCH_TYPE = {
+    ALL: 'all',
+    PERSONAL: 'personal',
+  }
+
   static async fetchGifts() {
     try {
       let awards = await AV.Cloud.run('voteFetchGifts')
@@ -68,14 +73,14 @@ export default class vote {
     }
     return await AV.Cloud.run('voteIncVotePv', params)
   }
-  
+
   static async fetchVoteRank(payload) {
     let params = {
       voteId: payload.voteId
     }
     return await AV.Cloud.run('voteFetchRank', params)
   }
-  
+
   static async joinVoteApply(payload) {
     let params = {
       voteId: payload.voteId,
@@ -85,7 +90,7 @@ export default class vote {
     }
     return await AV.Cloud.run('voteCreatePlayerApply', params)
   }
-  
+
   static async fetchVotePlayers(payload) {
     let params = {
       voteId: payload.voteId,
@@ -94,28 +99,28 @@ export default class vote {
     }
     return await AV.Cloud.run('voteFetchVotePlayers', params)
   }
-  
+
   static async fetchPlayerById(payload) {
     let params = {
       playerId: payload.playerId
     }
     return await AV.Cloud.run('voteFetchPlayerById', params)
   }
-  
+
   static async incPlayerPv(payload) {
     let params = {
       playerId: payload.playerId
     }
     return await AV.Cloud.run('voteIncPlayerPv', params)
   }
-  
+
   static async voteForPlayer(payload) {
     let params = {
       playerId: payload.playerId
     }
     return await AV.Cloud.run('voteVoteForPlayer', params)
   }
-  
+
   static async fetchGiftsByVote(payload) {
     let params = {
       voteId: payload.voteId
