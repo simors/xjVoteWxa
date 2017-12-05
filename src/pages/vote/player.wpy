@@ -59,6 +59,8 @@
       </view>
     </view>
 
+    <buyGiftTip/>
+
     <view style="height: 180rpx; background: transparent"/>
 
     <playerToolbar :voteId.sync="voteId" :scene.sync="scene"/>
@@ -72,6 +74,7 @@
   import PlayerStat from '../../components/playerStat'
   import PlayerToolbar from '../../components/playerToolbar'
   import * as errno from '../../utils/errno'
+  import BuyGiftTip from '../../components/buyGiftTip'
 
   export default class PlayerPage extends wepy.page {
     config = {
@@ -90,7 +93,8 @@
 
     components = {
       playerStat: PlayerStat,
-      playerToolbar: PlayerToolbar
+      playerToolbar: PlayerToolbar,
+      buyGiftTip: BuyGiftTip
     }
 
     methods = {
@@ -106,6 +110,9 @@
           console.error(e)
           if (e.code === errno.ERROR_VOTE_USE_UP) {
             Tips.error('选票耗尽')
+            setTimeout(() => {
+              this.$invoke('buyGiftTip', 'toggleDialog')
+            }, 1500)
           } else if (e.code === errno.ERROR_VOTE_WAS_DONE) {
             Tips.error('活动已结束')
           }

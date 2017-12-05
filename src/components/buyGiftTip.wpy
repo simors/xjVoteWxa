@@ -1,0 +1,82 @@
+<style lang="less">
+  .dialog__mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+  }
+
+  .dialog__container {
+    position: fixed;
+    bottom: 300rpx;
+    width: 750rpx;
+    background: transparent;
+    transform: translateY(100%);
+    z-index: 11;
+  }
+
+  .dialog--show .dialog__mask {
+    display: block;
+  }
+
+  .show-container {
+    display: block;
+  }
+
+  .hidden-container {
+    display: none;
+  }
+
+  .show-img {
+    width: 750rpx;
+    display: block;
+  }
+
+  .hidden-img {
+    display: none;
+  }
+</style>
+<template>
+  <view class="zan-dialog {{ showDialog ? 'dialog--show' : '' }}">
+    <view class="dialog__mask" bindtap="toggleDialog" />
+    <view animation="{{animationData}}" class="dialog__container {{showDialog ? 'show-container' : 'hidden-container'}}">
+      <view style="display: flex; justify-content: center">
+        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/present.png" mode="widthFix"/>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class BuyGiftTip extends wepy.component {
+    props = {}
+    data = {
+      showDialog: false,
+      animationData: {}
+    }
+    methods = {
+      toggleDialog(event) {
+        this.showDialog = !this.showDialog
+        let animation = wepy.createAnimation({
+          duration: 400,
+          timingFunction: 'ease'
+        })
+        this.animation = animation
+        wx.createSelectorQuery()
+            .select('.dialog__container')
+            .boundingClientRect((rect) => {
+              this.showDialog
+                  ? animation.translateY().step()
+                  : animation.translateY(rect.height).step()
+              this.animationData = animation.export()
+              this.$apply()
+            }).exec()
+      }
+    }
+  }
+</script>
