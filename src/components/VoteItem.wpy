@@ -14,14 +14,16 @@
       <view class="flex main--around cross--center list-item-meta-desc">
         <view class="flex main--center cross--center">
           <image src="/asset/svg/vote_count.svg" />
-          <text>{{vote.voteNum}} 投票</text>
+          <text style="color: #FF9D4E; padding-right: 8rpx">{{vote.voteNum}}</text>
+          <text>投票</text>
         </view>
         <view>
-          <text style="line-height: 26rpx; color: rgba(0,0,0,0.03)">|</text>
+          <text style="line-height: 48rpx; color: rgba(0,0,0,0.05)">|</text>
         </view>
         <view class="flex main--center cross--center">
           <image src="/asset/svg/pv.svg" />
-          <text>{{vote.pv}} 热度</text>
+          <text style="color: #FF9D4E; padding-right: 8rpx">{{vote.pv}}</text>
+          <text>热度</text>
         </view>
       </view>
     </view>
@@ -82,10 +84,9 @@
   }
 
   .list-item-meta-title {
-    line-height: 48rpx;
-    padding: 20rpx 0;
-    font-size: 48rpx;
-    font-weight: bold;
+    padding: 12rpx 0;
+    font-size: 40rpx;
+    font-weight: 500;
     color: #555;
     border-radius: 8rpx;
     transition: background-color .4s ease;
