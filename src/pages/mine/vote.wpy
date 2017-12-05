@@ -1,6 +1,6 @@
 <style lang="less">
-  @import "../styles/base.less";
-  @import "../minui/wxc-flex.wxss";
+  @import "../../styles/base.less";
+  @import "../../minui/wxc-flex.wxss";
 
   .list--wrap {
     padding: 0;
@@ -36,6 +36,54 @@
     &--icon {
       width: 152rpx;
       height: 23rpx;
+    }
+  }
+
+  .list-item--wrap {
+    overflow: hidden;
+    border-bottom: 1rpx solid #e0e0e0;
+    border-radius: 7rpx;
+    margin: 1rpx 0 0;
+    transition: all .2s ease;
+    box-shadow: 0 0 6rpx rgba(0, 0, 0, .15);
+    z-index: 10;
+    background: #fff;
+  }
+
+  .list-item {
+    padding: 15rpx;
+  }
+
+  .list-item-inner {
+    background: #fff;
+  }
+
+  .list-item-meta {
+    margin-top: 40rpx;
+    border-top: 1rpx solid #e9e9e9;
+    padding: 20rpx 24rpx 25rpx 24rpx;
+  }
+
+  .list-item-meta-title {
+    padding: 12rpx 0;
+    font-size: 40rpx;
+    font-weight: 500;
+    color: #555;
+    border-radius: 8rpx;
+    transition: background-color .4s ease;
+  }
+
+  .list-item-meta-desc {
+    margin-top: 20rpx;
+    background: rgba(0,0,0,0.02);
+    border: 1rpx solid rgba(0,0,0,0.08);
+    border-radius: 10rpx;
+    padding: 9rpx 0;
+
+    image {
+      height: 48rpx;
+      width: 48rpx;
+      margin-right: 24rpx;
     }
   }
 
@@ -89,24 +137,44 @@
       margin-left: 8rpx;
     }
   }
-
-  .toolbar-image {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 2px;
-  }
 </style>
 <template>
   <view class="container has-toolbar">
     <view class="list--wrap">
-      <repeat for="{{votes}}" key="index" index="index" item="item">
-        <voteItem :vote="item"></voteItem>
-      </repeat>
+      <view wx:key="id" wx:for="{{votes}}" wx:for-item="vote" class="list-item--wrap">
+        <view class="list-item">
+          <view class="item-inner">
+            <view class="flex main--center cross--center">
+              <navigator hoverClass="none" url="../vote/index?voteId={{vote.id}}">
+                <image src="{{vote.cover}}" mode="aspectFit" />
+              </navigator>
+            </view>
+          </view>
+        </view>
+        <view class="list-item-meta">
+          <view class="list-item-meta-title">{{vote.title}}</view>
+          <view class="flex main--around cross--center list-item-meta-desc">
+            <view class="flex main--center cross--center">
+              <image src="/asset/svg/vote_count.svg" />
+              <text style="color: #FF9D4E; font-size: 36rpx; padding-right: 8rpx">{{vote.voteNum}}</text>
+              <text style="font-size: 32rpx">投票</text>
+            </view>
+            <view>
+              <text style="line-height: 48rpx; color: rgba(0,0,0,0.05)">|</text>
+            </view>
+            <view class="flex main--center cross--center">
+              <image src="/asset/svg/pv.svg" />
+              <text style="color: #FF9D4E; font-size: 36rpx; padding-right: 8rpx">{{vote.pv}}</text>
+              <text style="font-size: 32rpx">热度</text>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
 
     <view class="loadmore">
       <view wx:if="{{loading}}" class="loadmore__wrap">
-        <image class="loadmore__loading-icon" src="../asset/png/loading.png"></image>
+        <image class="loadmore__loading-icon" src="../../asset/png/loading.png"></image>
         <text class="loadmore__loading-text">加载中...</text>
       </view>
       <block wx:elif="{{!moreVotes}}">
@@ -114,22 +182,6 @@
         <text class="loadmore__text">到底啦</text>
         <view class="loadmore__line"></view>
       </block>
-    </view>
-
-    <view style="height: 120rpx; background: transparent"/>
-
-    <view class="toolbar toolbar-bottom">
-      <view class="flex flex-column items-center justify-center">
-        <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
-        <view class="toolbar-fontsize-selected">主页</view>
-      </view>
-      <navigator class="flex flex-column items-center justify-center" url="./publish/publish">
-        <image class="toolbar-image" style="width: 32px; height: 32px;" src="../asset/png/publish.png" mode="aspectFill" />
-      </navigator>
-      <navigator class="flex flex-column items-center justify-center" url="./mine/mine">
-        <image class="toolbar-image" src="../asset/png/mine.png" mode="aspectFill" />
-        <view class="toolbar-fontsize">我的</view>
-      </navigator>
     </view>
   </view>
 </template>
@@ -193,11 +245,11 @@
 
     async refreshVotes() {
       const payload = {
+        searchType: cloud.VOTE_SEARCH_TYPE.PERSONAL,
         status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
         orderedBy: 'createdAt',
         limit: 10
       };
-
       return await cloud.fetchVotes(payload);
     }
 
@@ -209,6 +261,7 @@
       const lastVote = this.votes[this.votes.length - 1];
       const lastCreatedAt = lastVote.createdAt;
       const payload = {
+        searchType: cloud.VOTE_SEARCH_TYPE.PERSONAL,
         status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
         orderedBy: 'createdAt',
         lastTime: lastCreatedAt,

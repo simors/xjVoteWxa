@@ -46,7 +46,7 @@
     </view>
 
     <view class="zan-panel">
-      <navigator class="zan-cell zan-cell--access">
+      <navigator class="zan-cell zan-cell--access" hoverClass="none" url="./vote">
         <view class="cell_icon">
           <image class="item-img" src="../../asset/png/vote.png"/>
         </view>

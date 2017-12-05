@@ -43,6 +43,7 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/mine/mine',
+      'pages/mine/vote',
       'pages/publish/publish',
       'pages/publish/organizer',
       'pages/publish/award',
