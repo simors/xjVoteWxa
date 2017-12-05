@@ -6,7 +6,7 @@ import AV from '../utils/av-weapp-min'
 export default class pay {
   static async reqPayment(payload) {
     let params = {
-      amount: 100,
+      amount: 1,
       channel: 'wx_lite',
       metadata: {},
       openid: payload.openid,
