@@ -106,10 +106,12 @@
         try {
           await vote.voteForPlayer({playerId: this.player.id})
           Tips.success('投票成功')
+          setTimeout(() => {
+            this.$invoke('buyGiftTip', 'toggleDialog')
+          }, 1500)
         } catch (e) {
-          console.error(e)
           if (e.code === errno.ERROR_VOTE_USE_UP) {
-            Tips.error('选票耗尽')
+            Tips.error('今日已投票')
             setTimeout(() => {
               this.$invoke('buyGiftTip', 'toggleDialog')
             }, 1500)
