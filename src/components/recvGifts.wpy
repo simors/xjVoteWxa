@@ -1,0 +1,80 @@
+<style type="less">
+  .avatar-img {
+    width: 120rpx;
+    height: 120rpx;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+
+  .gift-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    height: 160rpx;
+  }
+</style>
+
+<template>
+  <view>
+    <repeat for="{{gifts}}" key="index" index="index" item="item">
+      <view class="gift-item">
+        <image class="avatar-img" src="{{item.user.avatar}}" mode="aspectFit"/>
+        <view style="display: flex; flex-direction: column; justify-content: center">
+          <text class="zan-font-12">{{item.user.nickname}}送了{{item.giftNum}}个{{item.gift.name}}</text>
+          <text class="zan-font-12 zan-c-gray" style="margin-top: 8px">{{item.createdAt}}</text>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import vote from '../cloud/vote'
+
+  export default class RecvGifts extends wepy.component {
+    props = {
+      playerId: String
+    }
+
+    data = {
+      gifts: [],
+      lastTime: null,
+      hasMore: true,
+      limit: 10
+    }
+
+    watch = {
+      async playerId(newValue, oldValue) {
+        this.gifts = await vote.fetchPlayerRecvGifts({playerId: newValue})
+        let size = this.gifts.length
+        if (size < this.limit) {
+          this.hasMore = false
+        }
+        if (size > 0) {
+          this.lastTime = this.gifts[size-1].createdAt
+        }
+        this.$apply()
+      }
+    }
+
+    methods = {
+      async moreRecvGifts() {
+        if (!this.hasMore) {
+          return
+        }
+        let moreGifts = await vote.fetchPlayerRecvGifts({playerId: this.playerId, lastTime: this.lastTime})
+        let size = moreGifts.length
+        if (size < this.limit) {
+          this.hasMore = false
+        }
+        if (size > 0) {
+          this.gifts.push(...moreGifts)
+          this.lastTime = this.gifts[size-1].createdAt
+        }
+        this.$apply()
+      }
+    }
+  }
+</script>

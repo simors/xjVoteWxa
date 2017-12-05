@@ -122,4 +122,13 @@ export default class vote {
     }
     return await AV.Cloud.run('voteFetchGiftsByVote', params)
   }
+  
+  static async fetchPlayerRecvGifts(payload) {
+    let params = {
+      playerId: payload.playerId,
+      lastTime: payload.lastTime,
+      limit: payload.limit
+    }
+    return await AV.Cloud.run('voteListPlayerGifts', params)
+  }
 }

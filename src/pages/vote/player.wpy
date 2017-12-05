@@ -54,9 +54,10 @@
     </view>
 
     <view class="padding-view">
-      <view>
+      <view style="margin-bottom: 10px">
         <text class="zan-font-18" style="color: #ff9d4e">「礼品列表」</text>
       </view>
+      <recvGifts :playerId.sync="playerId"/>
     </view>
 
     <buyGiftTip/>
@@ -75,6 +76,7 @@
   import PlayerToolbar from '../../components/playerToolbar'
   import * as errno from '../../utils/errno'
   import BuyGiftTip from '../../components/buyGiftTip'
+  import RecvGifts from '../../components/recvGifts'
 
   export default class PlayerPage extends wepy.page {
     config = {
@@ -83,6 +85,7 @@
 
     data = {
       voteId: null,
+      playerId: null,
       player: null,
       number: null,
       voteNum: null,
@@ -94,7 +97,8 @@
     components = {
       playerStat: PlayerStat,
       playerToolbar: PlayerToolbar,
-      buyGiftTip: BuyGiftTip
+      buyGiftTip: BuyGiftTip,
+      recvGifts: RecvGifts
     }
 
     methods = {
@@ -133,6 +137,7 @@
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
       }
+      this.playerId = playerId
       this.voteId = this.player.voteId
       this.number = this.player.number
       this.voteNum = this.player.voteNum
@@ -142,6 +147,10 @@
 
       wepy.setNavigationBarTitle({title: '给'+this.player.name+'投票'})
       this.$apply()
+    }
+
+    onReachBottom() {
+      this.$invoke('recvGifts', 'moreRecvGifts')
     }
 
     onShareAppMessage () {
