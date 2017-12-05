@@ -10,6 +10,7 @@ export default class vote {
     WAITING: 3,     // 未开始
     STARTING: 4,    // 正在进行
     DONE: 5,        // 已结束
+    ACCOUNTED: 6,   // 已结算
   }
 
   static async fetchGifts() {
