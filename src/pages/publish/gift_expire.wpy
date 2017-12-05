@@ -121,7 +121,12 @@
           this.$parent.clearVoteInfo()
 
           let currentUser = wepy.$instance.globalData.userInfo
-          let charge = await pay.reqPayment({openid: currentUser.openid})
+          let charge = await pay.reqPayment({
+            openid: currentUser.openid,
+            amount: 1,
+            metadata: {},
+            subject: '创建投票活动'
+          })
           Pingpp.createPayment(charge, function (result, err) {
             console.log(result);
             console.log(err.msg);

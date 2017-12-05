@@ -20,33 +20,15 @@
     display: flex;
   }
 
-  .selected-img {
-    width: 40rpx;
-    height: 40rpx;
-    margin-left: 10rpx;
-  }
-
 </style>
 <template>
-  <view class="gift-view" @tap.stop="onChange">
+  <view class="gift-view">
     <image class="gift-img" src="{{gift.photo}}"/>
 
-    <view wx:if="{{gift.checked}}">
-      <view class="desc-view">
-        <text class="zan-font-12 zan-font-bold">{{gift.name}}</text>
-        <image class="selected-img" src="/asset/png/selected.png"/>
-      </view>
-    </view>
-    <view wx:else>
-      <view class="desc-view">
-        <text class="zan-font-12 zan-font-bold">{{gift.name}}</text>
-      </view>
+    <view class="desc-view">
+      <text class="zan-font-12 zan-font-bold">{{gift.name}}</text>
     </view>
 
-    <view class="desc-view">
-      <text class="zan-font-12">单价：</text>
-      <text class="zan-font-12">¥{{gift.price}}</text>
-    </view>
     <view class="desc-view">
       <text class="zan-font-12">票数：</text>
       <text class="zan-font-12">{{gift.ballot}}</text>
@@ -56,7 +38,7 @@
 <script>
   import wepy from 'wepy'
 
-  export default class GiftItem extends wepy.component {
+  export default class VoteGiftItem extends wepy.component {
     props = {
       index: {
         type: [Number],
@@ -68,9 +50,6 @@
     }
 
     methods = {
-      onChange() {
-        this.$emit('checkGift', this.index)
-      }
     }
   }
 </script>

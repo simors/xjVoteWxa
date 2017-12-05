@@ -13,11 +13,11 @@ export default class pay {
   
   static async reqPayment(payload) {
     let params = {
-      amount: 1,
+      amount: payload.amount,
       channel: 'wx_lite',
-      metadata: {},
+      metadata: payload.metadata || {},
       openid: payload.openid,
-      subject: '测试'
+      subject: payload.subject
     }
     let charge = await AV.Cloud.run('payCreatePaymentRequest', params)
     return charge

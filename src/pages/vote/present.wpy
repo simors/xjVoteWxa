@@ -18,6 +18,34 @@
     padding: 10px 12px;
   }
 
+  .gifts-view {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .gift-cb {
+    position: absolute;
+    top: 26rpx;
+    right: 12rpx;
+    width: 190rpx;
+    height: 190rpx;
+    text-align: end;
+  }
+
+  .gift-tip-view {
+    margin: 10px 12px;
+    padding: 10px;
+    border-top: 1px solid #f9f9f9;
+  }
+
+  .bug-num-view {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 12px;
+  }
+
 </style>
 
 <template>
@@ -31,13 +59,29 @@
       <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
     </view>
 
-    <view class="padding-view">
-      <view>
-        <text class="zan-font-18" style="color: #ff9d4e">「礼品列表」</text>
-      </view>
-      <view>
+    <view class="padding-view" style="padding-bottom: 0">
+      <text class="zan-font-18" style="color: #ff9d4e">「礼品列表」</text>
+    </view>
 
+    <radio-group bindchange="checkGift">
+      <view class="gifts-view">
+        <repeat for="{{gifts}}" key="index" index="index" item="item">
+          <view style="position: relative">
+            <voteGiftItem :index="index" :gift="item"/>
+            <radio class="gift-cb" value="{{item.id}}"/>
+          </view>
+        </repeat>
       </view>
+    </radio-group>
+
+    <view class="gift-tip-view">
+      <text wx:if="{{checkedGift}}" class="zan-font-12 zan-c-red">已选择{{checkedGift.name}}，单价{{checkedGift.price}}元可抵{{checkedGift.ballot}}票</text>
+      <text wx:else class="zan-font-14 zan-c-red">未选择礼物</text>
+    </view>
+
+    <view class="bug-num-view">
+      <text class="zan-font-14 zan-font-bold">购买数量：</text>
+      <zanQuantity :quantity.sync="buyNum" :min="min" :max="max" componentId="giftcomp" size="small"/>
     </view>
 
     <view class="zan-btns">
@@ -54,6 +98,8 @@
   import PlayerStat from '../../components/playerStat'
   import Pingpp from '../../utils/pingpp'
   import pay from '../../cloud/pay'
+  import VoteGiftItem from '../../components/voteGiftItem'
+  import zanQuantity from '../../components/zan-quantity'
 
   export default class PresentPage extends wepy.page {
     config = {
@@ -62,6 +108,8 @@
 
     components = {
       playerStat: PlayerStat,
+      voteGiftItem: VoteGiftItem,
+      zanQuantity
     }
 
     data = {
@@ -70,12 +118,33 @@
       voteNum: null,
       giftNum: null,
       pv: null,
+      gifts: null,
+      checkedGift: null,
+      buyNum: 1,
+      min: 1,
+      max: 9999999
+    }
+
+    events = {
+      zanQuantityChange({ componentId, quantity }, event) {
+        this.buyNum = quantity
+        this.$apply()
+      }
     }
 
     methods = {
       async buyGift() {
+        if (!this.checkedGift) {
+          Tips.error('未选择礼物')
+          return
+        }
         let currentUser = wepy.$instance.globalData.userInfo
-        let charge = await pay.reqPayment({openid: currentUser.openid})
+        let charge = await pay.reqPayment({
+          openid: currentUser.openid,
+          amount: this.buyNum * this.checkedGift.price,
+          metadata: {},
+          subject: '赠送礼品'
+        })
         Pingpp.createPayment(charge, function (result, err) {
           console.log(result);
           console.log(err.msg);
@@ -91,6 +160,13 @@
             Tips.warn('取消支付')
           }
         });
+      },
+
+      checkGift(e) {
+        let giftId = e.detail.value
+        let gift = this.gifts.find((item) => item.id === giftId)
+        this.checkedGift = gift
+        this.$apply()
       }
     }
 
@@ -108,6 +184,8 @@
       this.pv = this.player.pv
 
       wepy.setNavigationBarTitle({title: '给'+this.player.name+'送礼'})
+
+      this.gifts = await vote.fetchGiftsByVote({voteId: this.player.voteId})
       this.$apply()
     }
 
