@@ -45,7 +45,7 @@
       <view class="flex flex-column items-center justify-center" @tap.stop="submitVote">
         <image class="big-img" src="/asset/gif/vote_active.gif" mode="aspectFill" />
       </view>
-      <view class="flex flex-column items-center justify-center">
+      <view class="flex flex-column items-center justify-center" @tap.stop="toPresentPage">
         <view class="flex flex-column items-center justify-center">
           <image class="toolbar-image" src="/asset/svg/gift.svg" mode="aspectFill" />
           <view class="toolbar-fontsize">礼物</view>
@@ -74,6 +74,10 @@
         } else if (this.scene === 'inner') {
           wx.navigateBack()
         }
+      },
+
+      toPresentPage() {
+        this.$emit('toPresent')
       },
 
       submitVote() {

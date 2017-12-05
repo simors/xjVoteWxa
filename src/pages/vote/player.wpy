@@ -119,6 +119,10 @@
             Tips.error('活动已结束')
           }
         }
+      },
+
+      'toPresent': () => {
+        this.$navigate({url: '/pages/vote/present?playerId=' + this.player.id})
       }
     }
 

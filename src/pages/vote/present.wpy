@@ -1,0 +1,55 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="container">
+
+    <view style="margin-top: 10px">
+      <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import vote from '../../cloud/vote'
+  import Tips from '../../utils/Tips'
+  import PlayerStat from '../../components/playerStat'
+
+  export default class PresentPage extends wepy.page {
+    config = {
+      enablePullDownRefresh: false
+    }
+
+    components = {
+      playerStat: PlayerStat,
+    }
+
+    data = {
+      player: null,
+      number: null,
+      voteNum: null,
+      giftNum: null,
+      pv: null,
+    }
+
+    async onLoad(option) {
+      let playerId = option.playerId
+      this.scene = option.scene
+      this.player = this.$parent.getGlobalPlayer(playerId)
+      if (!this.player) {
+        this.player = await vote.fetchPlayerById({playerId: playerId})
+      }
+      this.voteId = this.player.voteId
+      this.number = this.player.number
+      this.voteNum = this.player.voteNum
+      this.giftNum = this.player.giftNum
+      this.pv = this.player.pv
+
+      wepy.setNavigationBarTitle({title: '给'+this.player.name+'送礼'})
+      this.$apply()
+    }
+
+  }
+</script>

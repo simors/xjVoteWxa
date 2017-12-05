@@ -43,7 +43,7 @@
 <template>
   <view class="zan-dialog {{ showDialog ? 'dialog--show' : '' }}">
     <view class="dialog__mask" bindtap="toggleDialog" />
-    <view animation="{{animationData}}" class="dialog__container {{showDialog ? 'show-container' : 'hidden-container'}}">
+    <view animation="{{animationData}}" class="dialog__container {{showDialog ? 'show-container' : 'hidden-container'}}" @tap.stop="toPresentPage">
       <view style="display: flex; justify-content: center">
         <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/present.png" mode="widthFix"/>
       </view>
@@ -76,6 +76,10 @@
               this.animationData = animation.export()
               this.$apply()
             }).exec()
+      },
+
+      toPresentPage() {
+        this.$emit('toPresent')
       }
     }
   }
