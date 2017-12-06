@@ -22,4 +22,8 @@ export default class pay {
     let charge = await AV.Cloud.run('payCreatePaymentRequest', params)
     return charge
   }
+  
+  static async fetchWallet() {
+    return await AV.Cloud.run('payGetWalletInfo')
+  }
 }

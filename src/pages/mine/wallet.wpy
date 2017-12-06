@@ -60,7 +60,7 @@
     <view class="header-view">
       <view class="balance-view">
         <text class="tip-text">余额</text>
-        <text class="value-text">¥2387.12元</text>
+        <text class="value-text">¥ {{wallet.balance}}元</text>
       </view>
     </view>
 
@@ -79,6 +79,7 @@
 
 <script>
   import wepy from 'wepy'
+  import pay from '../../cloud/pay'
 
   export default class Wallet extends wepy.page {
     config = {
@@ -90,16 +91,11 @@
     }
 
     data = {
-      userInfo: {
-        nickName: '加载中...'
-      }
+      wallet: null
     }
 
     async onLoad() {
-      let userInfo = await this.$parent.getUserInfo()
-      if (userInfo) {
-        this.userInfo = userInfo
-      }
+      this.wallet = await pay.fetchWallet()
       this.$apply()
     }
   }
