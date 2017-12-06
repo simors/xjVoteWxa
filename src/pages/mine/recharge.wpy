@@ -141,7 +141,7 @@
           amount: Number(this.checkedValue) * 0.01,
           metadata: {
             'fromUser': currentUser.id,
-            'toUser': 'platform',
+            'toUser': currentUser.id,
             'dealType': pay.DEAL_TYPE.RECHARGE,
           },
           subject: '用户充值'

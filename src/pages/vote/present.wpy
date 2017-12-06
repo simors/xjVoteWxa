@@ -150,6 +150,7 @@
             'fromUser': currentUser.id,
             'toUser': 'platform',
             'dealType': pay.DEAL_TYPE.BUY_GIFT,
+            'voteId': this.player.voteId,
             'playerId': this.player.id,
             'giftId': this.checkedGift.id,
             'giftNum': this.buyNum
@@ -185,7 +186,6 @@
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
       }
-      this.voteId = this.player.voteId
       this.number = this.player.number
       this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
