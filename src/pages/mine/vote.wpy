@@ -189,7 +189,6 @@
 <script>
   import wepy from 'wepy';
   import Tips from '@/utils/Tips';
-  import VoteItem from '@/components/VoteItem';
   import cloud from '@/cloud/vote';
 
   export default class Index extends wepy.page {
@@ -197,7 +196,6 @@
       navigationBarTitleText: '小吉互动'
     };
     components = {
-      voteItem: VoteItem
     };
     data = {
       votes: [],
