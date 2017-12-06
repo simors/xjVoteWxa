@@ -67,7 +67,7 @@
         </view>
         <view class="zan-cell__ft"></view>
       </navigator>
-      <navigator class="zan-cell zan-cell--access">
+      <navigator class="zan-cell zan-cell--access" url="./wallet">
         <view class="cell_icon">
           <image class="item-img" src="../../asset/png/wallet.png"/>
         </view>

@@ -1,0 +1,106 @@
+<style lang="less">
+  @import "../../styles/vars.less";
+
+  .header-view {
+    width: 100%;
+    height: 260rpx;
+    background: @color-primary;
+  }
+
+  .balance-view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50rpx;
+  }
+
+  .tip-text {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .value-text {
+    font-size: 28px;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .btn-group {
+    display: flex;
+    align-items: center;
+    height: 100rpx;
+    border-top: 1px solid #f2f2f2;
+  }
+
+  .btn-style {
+    display: flex;
+    flex: 1;
+    background: @color-primary;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .btn-text {
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .btn-img {
+    width: 48rpx;
+    height: 48rpx;
+    margin-right: 5px;
+  }
+</style>
+
+<template>
+  <view class="container">
+    <view class="header-view">
+      <view class="balance-view">
+        <text class="tip-text">余额</text>
+        <text class="value-text">¥2387.12元</text>
+      </view>
+    </view>
+
+    <view class="btn-group">
+      <view class="btn-style" style="border-right: 1px solid #f2f2f2">
+        <image class="btn-img" src="/asset/svg/recharge.svg"/>
+        <text class="btn-text">充值</text>
+      </view>
+      <view class="btn-style">
+        <image class="btn-img" src="/asset/svg/withdraw.svg"/>
+        <text class="btn-text">提现</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Wallet extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的钱包',
+      enablePullDownRefresh: false
+    }
+
+    components = {
+    }
+
+    data = {
+      userInfo: {
+        nickName: '加载中...'
+      }
+    }
+
+    async onLoad() {
+      let userInfo = await this.$parent.getUserInfo()
+      if (userInfo) {
+        this.userInfo = userInfo
+      }
+      this.$apply()
+    }
+  }
+</script>
