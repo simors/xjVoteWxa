@@ -13,7 +13,7 @@
       <view class="list-item-meta-title">{{vote.title}}</view>
       <view class="flex main--around cross--center list-item-meta-desc">
         <view class="flex main--center cross--center">
-          <image src="/asset/svg/vote_count.svg" />
+          <image src="/asset/svg/vote_count_48.svg" />
           <text style="color: #FF9D4E; font-size: 36rpx; padding-right: 8rpx">{{vote.voteNum}}</text>
           <text style="font-size: 32rpx">投票</text>
         </view>
