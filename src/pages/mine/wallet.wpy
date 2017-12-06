@@ -65,14 +65,14 @@
     </view>
 
     <view class="btn-group">
-      <view class="btn-style" style="border-right: 1px solid #f2f2f2">
+      <navigator class="btn-style" style="border-right: 1px solid #f2f2f2" url="/pages/mine/recharge">
         <image class="btn-img" src="/asset/svg/recharge.svg"/>
         <text class="btn-text">充值</text>
-      </view>
-      <view class="btn-style">
+      </navigator>
+      <navigator class="btn-style" url="/pages/mine/withdraw">
         <image class="btn-img" src="/asset/svg/withdraw.svg"/>
         <text class="btn-text">提现</text>
-      </view>
+      </navigator>
     </view>
   </view>
 </template>
