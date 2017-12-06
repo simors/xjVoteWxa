@@ -141,8 +141,15 @@
         let currentUser = wepy.$instance.globalData.userInfo
         let charge = await pay.reqPayment({
           openid: currentUser.openid,
-          amount: this.buyNum * this.checkedGift.price,
-          metadata: {},
+          amount: this.buyNum * this.checkedGift.price * 0.01,
+          metadata: {
+            'fromUser': currentUser.id,
+            'toUser': 'platform',
+            'dealType': pay.DEAL_TYPE.BUY_GIFT,
+            'playerId': this.player.id,
+            'giftId': this.checkedGift.id,
+            'giftNum': this.buyNum
+          },
           subject: '赠送礼品'
         })
         Pingpp.createPayment(charge, function (result, err) {
