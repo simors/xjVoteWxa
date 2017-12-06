@@ -121,6 +121,10 @@
           this.$parent.clearVoteInfo()
 
           let currentUser = wepy.$instance.globalData.userInfo
+          if (!currentUser) {
+            Tips.error('请授权登录')
+            return
+          }
           let charge = await pay.reqPayment({
             openid: currentUser.openid,
             amount: 1,
