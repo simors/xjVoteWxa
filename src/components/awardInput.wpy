@@ -29,6 +29,14 @@
     align-items: center;
   }
 
+  .show-award-view {
+    max-height: 600rpx;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .award-img {
     width: 100%;
   }
@@ -47,8 +55,8 @@
 
 <template>
   <view class="award">
-    <view wx:if="{{award.awardPhoto}}" @tap.stop="chooseAwardPhoto">
-      <image src="{{award.awardPhoto}}" mode="widthFix"/>
+    <view wx:if="{{award.awardPhoto}}" class="show-award-view" @tap.stop="chooseAwardPhoto">
+      <image class="award-img" src="{{award.awardPhoto}}" mode="widthFix"/>
     </view>
     <view wx:else class="award-view" @tap.stop="chooseAwardPhoto">
       <image class="award-tip-img" src="../asset/png/photo.png"/>

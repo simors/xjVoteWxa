@@ -1,4 +1,12 @@
 <style lang="less">
+  .cover-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 700rpx;
+    overflow: hidden;
+  }
+
   .cover-img {
     width: 100%;
     height: 500rpx;
@@ -50,7 +58,9 @@
     <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
       <zanNoticebar :text.sync="notice"/>
 
-      <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="aspectFill"/>
+      <view class="cover-view">
+        <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
+      </view>
 
       <view class="title-view">
         <text class="title-font">{{voteDetail.title}}</text>

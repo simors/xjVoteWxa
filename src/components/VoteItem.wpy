@@ -65,7 +65,7 @@
   }
 
   .list-item {
-    max-height: 800rpx;
+    max-height: 700rpx;
     overflow: hidden;
   }
 
