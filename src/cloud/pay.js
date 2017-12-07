@@ -9,6 +9,7 @@ export default class pay {
     RECHARGE: 2,      // 用户充值
     WITHDRAW: 3,      // 提现
     BUY_GIFT: 4,      // 购买礼品
+    VOTE_PROFIT: 5,   // 活动收益
   }
   
   static async reqPayment(payload) {
@@ -34,5 +35,13 @@ export default class pay {
   
   static async fetchWallet() {
     return await AV.Cloud.run('payGetWalletInfo')
+  }
+  
+  static async fetchUserDealRecords(payload) {
+    let params = {
+      lastTime: payload.lastTime,
+      limit: payload.limit
+    }
+    return await AV.Cloud.run('payFetchUserDealRecords', params)
   }
 }

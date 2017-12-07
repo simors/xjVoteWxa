@@ -74,12 +74,17 @@
         <text class="btn-text">提现</text>
       </navigator>
     </view>
+
+    <view style="margin: 10px 12px;">
+      <dealRecords/>
+    </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import pay from '../../cloud/pay'
+  import DealRecords from '../../components/dealRecords'
 
   export default class Wallet extends wepy.page {
     config = {
@@ -88,6 +93,7 @@
     }
 
     components = {
+      dealRecords: DealRecords
     }
 
     data = {
@@ -97,6 +103,10 @@
     setBackPageData(wallet) {
       this.wallet = wallet
       this.$apply()
+    }
+
+    onReachBottom() {
+      this.$invoke('dealRecords', 'moreDealRecords')
     }
 
     async onLoad() {

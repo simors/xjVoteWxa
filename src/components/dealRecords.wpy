@@ -1,0 +1,87 @@
+<style type="less">
+  .deal-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 140rpx;
+  }
+
+  .item-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px 10px;
+  }
+</style>
+
+<template>
+  <view>
+    <repeat for="{{deals}}" key="index" index="index" item="item">
+      <view class="deal-item">
+        <view class="item-view">
+          <text class="zan-font-14" style="margin-bottom: 5px">{{item.dealTime}}</text>
+          <text wx:if="{{item.dealType === 1}}" class="zan-font-14">创建投票</text>
+          <text wx:elif="{{item.dealType === 2}}" class="zan-font-14">余额充值</text>
+          <text wx:elif="{{item.dealType === 3}}" class="zan-font-14">收益提现</text>
+          <text wx:elif="{{item.dealType === 4}}" class="zan-font-14">购买礼品</text>
+          <text wx:elif="{{item.dealType === 5}}" class="zan-font-14">活动收益</text>
+        </view>
+        <view class="item-view">
+          <text wx:if="{{item.dealType === 1}}" class="zan-font-18 zan-font-bold zan-c-green">¥{{item.cost}}</text>
+          <text wx:if="{{item.dealType === 2}}" class="zan-font-18 zan-font-bold zan-c-red">¥{{item.cost}}</text>
+          <text wx:if="{{item.dealType === 3}}" class="zan-font-18 zan-font-bold zan-c-green">¥{{item.cost}}</text>
+          <text wx:if="{{item.dealType === 4}}" class="zan-font-18 zan-font-bold zan-c-green">¥{{item.cost}}</text>
+          <text wx:if="{{item.dealType === 5}}" class="zan-font-18 zan-font-bold zan-c-red">¥{{item.cost}}</text>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import pay from '../cloud/pay'
+
+  export default class DealRecords extends wepy.component {
+    props = {
+    }
+
+    data = {
+      deals: [],
+      lastTime: null,
+      hasMore: true,
+      limit: 10
+    }
+
+    methods = {
+      async moreDealRecords() {
+        if (!this.hasMore) {
+          return
+        }
+        let deals = await pay.fetchUserDealRecords({lastTime: this.lastTime, limit: this.limit})
+        let size = deals.length
+        if (size < this.limit) {
+          this.hasMore = false
+        }
+        if (size > 0) {
+          this.deals.push(...deals)
+          this.lastTime = this.deals[size-1].dealTime
+        }
+        this.$apply()
+      }
+    }
+
+    async onLoad() {
+      this.deals = await pay.fetchUserDealRecords({limit: this.limit})
+      let size = this.deals.length
+      if (size < this.limit) {
+        this.hasMore = false
+      }
+      if (size > 0) {
+        this.lastTime = this.deals[size-1].dealTime
+      }
+      this.$apply()
+    }
+  }
+</script>
