@@ -60,6 +60,8 @@
       <text class="zan-font-12 zan-c-red">您选择的活动天数为{{expire}}天，需支付{{price}}元</text>
     </view>
 
+    <zanToptips/>
+
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">余额支付</button>
     </view>
@@ -72,6 +74,7 @@
   import vote from '../../cloud/vote'
   import GiftItem from '../../components/giftItem'
   import DateTime from '../../utils/dateTime'
+  import zanToptips from '../../components/zan-toptips'
   import pay from '../../cloud/pay'
   import * as errno from '../../utils/errno'
 
@@ -82,7 +85,8 @@
     }
 
     components = {
-      giftItem: GiftItem
+      giftItem: GiftItem,
+      zanToptips
     }
 
     data = {
@@ -142,7 +146,7 @@
 
       async submitForm() {
         try {
-          Tips.loading()
+          Tips.loading('正在支付')
           wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.PAYING
           await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
 
@@ -168,18 +172,14 @@
         } catch (e) {
           Tips.loaded()
           if (e.code === errno.ERROR_NOT_ENOUGH_MONEY) {
-            Tips.error('账户余额不足')
-            let pages = this.getCurrentPages()
-            console.log('1 pages', pages)
-            pages.pop()
-            pages.pop()
-            pages.pop()
-            pages.pop()
-            console.log('2 pages', pages)
+            this.$invoke('zanToptips', 'showZanTopTips', { content: '余额不足！充值后在我的投票页面继续完成支付', options: 3000 })
+            this.$parent.clearVoteInfo()
             setTimeout(() => {
-              wx.navigateTo({url: '/pages/mine/recharge?scene=create_vote'})
-            }, 1000)
-          } else if (e.code === errno.ERROR_PAY_INNER_PROCESS){
+//              wx.reLaunch({url: '/pages/mine/recharge?scene=create_vote'})
+//              wx.reLaunch({url: '/pages/index'})
+              wx.navigateBack({delta: 4})
+            }, 3000)
+          } else if (e.code === errno.ERROR_PAY_INNER_PROCESS) {
             Tips.error('支付失败')
           } else {
             Tips.error('操作失败')

@@ -69,7 +69,7 @@
       <view class="zan-cell zan-form__item zan-cell--last-child">
         <view class="notice-view">
           <text class="notice-tip">活动规则</text>
-          <textarea class="zan-form__input zan-cell__bd rule-text" value="{{ruleContent}}" placeholder="编辑活动规则" maxlength="-1" @input="ruleInput"/>
+          <textarea class="zan-form__input zan-cell__bd rule-text" value="{{ruleContent}}" placeholder="编辑活动规则" auto-height maxlength="-1" @input="ruleInput"/>
         </view>
       </view>
     </view>
