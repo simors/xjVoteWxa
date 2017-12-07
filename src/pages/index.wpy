@@ -119,10 +119,10 @@
     <view style="height: 120rpx; background: transparent"/>
 
     <view class="toolbar toolbar-bottom">
-      <view class="flex flex-column items-center justify-center">
+      <navigator class="flex flex-column items-center justify-center" url="./index" redirect>
         <image class="toolbar-image" src="../asset/png/home_sel.png" mode="aspectFill" />
         <view class="toolbar-fontsize-selected">主页</view>
-      </view>
+      </navigator>
       <navigator class="flex flex-column items-center justify-center" url="./publish/publish">
         <image class="toolbar-image" style="width: 32px; height: 32px;" src="../asset/png/publish.png" mode="aspectFill" />
       </navigator>
