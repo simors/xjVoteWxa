@@ -17,6 +17,12 @@
   .picker {
     width: 200px;
   }
+
+  .price-tip-view {
+    margin: 10px 12px;
+    padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
 </style>
 
 <template>
@@ -50,8 +56,12 @@
       </view>
     </view>
 
+    <view class="price-tip-view">
+      <text class="zan-font-12 zan-c-red">您选择的活动天数为{{expire}}天，需支付{{price}}元</text>
+    </view>
+
     <view class="zan-btns" style="margin-top: 100px">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">去支付</button>
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">余额支付</button>
     </view>
   </view>
 </template>
@@ -63,7 +73,7 @@
   import GiftItem from '../../components/giftItem'
   import DateTime from '../../utils/dateTime'
   import pay from '../../cloud/pay'
-  import errno from '../../utils/errno'
+  import * as errno from '../../utils/errno'
 
   export default class GiftAndExpire extends wepy.page {
     config = {
@@ -82,8 +92,9 @@
       startDateInput: null,
       endDateInput: null,
       expire: 5,
-      validExpire: [5, 8, 10],
+      validExpire: [5, 8, 10, 30],
       index: 0,
+      price: 80
     }
 
     events = {
@@ -105,30 +116,71 @@
       bindDateChange(e) {
         this.startDate = e.detail.value
         wepy.$instance.globalData.editVote.startDate = this.startDate
+        this.$apply()
       },
 
       bindExpireChange(e) {
         this.index = e.detail.value
         this.expire = this.validExpire[this.index]
         wepy.$instance.globalData.editVote.expire = this.expire
+        switch (this.expire) {
+          case 5:
+            this.price = 80
+            break
+          case 8:
+            this.price = 120
+            break
+          case 10:
+            this.price = 300
+            break
+          case 30:
+            this.price = 500
+            break
+        }
+        this.$apply()
       },
 
       async submitForm() {
         try {
+          Tips.loading()
           wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.PAYING
           await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
-          Tips.success('创建投票成功')
-          this.$parent.clearVoteInfo()
 
           let currentUser = wepy.$instance.globalData.userInfo
           if (!currentUser) {
+            Tips.loaded()
             Tips.error('请授权登录')
             return
           }
-          await pay.reqPayWithBalance({amount: 1, dealType: pay.DEAL_TYPE.VOTE_PAY})
+          await pay.reqPayWithBalance({
+            amount: this.price * 0.01,
+            dealType: pay.DEAL_TYPE.VOTE_PAY,
+            metadata: {
+              voteId: wepy.$instance.globalData.editVote.id,
+            }
+          })
+          Tips.loaded()
+          Tips.success('创建投票成功')
+          this.$parent.clearVoteInfo()
+          setTimeout(() => {
+            wx.reLaunch({url: '/pages/index'})
+          }, 1000)
         } catch (e) {
+          Tips.loaded()
           if (e.code === errno.ERROR_NOT_ENOUGH_MONEY) {
             Tips.error('账户余额不足')
+            let pages = this.getCurrentPages()
+            console.log('1 pages', pages)
+            pages.pop()
+            pages.pop()
+            pages.pop()
+            pages.pop()
+            console.log('2 pages', pages)
+            setTimeout(() => {
+              wx.navigateTo({url: '/pages/mine/recharge?scene=create_vote'})
+            }, 1000)
+          } else if (e.code === errno.ERROR_PAY_INNER_PROCESS){
+            Tips.error('支付失败')
           } else {
             Tips.error('操作失败')
           }

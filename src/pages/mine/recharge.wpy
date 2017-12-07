@@ -126,7 +126,8 @@
     }
 
     data = {
-      checkedValue: '100'
+      checkedValue: '50',
+      scene: null
     }
 
     methods = {
@@ -136,9 +137,10 @@
           Tips.error('请授权登录')
           return
         }
+        Tips.loading('正在充值')
         let charge = await pay.reqPayment({
           openid: currentUser.openid,
-          amount: Number(this.checkedValue) * 0.01,
+          amount: Number(this.checkedValue) * 0.001,
           metadata: {
             'fromUser': currentUser.id,
             'toUser': currentUser.id,
@@ -146,13 +148,23 @@
           },
           subject: '用户充值'
         })
-        Pingpp.createPayment(charge, function (result, err) {
+        Pingpp.createPayment(charge, async (result, err) => {
           if (result == "success") {
             // 只有微信小程序 wx_lite 支付成功的结果会在这里返回
-            wx.navigateBack()
+            Tips.loaded()
+            Tips.success('充值成功')
+            if (!this.scene) {
+              let wallet = await pay.fetchWallet()
+              let pages = this.getCurrentPages()
+              let walletPage = pages[pages.length - 2]
+              walletPage.setBackPageData(wallet)
+              wx.navigateBack({delta: 1})
+            } else if (this.scene === 'create_vote') {
+              wx.redirectTo({url: '/pages/mine/wallet'})
+            }
           } else if (result == "fail") {
             // charge 不正确或者微信小程序支付失败时会在此处返回
-            Tips.error('支付失败')
+            Tips.error('充值失败')
           } else if (result == "cancel") {
             // 微信小程序支付取消支付
             Tips.warn('取消支付')
@@ -164,6 +176,13 @@
         this.checkedValue = e.detail.value
         this.$apply()
       }
+    }
+
+    onLoad(option) {
+      if (option.scene) {
+        this.scene = option.scene
+      }
+      this.$apply()
     }
   }
 </script>

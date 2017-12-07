@@ -26,7 +26,8 @@ export default class pay {
   static async reqPayWithBalance(payload) {
     let params = {
       amount: payload.amount,
-      dealType: payload.dealType
+      dealType: payload.dealType,
+      metadata: payload.metadata
     }
     return await AV.Cloud.run('payWithWalletBalance', params)
   }

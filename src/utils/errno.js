@@ -152,3 +152,4 @@ export const ERROR_CREATE_CHARGES           = (ERROR_BASE_PAY - 3)         /* �
 export const ERROR_NO_WECHAT                = (ERROR_BASE_PAY - 4)         /* 没有钱包信息     */
 export const ERROR_NOT_ENOUGH_MONEY         = (ERROR_BASE_PAY - 5)         /* 余额不足        */
 export const ERROR_IN_WITHDRAW_PROCESS      = (ERROR_BASE_PAY - 6)         /* 提现处理中      */
+export const ERROR_PAY_INNER_PROCESS        = (ERROR_BASE_PAY - 7)         /* 支付内部异常      */

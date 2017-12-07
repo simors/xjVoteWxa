@@ -94,6 +94,11 @@
       wallet: null
     }
 
+    setBackPageData(wallet) {
+      this.wallet = wallet
+      this.$apply()
+    }
+
     async onLoad() {
       this.wallet = await pay.fetchWallet()
       this.$apply()
