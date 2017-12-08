@@ -1,6 +1,7 @@
 <style lang="less">
   @import "../../styles/base.less";
   @import "../../minui/wxc-flex.wxss";
+  @import "../../zanui/color.wxss";
 
   .list--wrap {
     padding: 0;
@@ -76,6 +77,54 @@
     }
   }
 
+  .card {
+    margin-left: 0px;
+    width: auto;
+    padding: 5px 15px;
+    overflow: hidden;
+    /*position: relative;*/
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+
+  .card__thumb {
+    height: 240rpx;
+    margin-right: 24rpx;
+    overflow: hidden;
+    background-size: cover;
+    flex: 0 0 240rpx;
+  }
+
+  .card__img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .card__detail {
+    width: auto;
+    flex: 1 1 auto;
+  }
+
+  .card__detail-row {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    line-height: 20px;
+    min-height: 20px;
+    margin-bottom: 3px;
+  }
+
+  .ellipsis--l2 {
+    max-height: 40px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
   .loadmore {
     display: flex;
     width: 100%;
@@ -131,25 +180,38 @@
   <view class="container has-toolbar">
     <view class="list--wrap">
       <view wx:key="id" wx:for="{{votes}}" wx:for-item="vote" class="list-item--wrap">
-        <view class="flex main--center cross--center list-item">
-          <image src="{{vote.cover}}" mode="widthFix" style="width: 100%;"
-                 bindtap="showVoteDetail({{vote.id}})" />
-        </view>
-        <view class="list-item-meta">
-          <view class="list-item-meta-title">{{vote.title}}</view>
-          <view class="flex main--around cross--center list-item-meta-desc">
-            <view class="flex main--center cross--center">
-              <image src="/asset/svg/vote_count_48.svg" />
-              <text style="color: #FF9D4E; font-size: 36rpx; padding-right: 8rpx">{{vote.voteNum}}</text>
-              <text style="font-size: 32rpx">投票</text>
+        <view class="card" @tap.stop="showVoteDetail({{vote.id}}, {{vote.status}})">
+          <view class="card__thumb">
+            <image class="card__img"
+                   src="{{vote.cover}}"
+                   mode="aspectFit"
+            ></image>
+          </view>
+          <view class="card__detail">
+            <view class="card__detail-row">
+              <view class="ellipsis--l2">
+                {{vote.title}}
+              </view>
             </view>
-            <view>
-              <text style="line-height: 48rpx; color: rgba(0,0,0,0.05)">|</text>
+            <view class="card__detail-row zan-c-gray-darker">
+              <view>
+                热度：{{vote.pv}}
+              </view>
             </view>
-            <view class="flex main--center cross--center">
-              <image src="/asset/svg/pv.svg" />
-              <text style="color: #FF9D4E; font-size: 36rpx; padding-right: 8rpx">{{vote.pv}}</text>
-              <text style="font-size: 32rpx">热度</text>
+            <view class="card__detail-row zan-c-gray-darker">
+              <view>
+                收益：¥ {{vote.profit}}
+              </view>
+            </view>
+            <view class="card__detail-row zan-c-gray-darker">
+              <text>{{vote.displayDate}}</text>
+              <text wx:if="{{vote.status === 1}}" class="zan-c-orange">正在编辑</text>
+              <text wx:elif="{{vote.status === 2}}" class="zan-c-purple">待支付</text>
+              <text wx:elif="{{vote.status === 3}}" class="zan-c-red">未开始</text>
+              <text wx:elif="{{vote.status === 4}}" class="zan-c-green">正在进行</text>
+              <text wx:elif="{{vote.status === 5}}" class="zan-c-blue">已结束</text>
+              <text wx:elif="{{vote.status === 6}}" class="zan-c-black">已结算</text>
+              <text wx:else class="zan-c-red-darker">未知</text>
             </view>
           </view>
         </view>
@@ -173,14 +235,14 @@
 <script>
   import wepy from 'wepy';
   import Tips from '@/utils/Tips';
+  import DateTime from '@/utils/dateTime';
   import cloud from '@/cloud/vote';
 
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: '小吉互动'
+      navigationBarTitleText: '我的投票'
     };
-    components = {
-    };
+    components = {};
     data = {
       votes: [],
       loading: false,
@@ -188,10 +250,16 @@
     };
     computed = {};
     methods = {
-      showVoteDetail (id) {
-        wx.navigateTo({
-          url: '../vote/index?voteId=' + id
-        })
+      showVoteDetail (id, status) {
+        if (status === cloud.VOTE_STATUS.EDITING) {
+          wx.navigateTo({
+            url: '../publish/publish?voteId=' + id
+          })
+        } else {
+          wx.navigateTo({
+            url: '../vote/index?voteId=' + id
+          })
+        }
       }
     };
     events = {};
@@ -234,11 +302,20 @@
     async refreshVotes() {
       const payload = {
         searchType: cloud.VOTE_SEARCH_TYPE.PERSONAL,
-        status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
         orderedBy: 'createdAt',
         limit: 10
       };
-      return await cloud.fetchVotes(payload);
+      const rawVotes = await cloud.fetchVotes(payload);
+      const votes = [];
+      for (const i of rawVotes) {
+        const vote = {
+          ...i,
+          displayDate: DateTime.format(i.createdAt),
+          profit: (i.profit * 7 / 10).toFixed(2)
+        };
+        votes.push(vote);
+      }
+      return votes;
     }
 
     async fetchMoreVotes() {
@@ -250,13 +327,22 @@
       const lastCreatedAt = lastVote.createdAt;
       const payload = {
         searchType: cloud.VOTE_SEARCH_TYPE.PERSONAL,
-        status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
         orderedBy: 'createdAt',
         lastTime: lastCreatedAt,
         limit: 10
       };
 
-      return await cloud.fetchVotes(payload);
+      const rawVotes = await cloud.fetchVotes(payload);
+      const votes = [];
+      for (const i of rawVotes) {
+        const vote = {
+          ...i,
+          displayDate: DateTime.format(i.createdAt),
+          profit: (i.profit * 7 / 10).toFixed(2)
+        };
+        votes.push(vote);
+      }
+      return votes;
     }
   }
 </script>
