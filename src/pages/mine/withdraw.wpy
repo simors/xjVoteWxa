@@ -48,6 +48,8 @@
 <script>
   import wepy from 'wepy'
   import pay from '../../cloud/pay'
+  import Tips from '../../utils/Tips'
+  import * as errno from '../../utils/errno'
 
   export default class Withdraw extends wepy.page {
     config = {
@@ -64,8 +66,33 @@
     }
 
     methods = {
-      confirmWithdraw() {
-
+      async confirmWithdraw() {
+        if (this.money < 0) {
+          Tips.error('提现金额有误')
+          return
+        }
+        if (this.money > this.balance) {
+          Tips.error('账户余额不足')
+          return
+        }
+        try {
+          await pay.reqWithdrawApply({amount: this.money})
+          Tips.success('提现申请成功')
+          setTimeout(() => {
+            wx.navigateBack({delta: 1})
+          }, 1500)
+        } catch (e) {
+          console.error('error in request withdraw', e)
+          if (e.code === errno.ERROR_NO_WECHAT) {
+            Tips.error('没有微信授权')
+          } else if (e.code === errno.ERROR_NOT_ENOUGH_MONEY) {
+            Tips.error('余额不足')
+          } else if (e.code === errno.ERROR_IN_WITHDRAW_PROCESS) {
+            Tips.error('已存在提现申请')
+          } else {
+            Tips.error('提现申请失败')
+          }
+        }
       },
 
       moneyInput(e) {

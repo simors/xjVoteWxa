@@ -12,6 +12,20 @@ export default class pay {
     VOTE_PROFIT: 5,   // 活动收益
   }
   
+  static WALLET_PROCESS_TYPE = {
+    NORMAL_PROCESS: 0,      // 正常状态
+    WITHDRAW_PROCESS: 1,    // 正在提现
+  }
+  
+  static WITHDRAW_STATUS = {
+    APPLYING: 1,      // 提交申请
+    DONE: 2,          // 处理完成
+  }
+  
+  static WITHDRAW_APPLY_TYPE = {
+    PROFIT: 1,        // 服务单位和投资人申请收益取现
+  }
+  
   static async reqPayment(payload) {
     let params = {
       amount: payload.amount,
@@ -43,5 +57,13 @@ export default class pay {
       limit: payload.limit
     }
     return await AV.Cloud.run('payFetchUserDealRecords', params)
+  }
+  
+  static async reqWithdrawApply(payload) {
+    let params = {
+      amount: payload.amount,
+      applyType: pay.WITHDRAW_APPLY_TYPE.PROFIT
+    }
+    return await AV.Cloud.run('payCreateWithdrawApply', params)
   }
 }
