@@ -77,6 +77,7 @@
   import zanToptips from '../../components/zan-toptips'
   import pay from '../../cloud/pay'
   import * as errno from '../../utils/errno'
+  import Pingpp from '../../utils/pingpp'
 
   export default class GiftAndExpire extends wepy.page {
     config = {
@@ -145,45 +146,81 @@
       },
 
       async submitForm() {
-        try {
-          Tips.loading('正在支付')
-          wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.PAYING
-          await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
+        let wallet = await pay.fetchWallet()
+        if (wallet.balance < this.price) {
+          await this.payWithWechat()
+        } else {
 
-          let currentUser = wepy.$instance.globalData.userInfo
-          if (!currentUser) {
-            Tips.loaded()
-            Tips.error('请授权登录')
-            return
-          }
-          await pay.reqPayWithBalance({
-            amount: this.price * 0.01,
-            dealType: pay.DEAL_TYPE.VOTE_PAY,
-            metadata: {
-              voteId: wepy.$instance.globalData.editVote.id,
-            }
-          })
-          Tips.loaded()
-          Tips.success('创建投票成功')
-          this.$parent.clearVoteInfo()
+        }
+      }
+    }
+
+    async payWithWechat() {
+      let currentUser = wepy.$instance.globalData.userInfo
+      if (!currentUser) {
+        Tips.error('请授权登录')
+        return
+      }
+      let charge = await pay.reqPayment({
+        openid: currentUser.openid,
+        amount: this.price * 0.001,
+        metadata: {
+          'fromUser': currentUser.id,
+          'toUser': 'platform',
+          'dealType': pay.DEAL_TYPE.VOTE_PAY,
+          'voteId': wepy.$instance.globalData.editVote.id,
+        },
+        subject: '创建投票活动'
+      })
+      Pingpp.createPayment(charge, function (result, err) {
+        if (result == "success") {
+          // 只有微信小程序 wx_lite 支付成功的结果会在这里返回
           setTimeout(() => {
             wx.reLaunch({url: '/pages/index'})
           }, 1000)
-        } catch (e) {
+        } else if (result == "fail") {
+          // charge 不正确或者微信小程序支付失败时会在此处返回
+          Tips.error('支付失败')
+        } else if (result == "cancel") {
+          // 微信小程序支付取消支付
+          Tips.warn('取消支付')
+        }
+      });
+    }
+
+    async payWithBalance() {
+      try {
+        Tips.loading('正在支付')
+        wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.PAYING
+        await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
+
+        let currentUser = wepy.$instance.globalData.userInfo
+        if (!currentUser) {
           Tips.loaded()
-          if (e.code === errno.ERROR_NOT_ENOUGH_MONEY) {
-            this.$invoke('zanToptips', 'showZanTopTips', { content: '余额不足！充值后在我的投票页面继续完成支付', options: 3000 })
-            this.$parent.clearVoteInfo()
-            setTimeout(() => {
-//              wx.reLaunch({url: '/pages/mine/recharge?scene=create_vote'})
-//              wx.reLaunch({url: '/pages/index'})
-              wx.navigateBack({delta: 4})
-            }, 3000)
-          } else if (e.code === errno.ERROR_PAY_INNER_PROCESS) {
-            Tips.error('支付失败')
-          } else {
-            Tips.error('操作失败')
+          Tips.error('请授权登录')
+          return
+        }
+        await pay.reqPayWithBalance({
+          amount: this.price * 0.001,
+          dealType: pay.DEAL_TYPE.VOTE_PAY,
+          metadata: {
+            voteId: wepy.$instance.globalData.editVote.id,
           }
+        })
+        Tips.loaded()
+        Tips.success('创建投票成功')
+        this.$parent.clearVoteInfo()
+        setTimeout(() => {
+          wx.reLaunch({url: '/pages/index'})
+        }, 1000)
+      } catch (e) {
+        Tips.loaded()
+        if (e.code === errno.ERROR_NOT_ENOUGH_MONEY) {
+          this.$invoke('zanToptips', 'showZanTopTips', { content: '余额不足！充值后在我的投票页面继续完成支付', options: 3000 })
+        } else if (e.code === errno.ERROR_PAY_INNER_PROCESS) {
+          Tips.error('支付失败')
+        } else {
+          Tips.error('操作失败')
         }
       }
     }
