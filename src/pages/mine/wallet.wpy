@@ -69,7 +69,7 @@
         <image class="btn-img" src="/asset/svg/recharge.svg"/>
         <text class="btn-text">充值</text>
       </navigator>
-      <navigator class="btn-style" url="/pages/mine/withdraw">
+      <navigator class="btn-style" url="/pages/mine/withdraw?balance={{wallet.balance}}">
         <image class="btn-img" src="/asset/svg/withdraw.svg"/>
         <text class="btn-text">提现</text>
       </navigator>

@@ -31,8 +31,8 @@
         <text class="zan-font-14">取现金额</text>
       </view>
       <view class="money-input-view">
-        <text class="zan-font-30">¥</text>
-        <input type="number" auto-focus placeholder="请输入提现金额" class="input-style" @input="moneyInput"/>
+        <text class="zan-font-30" style="margin-right: 5px">¥</text>
+        <input type="number" focus placeholder="请输入提现金额" class="input-style" @input="moneyInput"/>
       </view>
       <view>
         <text class="zan-font-12 zan-c-red">申请取现后，将在3个工作日内打入您的微信钱包</text>
@@ -59,7 +59,8 @@
     }
 
     data = {
-      money: null
+      money: 0,
+      balance: null
     }
 
     methods = {
@@ -68,9 +69,13 @@
       },
 
       moneyInput(e) {
-        this.money = e.detail.value
+        this.money = Number(e.detail.value)
         this.$apply()
       }
+    }
+
+    onLoad(option) {
+      this.balance = option.balance
     }
   }
 </script>
