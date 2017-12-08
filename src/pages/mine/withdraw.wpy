@@ -22,16 +22,20 @@
     margin: 0;
     height: 100%;
   }
+
+  .step-view {
+    margin: 20px 12px;
+  }
 </style>
 
 <template>
   <view class="container">
     <view class="withdraw-view">
       <view>
-        <text class="zan-font-14">取现金额</text>
+        <text class="zan-font-14 zan-c-gray-darker">取现金额</text>
       </view>
       <view class="money-input-view">
-        <text class="zan-font-30" style="margin-right: 5px">¥</text>
+        <text class="zan-font-30 zan-c-gray-darker" style="margin-right: 5px">¥</text>
         <input type="number" focus placeholder="请输入提现金额" class="input-style" @input="moneyInput"/>
       </view>
       <view>
@@ -42,6 +46,12 @@
     <view class="zan-btns" style="margin-top: 50px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="confirmWithdraw">确认提现</button>
     </view>
+
+    <view wx:if="{{lastWithdraw}}" class="step-view">
+      <text class="zan-font-14 zan-c-gray-darker">已提交申请</text>
+      <zanSteps type="vertical" :hasDesc="_true" :steps.sync="steps"/>
+    </view>
+
   </view>
 </template>
 
@@ -50,6 +60,8 @@
   import pay from '../../cloud/pay'
   import Tips from '../../utils/Tips'
   import * as errno from '../../utils/errno'
+  import zanSteps from '../../components/zan-steps'
+  import DateFormat from '../../utils/dateTime'
 
   export default class Withdraw extends wepy.page {
     config = {
@@ -58,11 +70,15 @@
     }
 
     components = {
+      zanSteps
     }
 
     data = {
       money: 0,
-      balance: null
+      balance: null,
+      lastWithdraw: null,
+      steps: [],
+      _true: true,
     }
 
     methods = {
@@ -101,8 +117,30 @@
       }
     }
 
-    onLoad(option) {
+    async onLoad(option) {
       this.balance = option.balance
+      this.lastWithdraw = await pay.getLastWithdrawApply()
+      if (this.lastWithdraw) {
+        let applyDate = DateFormat.format(this.lastWithdraw.applyDate)
+        this.steps.push({
+          current: false,
+          done: true,
+          text: '请求提现' + this.lastWithdraw.amount + '元',
+          desc: applyDate
+        })
+        this.steps.push({
+          current: true,
+          done: true,
+          text: '平台收到提现请求',
+          desc: applyDate
+        })
+        this.steps.push({
+          current: false,
+          done: false,
+          text: '等待平台处理',
+        })
+      }
+      this.$apply()
     }
   }
 </script>

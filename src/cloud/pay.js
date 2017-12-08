@@ -66,4 +66,8 @@ export default class pay {
     }
     return await AV.Cloud.run('payCreateWithdrawApply', params)
   }
+  
+  static async getLastWithdrawApply() {
+    return await AV.Cloud.run('payFetchUserLastWithdrawApply')
+  }
 }
