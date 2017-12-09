@@ -1,4 +1,8 @@
 <style lang="less">
+  .page-view {
+    width: 100%;
+  }
+
   .view-gap {
     margin-bottom: 10px;
   }
@@ -63,7 +67,7 @@
             </view>
           </view>
           <view wx:else class="tip-img-view view-gap" @tap.stop="chooseImage({{index}})">
-            <image class="tip-img" src="../../asset/png/photo.png"/>
+            <image class="tip-img" src="/asset/png/photo.png"/>
             <text class="tip-img-text">请插入图片，最多选择9张</text>
           </view>
         </view>
@@ -75,23 +79,19 @@
       <button class="zan-btn zan-btn--primary zan-btn--small" @tap.stop="addTextInput">+ 文字</button>
     </view>
 
-    <view class="zan-btns" style="margin-top: 100px">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
+    <view class="zan-btns" style="margin-top: 100px;text-align: right">
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Tips from '../../utils/Tips'
-  import ImageUtils from '../../utils/imageUtils'
+  import Tips from '../utils/Tips'
+  import ImageUtils from '../utils/imageUtils'
 
-  export default class Organizer extends wepy.page {
-    config = {
-      navigationBarTitleText: '主办方介绍',
-      enablePullDownRefresh: false
-    }
-
+  export default class Organizer extends wepy.component {
     data = {
       introduce: [
         {
@@ -156,11 +156,15 @@
         this.$apply()
       },
 
-      async jumpNext() {
-        if (!this.validate()) {
-          return
-        }
-        await this.$navigate('./award')
+      jumpPre() {
+        this.$emit('changeStep', 1)
+      },
+
+      jumpNext() {
+//        if (!this.validate()) {
+//          return
+//        }
+        this.$emit('changeStep', 3)
       }
     }
 
@@ -184,8 +188,9 @@
     onLoad() {
       if (wepy.$instance.globalData.editVote.organizer != null) {
         this.introduce = wepy.$instance.globalData.editVote.organizer
-        this.$apply()
       }
+      wepy.setNavigationBarTitle({title: '主办方介绍'})
+      this.$apply()
     }
   }
 </script>

@@ -1,0 +1,194 @@
+<style lang="less">
+  .page-view {
+    width: 100%;
+  }
+
+  .cover-view {
+    width: 100%;
+    height: 500rpx;
+    background: #F2F2F2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-img {
+    width: 100%;
+    height: 500rpx;
+  }
+
+  .cover-tip-img {
+    width: 100rpx;
+    height: 100rpx;
+  }
+
+  .cover-text {
+    font-size: 12px;
+    color: #CD853F;
+    margin-top: 20rpx;
+  }
+
+  .notice-view {
+    width: 100%;
+  }
+
+  .notice-tip {
+    font-size: 14px;
+    width: 80px;
+  }
+
+  .notice-text {
+    width: 100%;
+    height: 80px;
+  }
+
+  .rule-text {
+    width: 100%;
+  }
+</style>
+
+<template>
+  <view class="page-view">
+    <view wx:if="{{coverPath}}"  @tap.stop="chooseCover">
+      <image class="cover-img" src="{{coverPath}}" mode="aspectFill"/>
+    </view>
+    <view wx:else class="cover-view" @tap.stop="chooseCover">
+      <image class="cover-tip-img" src="/asset/png/photo.png"/>
+      <text class="cover-text">添加封面</text>
+    </view>
+
+    <view class="zan-form">
+      <view class="zan-cell zan-form__item">
+        <text class="zan-form__title">活动名称</text>
+        <input class="zan-form__input zan-cell__bd" value="{{voteTitle}}" placeholder="请输入活动的名称" @input="titleInput"/>
+      </view>
+      <view class="zan-cell zan-form__item">
+        <view class="notice-view">
+          <text class="notice-tip">活动公告</text>
+          <textarea class="zan-form__input zan-cell__bd notice-text" value="{{noticeContent}}" placeholder="输入滚动公告栏的内容" @input="noticeContentInput"/>
+        </view>
+      </view>
+      <view class="zan-cell zan-form__item zan-cell--last-child">
+        <view class="notice-view">
+          <text class="notice-tip">活动规则</text>
+          <textarea class="zan-form__input zan-cell__bd rule-text" value="{{ruleContent}}" placeholder="编辑活动规则" auto-height maxlength="-1" @input="ruleInput"/>
+        </view>
+      </view>
+    </view>
+
+    <view class="zan-btns" style="margin-top: 100px;text-align: right">
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import ImageUtils from '../utils/imageUtils'
+  import Tips from '../utils/Tips'
+  import vote from '../cloud/vote'
+
+  export default class PublishIndex extends wepy.component {
+    props = {
+      voteId: String
+    }
+
+    data = {
+      coverPath: null,
+      voteTitle: null,
+      noticeContent: null,
+      ruleContent: null
+    }
+
+    methods = {
+      async chooseCover() {
+        let tempFilesPaths = await ImageUtils.chooseImage({count: 1, sizeType: ['compressed']})
+        if (tempFilesPaths.length === 0) {
+          return
+        }
+        this.coverPath = tempFilesPaths[0]
+        Tips.loading('正在上传图片')
+        let netCover = await ImageUtils.uploadImage(tempFilesPaths[0])
+        Tips.loaded()
+        wepy.$instance.globalData.editVote.cover = netCover
+        this.$apply()
+      },
+
+      titleInput(e) {
+        this.voteTitle = e.detail.value
+        wepy.$instance.globalData.editVote.title = this.voteTitle
+      },
+
+      noticeContentInput(e) {
+        this.noticeContent = e.detail.value
+        wepy.$instance.globalData.editVote.notice = this.noticeContent
+      },
+
+      ruleInput(e) {
+        this.ruleContent = e.detail.value
+        wepy.$instance.globalData.editVote.rule = this.ruleContent
+      },
+
+      jumpNext() {
+//        if (!this.validate()) {
+//          return
+//        }
+        this.$emit('changeStep', 2)
+      }
+    }
+
+    validate() {
+      if (!this.coverPath || this.coverPath.length === 0) {
+        Tips.alert('未上传封面')
+        return false
+      }
+
+      if (!this.voteTitle) {
+        Tips.alert('未输入活动名称')
+        return false
+      }
+
+      if (!this.noticeContent) {
+        Tips.alert('未输入公告')
+        return false
+      }
+
+      if (!this.ruleContent) {
+        Tips.alert('未输入活动规则')
+        return false
+      }
+
+      return true
+    }
+
+    async onLoad() {
+      if (!this.voteId) {
+        this.$root.$parent.clearVoteInfo()
+      } else {
+        let voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId, updateStatus: false})
+        this.$root.$parent.initVoteInfo(voteInfo)
+      }
+
+      if (wepy.$instance.globalData.editVote.rule === null) {
+        let ruleTemp = await vote.getRuleTemplate({tempName: '幼儿模板'})
+        this.ruleContent = ruleTemp
+        wepy.$instance.globalData.editVote.rule = this.ruleContent
+      } else {
+        this.ruleContent = wepy.$instance.globalData.editVote.rule
+      }
+
+      if (wepy.$instance.globalData.editVote.cover !== null) {
+        this.coverPath = wepy.$instance.globalData.editVote.cover
+      }
+      if (wepy.$instance.globalData.editVote.title !== null) {
+        this.voteTitle = wepy.$instance.globalData.editVote.title
+      }
+      if (wepy.$instance.globalData.editVote.notice !== null) {
+        this.noticeContent = wepy.$instance.globalData.editVote.notice
+      }
+      wepy.setNavigationBarTitle({title: '创建活动'})
+      this.$apply()
+    }
+  }
+</script>

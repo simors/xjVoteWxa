@@ -1,4 +1,8 @@
 <style lang="less">
+  .page-view {
+    width: 100%;
+  }
+
   .add-view {
     margin: 15px 0;
     width: 100%;
@@ -23,31 +27,28 @@
 </style>
 
 <template>
-  <view class="container">
+  <view class="page-view">
     <repeat for="{{awards}}" key="index" index="index" item="item">
       <awardInput :index="index" :award="item"/>
     </repeat>
 
     <view class="add-view" @tap.stop="addAward">
-      <image class="add-btn-img" src="../../asset/png/add.png" />
+      <image class="add-btn-img" src="/asset/png/add.png" />
       <text class="add-btn-text">添加奖项</text>
     </view>
-    <view class="zan-btns" style="margin-top: 100px">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
+    <view class="zan-btns" style="margin-top: 100px;text-align: right">
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Tips from '../../utils/Tips'
-  import AwardInput from '../../components/awardInput'
+  import Tips from '../utils/Tips'
+  import AwardInput from './awardInput'
 
-  export default class Award extends wepy.page {
-    config = {
-      navigationBarTitleText: '奖项设置',
-      enablePullDownRefresh: false
-    }
+  export default class Award extends wepy.component {
 
     components = {
       awardInput: AwardInput
@@ -73,11 +74,15 @@
     }
 
     methods = {
-      async jumpNext() {
+      jumpPre() {
+        this.$emit('changeStep', 2)
+      },
+
+      jumpNext() {
         if (!this.validate()) {
           return
         }
-        await this.$navigate('./gift_expire')
+        this.$emit('changeStep', 4)
       },
 
       addAward() {
@@ -116,8 +121,9 @@
     onLoad() {
       if (wepy.$instance.globalData.editVote.awards != null) {
         this.awards = wepy.$instance.globalData.editVote.awards
-        this.$apply()
       }
+      wepy.setNavigationBarTitle({title: '奖项设置'})
+      this.$apply()
     }
   }
 </script>

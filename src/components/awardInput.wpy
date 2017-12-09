@@ -59,7 +59,7 @@
       <image class="award-img" src="{{award.awardPhoto}}" mode="widthFix"/>
     </view>
     <view wx:else class="award-view" @tap.stop="chooseAwardPhoto">
-      <image class="award-tip-img" src="../asset/png/photo.png"/>
+      <image class="award-tip-img" src="/asset/png/photo.png"/>
       <text class="award-text">添加奖项图片</text>
     </view>
 

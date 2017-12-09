@@ -1,4 +1,8 @@
 <style lang="less">
+  .page-view {
+    width: 100%;
+  }
+
   .gifts-view {
     display: flex;
     flex-wrap: wrap;
@@ -102,8 +106,7 @@
 </style>
 
 <template>
-  <view class="container">
-
+  <view class="page-view">
     <checkbox-group>
       <view class="gifts-view">
         <repeat for="{{gifts}}" key="index" index="index" item="item">
@@ -169,7 +172,8 @@
       </view>
     </view>
 
-    <view class="zan-btns" style="margin-top: 100px">
+    <view class="zan-btns" style="margin-top: 100px;text-align: right">
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">去支付</button>
     </view>
   </view>
@@ -177,21 +181,16 @@
 
 <script>
   import wepy from 'wepy'
-  import Tips from '../../utils/Tips'
-  import vote from '../../cloud/vote'
-  import GiftItem from '../../components/giftItem'
-  import DateTime from '../../utils/dateTime'
-  import zanToptips from '../../components/zan-toptips'
-  import pay from '../../cloud/pay'
-  import * as errno from '../../utils/errno'
-  import Pingpp from '../../utils/pingpp'
+  import Tips from '../utils/Tips'
+  import vote from '../cloud/vote'
+  import GiftItem from './giftItem'
+  import DateTime from '../utils/dateTime'
+  import zanToptips from './zan-toptips'
+  import pay from '../cloud/pay'
+  import * as errno from '../utils/errno'
+  import Pingpp from '../utils/pingpp'
 
-  export default class GiftAndExpire extends wepy.page {
-    config = {
-      navigationBarTitleText: '礼品及期限',
-      enablePullDownRefresh: false
-    }
-
+  export default class GiftAndExpire extends wepy.component {
     components = {
       giftItem: GiftItem,
       zanToptips
@@ -342,7 +341,7 @@
         })
         Tips.loaded()
         Tips.success('创建投票成功')
-        this.$parent.clearVoteInfo()
+        this.$root.$parent.clearVoteInfo()
         setTimeout(() => {
           wx.reLaunch({url: '/pages/index'})
         }, 1000)
@@ -399,6 +398,8 @@
         this.expire = wepy.$instance.globalData.editVote.expire
       }
       this.index = this.validExpire.indexOf(this.expire)
+
+      wepy.setNavigationBarTitle({title: '礼品及期限'})
       this.$apply()
     }
   }
