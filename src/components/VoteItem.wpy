@@ -5,7 +5,9 @@
              bindtap="showVoteDetail({{vote.id}})" />
     </view>
     <view class="list-item-meta">
-      <view class="list-item-meta-title">{{vote.title}}</view>
+      <view class="list-item-meta-title">
+        <text class="zan-ellipsis--l2">{{vote.title}}</text>
+      </view>
       <view class="flex main--around cross--center list-item-meta-desc">
         <view class="flex main--center cross--center">
           <image src="/asset/svg/vote_count_48.svg" />
