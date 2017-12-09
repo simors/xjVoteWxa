@@ -129,9 +129,9 @@
       },
 
       async jumpNext() {
-        if (!await this.validate()) {
-          return
-        }
+//        if (!await this.validate()) {
+//          return
+//        }
         await this.$navigate('./organizer')
       }
     }

@@ -23,6 +23,82 @@
     padding: 10px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
+
+  .popup__mask {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+  }
+
+  .popup--show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 5px;
+    padding: 0;
+    margin: 20px 12px;
+    overflow: hidden;
+  }
+
+  .content-container {
+    padding: 10px 40px;
+  }
+
+  .pay-channel-view {
+    position: relative;
+    margin: 10px 0;
+    padding-top: 3px;
+  }
+
+  .rd-check {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 40rpx;
+  }
+
+  .popup-btn-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100rpx;
+    border-top: 1px solid rgba(0, 0, 0, 0.09);
+    width: 100%;
+  }
+
+  .popup-btn {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pay-chanel {
+    margin-left: 80rpx;
+    display: flex;
+    align-items: center;
+  }
+
+  .pay-icon {
+    width: 48rpx;
+    height: 48rpx;
+    margin-right: 5px;
+  }
 </style>
 
 <template>
@@ -62,6 +138,37 @@
 
     <zanToptips/>
 
+    <view class="popup__mask {{showPop ? 'popup--show' : ''}}">
+      <view class="popup__container">
+        <view class="content-container">
+          <view style="margin-bottom: 10px">
+            <text class="zan-font-14 zan-c-gray-darker">选择支付方式</text>
+          </view>
+          <radio-group bindchange="bindPayChannelChange">
+            <view class="pay-channel-view">
+              <view class="pay-chanel">
+                <image class="pay-icon" src="/asset/png/wechat.png"/>
+                <text class="zan-font-14 zan-c-gray-darker">微信支付</text>
+              </view>
+              <radio class="rd-check" value="wechat"/>
+            </view>
+            <view class="pay-channel-view">
+              <view class="pay-chanel">
+                <image class="pay-icon" src="/asset/png/wallet.png"/>
+                <text class="zan-font-14 zan-c-gray-darker">余额支付</text>
+                <text class="zan-font-14 zan-c-red" style="margin-left: 5px">¥{{balance}}</text>
+              </view>
+              <radio class="rd-check" value="wallet"/>
+            </view>
+          </radio-group>
+        </view>
+        <view class="popup-btn-view">
+          <view class="popup-btn" style="border-right: 1px solid rgba(0, 0, 0, 0.09)" @tap.stop="togglePopup">取消</view>
+          <view class="popup-btn" style="color: #44BB00;" @tap.stop="payWithSelectedChannel">确定</view>
+        </view>
+      </view>
+    </view>
+
     <view class="zan-btns" style="margin-top: 100px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">余额支付</button>
     </view>
@@ -93,13 +200,16 @@
     data = {
       gifts: [],
       selectedGifts: [],
+      checkedChannel: null,
       startDate: null,
       startDateInput: null,
       endDateInput: null,
       expire: 5,
       validExpire: [5, 8, 10, 30],
       index: 0,
-      price: 80
+      price: 80,
+      showPop: false,
+      balance: 0
     }
 
     events = {
@@ -145,12 +255,35 @@
         this.$apply()
       },
 
+      bindPayChannelChange(e) {
+        this.checkedChannel = e.detail.value
+      },
+
+      togglePopup() {
+        this.showPop = !this.showPop
+        this.$apply()
+      },
+
       async submitForm() {
         let wallet = await pay.fetchWallet()
+        this.balance = wallet.balance
         if (wallet.balance < this.price) {
           await this.payWithWechat()
         } else {
+          this.showPop = !this.showPop
+          this.$apply()
+        }
+      },
 
+      async payWithSelectedChannel() {
+        if (!this.checkedChannel) {
+          Tips.alert('未选择支付方式')
+          return
+        }
+        if (this.checkedChannel === 'wechat') {
+          await this.payWithWechat()
+        } else if (this.checkedChannel === 'wallet') {
+          await this.payWithBalance()
         }
       }
     }
