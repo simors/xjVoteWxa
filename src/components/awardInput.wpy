@@ -5,11 +5,11 @@
     width: 100%;
   }
 
-  .desc-view {
+  .award-desc-view {
     width: 100%;
   }
 
-  .decs-tip {
+  .desc-tip {
     font-size: 14px;
     width: 80px;
   }
@@ -73,7 +73,7 @@
         <input class="zan-form__input zan-cell__bd" type="number" value="{{award.winnerNum}}" placeholder="请输入中奖人数" @input="winnerNumInput"/>
       </view>
       <view class="zan-cell zan-form__item zan-cell--last-child">
-        <view class="desc-view">
+        <view class="award-desc-view">
           <text class="desc-tip">奖项说明</text>
           <textarea class="zan-form__input zan-cell__bd desc-text" value="{{award.description}}" placeholder="编辑奖项说明" maxlength="-1" @input="awardDescInput"/>
         </view>

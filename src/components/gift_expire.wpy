@@ -25,7 +25,6 @@
   .price-tip-view {
     margin: 10px 12px;
     padding: 10px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .popup__mask {
@@ -172,9 +171,9 @@
       </view>
     </view>
 
-    <view class="zan-btns" style="margin-top: 100px;text-align: right">
+    <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">去支付</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm">去支付</button>
     </view>
   </view>
 </template>
@@ -227,6 +226,10 @@
     }
 
     methods = {
+      jumpPre() {
+        this.$emit('changeStep', 3)
+      },
+
       bindDateChange(e) {
         this.startDate = e.detail.value
         wepy.$instance.globalData.editVote.startDate = this.startDate

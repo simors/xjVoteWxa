@@ -11,7 +11,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: #F2F2F2;
   }
 
   .add-btn-img {
@@ -36,7 +36,7 @@
       <image class="add-btn-img" src="/asset/png/add.png" />
       <text class="add-btn-text">添加奖项</text>
     </view>
-    <view class="zan-btns" style="margin-top: 100px;text-align: right">
+    <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
@@ -79,9 +79,9 @@
       },
 
       jumpNext() {
-        if (!this.validate()) {
-          return
-        }
+//        if (!this.validate()) {
+//          return
+//        }
         this.$emit('changeStep', 4)
       },
 

@@ -310,7 +310,7 @@
       for (const i of rawVotes) {
         const vote = {
           ...i,
-          displayDate: DateTime.format(i.createdAt),
+          displayDate: i.createdAt.split(' ')[0],
           profit: (i.profit * 7 / 10).toFixed(2)
         };
         votes.push(vote);
@@ -337,7 +337,7 @@
       for (const i of rawVotes) {
         const vote = {
           ...i,
-          displayDate: DateTime.format(i.createdAt),
+          displayDate: i.createdAt.split(' ')[0],
           profit: (i.profit * 7 / 10).toFixed(2)
         };
         votes.push(vote);
