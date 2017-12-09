@@ -189,7 +189,7 @@
           </view>
           <view class="card__detail">
             <view class="card__detail-row">
-              <view class="ellipsis--l2">
+              <view class="zan-font-16 zan-font-bold ellipsis--l2">
                 {{vote.title}}
               </view>
             </view>

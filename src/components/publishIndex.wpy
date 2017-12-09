@@ -131,9 +131,9 @@
       },
 
       jumpNext() {
-//        if (!this.validate()) {
-//          return
-//        }
+        if (!this.validate()) {
+          return
+        }
         this.$emit('changeStep', 2)
       }
     }
