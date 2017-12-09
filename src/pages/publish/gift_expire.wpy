@@ -170,7 +170,7 @@
     </view>
 
     <view class="zan-btns" style="margin-top: 100px">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">余额支付</button>
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="submitForm">去支付</button>
     </view>
   </view>
 </template>
