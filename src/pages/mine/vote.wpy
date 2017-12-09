@@ -184,7 +184,7 @@
           <view class="card__thumb">
             <image class="card__img"
                    src="{{vote.cover}}"
-                   mode="aspectFit"
+                   mode="aspectFill"
             ></image>
           </view>
           <view class="card__detail">
