@@ -74,7 +74,7 @@
 
     methods = {
       async jumpNext() {
-        if (!await this.validate()) {
+        if (!this.validate()) {
           return
         }
         await this.$navigate('./gift_expire')
@@ -91,7 +91,25 @@
       }
     }
 
-    async validate() {
+    validate() {
+      for (let item of this.awards) {
+        if (!item.awardPhoto) {
+          Tips.alert('未上传图片')
+          return false
+        }
+        if (!item.awardName) {
+          Tips.alert('未设置奖品名')
+          return false
+        }
+        if (!item.winnerNum) {
+          Tips.alert('未设置获奖人数')
+          return false
+        }
+        if (!item.description) {
+          Tips.alert('未填写奖品描述')
+          return false
+        }
+      }
       return true
     }
 

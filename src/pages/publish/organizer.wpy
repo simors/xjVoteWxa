@@ -157,14 +157,27 @@
       },
 
       async jumpNext() {
-        if (!await this.validate()) {
+        if (!this.validate()) {
           return
         }
         await this.$navigate('./award')
       }
     }
 
-    async validate() {
+    validate() {
+      for(let item of this.introduce) {
+        if (item.type === 'text') {
+          if (!item.content) {
+            Tips.alert('未填文本')
+            return false
+          }
+        } else if (item.type === 'image') {
+          if (!item.url) {
+            Tips.alert('未上传图片')
+            return false
+          }
+        }
+      }
       return true
     }
 
