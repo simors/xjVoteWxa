@@ -101,6 +101,30 @@
       ruleContent: null
     }
 
+    events = {
+      'initVoteData': async () => {
+        let globalEditVote = wepy.$instance.globalData.editVote
+        if (globalEditVote.rule === null) {
+          let ruleTemp = await vote.getRuleTemplate({tempName: '幼儿模板'})
+          this.ruleContent = ruleTemp
+          wepy.$instance.globalData.editVote.rule = this.ruleContent
+        } else {
+          this.ruleContent = globalEditVote.rule
+        }
+
+        if (globalEditVote.cover !== null) {
+          this.coverPath = globalEditVote.cover
+        }
+        if (globalEditVote.title !== null) {
+          this.voteTitle = globalEditVote.title
+        }
+        if (globalEditVote.notice !== null) {
+          this.noticeContent = globalEditVote.notice
+        }
+        this.$apply()
+      }
+    }
+
     methods = {
       async chooseCover() {
         let tempFilesPaths = await ImageUtils.chooseImage({count: 1, sizeType: ['compressed']})
@@ -162,33 +186,8 @@
       return true
     }
 
-    async onLoad() {
-      if (!this.voteId) {
-        this.$root.$parent.clearVoteInfo()
-      } else {
-        let voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId, updateStatus: false})
-        this.$root.$parent.initVoteInfo(voteInfo)
-      }
-
-      if (wepy.$instance.globalData.editVote.rule === null) {
-        let ruleTemp = await vote.getRuleTemplate({tempName: '幼儿模板'})
-        this.ruleContent = ruleTemp
-        wepy.$instance.globalData.editVote.rule = this.ruleContent
-      } else {
-        this.ruleContent = wepy.$instance.globalData.editVote.rule
-      }
-
-      if (wepy.$instance.globalData.editVote.cover !== null) {
-        this.coverPath = wepy.$instance.globalData.editVote.cover
-      }
-      if (wepy.$instance.globalData.editVote.title !== null) {
-        this.voteTitle = wepy.$instance.globalData.editVote.title
-      }
-      if (wepy.$instance.globalData.editVote.notice !== null) {
-        this.noticeContent = wepy.$instance.globalData.editVote.notice
-      }
+    onLoad() {
       wepy.setNavigationBarTitle({title: '创建活动'})
-      this.$apply()
     }
   }
 </script>

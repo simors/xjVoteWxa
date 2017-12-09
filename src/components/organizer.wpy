@@ -168,6 +168,15 @@
       }
     }
 
+    events = {
+      'initVoteData': () => {
+        if (wepy.$instance.globalData.editVote.organizer != null) {
+          this.introduce = wepy.$instance.globalData.editVote.organizer
+        }
+        this.$apply()
+      }
+    }
+
     validate() {
       for(let item of this.introduce) {
         if (item.type === 'text') {
@@ -186,11 +195,7 @@
     }
 
     onLoad() {
-      if (wepy.$instance.globalData.editVote.organizer != null) {
-        this.introduce = wepy.$instance.globalData.editVote.organizer
-      }
       wepy.setNavigationBarTitle({title: '主办方介绍'})
-      this.$apply()
     }
   }
 </script>

@@ -222,6 +222,50 @@
         }
         wepy.$instance.globalData.editVote.gifts = this.selectedGifts
         this.$apply()
+      },
+
+      'initVoteData': async () => {
+        this.startDateInput = DateTime.addDate(1)
+        this.endDateInput = DateTime.addDate(10)
+        Tips.loading()
+        this.gifts = await vote.fetchGifts()
+        Tips.loaded()
+        if (wepy.$instance.globalData.editVote.gifts === null) {
+          // 默认全部选中
+          this.gifts = this.gifts.map((gift) => {
+            this.selectedGifts.push(gift.id)
+            gift.checked = true
+            return gift
+          })
+
+          wepy.$instance.globalData.editVote.gifts = this.selectedGifts
+        } else {
+          this.selectedGifts = wepy.$instance.globalData.editVote.gifts
+          this.gifts = this.gifts.map((gift) => {
+            let pos = this.selectedGifts.indexOf(gift.id)
+            if (pos < 0) {
+              gift.checked = false
+            } else {
+              gift.checked = true
+            }
+            return gift
+          })
+        }
+
+        if (wepy.$instance.globalData.editVote.startDate === null) {
+          this.startDate = DateTime.addDate(5)
+          wepy.$instance.globalData.editVote.startDate = this.startDate
+        } else {
+          this.startDate = wepy.$instance.globalData.editVote.startDate
+        }
+
+        if (wepy.$instance.globalData.editVote.expire === null) {
+          wepy.$instance.globalData.editVote.expire = this.expire
+        } else {
+          this.expire = wepy.$instance.globalData.editVote.expire
+        }
+        this.index = this.validExpire.indexOf(this.expire)
+        this.$apply()
       }
     }
 
@@ -360,50 +404,8 @@
       }
     }
 
-    async onLoad() {
-      this.startDateInput = DateTime.addDate(1)
-      this.endDateInput = DateTime.addDate(10)
-      Tips.loading()
-      this.gifts = await vote.fetchGifts()
-      Tips.loaded()
-      if (wepy.$instance.globalData.editVote.gifts === null) {
-        // 默认全部选中
-        this.gifts = this.gifts.map((gift) => {
-          this.selectedGifts.push(gift.id)
-          gift.checked = true
-          return gift
-        })
-
-        wepy.$instance.globalData.editVote.gifts = this.selectedGifts
-      } else {
-        this.selectedGifts = wepy.$instance.globalData.editVote.gifts
-        this.gifts = this.gifts.map((gift) => {
-          let pos = this.selectedGifts.indexOf(gift.id)
-          if (pos < 0) {
-            gift.checked = false
-          } else {
-            gift.checked = true
-          }
-          return gift
-        })
-      }
-
-      if (wepy.$instance.globalData.editVote.startDate === null) {
-        this.startDate = DateTime.addDate(5)
-        wepy.$instance.globalData.editVote.startDate = this.startDate
-      } else {
-        this.startDate = wepy.$instance.globalData.editVote.startDate
-      }
-
-      if (wepy.$instance.globalData.editVote.expire === null) {
-        wepy.$instance.globalData.editVote.expire = this.expire
-      } else {
-        this.expire = wepy.$instance.globalData.editVote.expire
-      }
-      this.index = this.validExpire.indexOf(this.expire)
-
+    onLoad() {
       wepy.setNavigationBarTitle({title: '礼品及期限'})
-      this.$apply()
     }
   }
 </script>

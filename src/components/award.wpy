@@ -59,6 +59,13 @@
         this.awards[index] = award
         wepy.$instance.globalData.editVote.awards = this.awards
         this.$apply()
+      },
+
+      'initVoteData': () => {
+        if (wepy.$instance.globalData.editVote.awards != null) {
+          this.awards = wepy.$instance.globalData.editVote.awards
+        }
+        this.$apply()
       }
     }
 
@@ -119,11 +126,7 @@
     }
 
     onLoad() {
-      if (wepy.$instance.globalData.editVote.awards != null) {
-        this.awards = wepy.$instance.globalData.editVote.awards
-      }
       wepy.setNavigationBarTitle({title: '奖项设置'})
-      this.$apply()
     }
   }
 </script>

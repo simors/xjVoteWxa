@@ -20,6 +20,7 @@
 
 <script>
   import wepy from 'wepy'
+  import vote from '../../cloud/vote'
   import Tips from '../../utils/Tips'
   import PublishIndex from '../../components/publishIndex'
   import Organizer from '../../components/organizer'
@@ -54,9 +55,14 @@
     }
 
     async onLoad(option) {
-      if (option.voteId) {
+      if (!option.voteId) {
+        this.$parent.clearVoteInfo()
+      } else {
         this.voteId = option.voteId
+        let voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId, updateStatus: false})
+        this.$parent.initVoteInfo(voteInfo)
       }
+      this.$broadcast('initVoteData')
       this.$apply()
     }
   }
