@@ -162,6 +162,7 @@
       if (option.voteId) {
         voteInfo = await vote.fetchVoteInfoById({voteId: option.voteId, updateStatus: true})
         wepy.$instance.globalData.activeVote = voteInfo
+        await this.$parent.getUserInfo();
         vote.incVotePv({voteId: option.voteId})
       } else {
         voteInfo = wepy.$instance.globalData.activeVote

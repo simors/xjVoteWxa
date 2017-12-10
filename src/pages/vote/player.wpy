@@ -143,6 +143,8 @@
       this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
       this.pv = this.player.pv
+
+      await this.$parent.getUserInfo();
       vote.incPlayerPv({playerId: playerId})
 
       wepy.setNavigationBarTitle({title: '给'+this.player.name+'投票'})
