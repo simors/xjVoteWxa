@@ -158,7 +158,7 @@
 
     async onLoad() {
       this.loading = true;
-      await this.$parent.getUserInfo();
+      this.$parent.getUserInfo();
       this.votes = await this.refreshVotes();
       this.loading = false;
       this.$apply();
