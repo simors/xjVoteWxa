@@ -70,11 +70,17 @@
 
     async onLoad(option) {
       if (!option.voteId) {
+        Tips.loading()
         this.$parent.clearVoteInfo()
+        let ruleTemp = await vote.getRuleTemplate({tempName: '幼儿模板'})
+        wepy.$instance.globalData.editVote.rule = ruleTemp
+        Tips.loaded()
       } else {
+        Tips.loading()
         this.voteId = option.voteId
         let voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId, updateStatus: false})
         this.$parent.initVoteInfo(voteInfo)
+        Tips.loaded()
       }
       this.$broadcast('initVoteData')
       wepy.setNavigationBarTitle({title: '创建活动'})

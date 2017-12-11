@@ -87,7 +87,6 @@
   import wepy from 'wepy'
   import ImageUtils from '../utils/imageUtils'
   import Tips from '../utils/Tips'
-  import vote from '../cloud/vote'
 
   export default class PublishIndex extends wepy.component {
     props = {
@@ -102,13 +101,10 @@
     }
 
     events = {
-      'initVoteData': async () => {
+      'initVoteData': () => {
         let globalEditVote = wepy.$instance.globalData.editVote
-        if (globalEditVote.rule === null) {
-          let ruleTemp = await vote.getRuleTemplate({tempName: '幼儿模板'})
-          this.ruleContent = ruleTemp
-          wepy.$instance.globalData.editVote.rule = this.ruleContent
-        } else {
+        console.log('globalEditVote', globalEditVote)
+        if (globalEditVote.rule !== null) {
           this.ruleContent = globalEditVote.rule
         }
 
