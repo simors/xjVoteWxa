@@ -70,7 +70,7 @@
     methods = {
       backToHome() {
         if (this.scene === 'share') {
-          this.$root.$redirect({url: '/pages/vote/index?voteId' + this.voteId})
+          this.$root.$redirect({url: '/pages/vote/index?voteId=' + this.voteId})
         } else if (this.scene === 'inner') {
           wx.navigateBack()
         }

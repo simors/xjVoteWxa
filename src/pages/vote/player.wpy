@@ -157,7 +157,7 @@
 
     onShareAppMessage () {
       const title = '给'+this.player.name+'投票';
-      const url = '/pages/vote/player?playerId=' + this.player.id + '&&scene=share';
+      const url = '/pages/vote/player?playerId=' + this.player.id + '&scene=share';
       return Tips.share(title, url, title);
     }
   }
