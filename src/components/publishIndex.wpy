@@ -185,9 +185,5 @@
 
       return true
     }
-
-    onLoad() {
-      wepy.setNavigationBarTitle({title: '创建活动'})
-    }
   }
 </script>

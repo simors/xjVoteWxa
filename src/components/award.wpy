@@ -124,9 +124,5 @@
       }
       return true
     }
-
-    onLoad() {
-      wepy.setNavigationBarTitle({title: '奖项设置'})
-    }
   }
 </script>

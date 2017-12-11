@@ -47,6 +47,20 @@
     events = {
       'changeStep': (newStep) => {
         this.step = newStep
+        switch (newStep) {
+          case 1:
+            wepy.setNavigationBarTitle({title: '创建活动'})
+            break
+          case 2:
+            wepy.setNavigationBarTitle({title: '主办方介绍'})
+            break
+          case 3:
+            wepy.setNavigationBarTitle({title: '奖项设置'})
+            break
+          case 4:
+            wepy.setNavigationBarTitle({title: '礼品及期限'})
+            break
+        }
         this.$apply()
       }
     }
@@ -63,6 +77,7 @@
         this.$parent.initVoteInfo(voteInfo)
       }
       this.$broadcast('initVoteData')
+      wepy.setNavigationBarTitle({title: '创建活动'})
       this.$apply()
     }
   }
