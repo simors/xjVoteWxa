@@ -44,7 +44,7 @@
     </view>
 
     <view class="zan-btns" style="margin-top: 50px">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="confirmWithdraw">确认提现</button>
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="confirmWithdraw" disabled="{{payDisabled}}">确认提现</button>
     </view>
 
     <view wx:if="{{lastWithdraw}}" class="step-view">
@@ -79,6 +79,7 @@
       lastWithdraw: null,
       steps: [],
       _true: true,
+      payDisabled: false
     }
 
     methods = {
@@ -91,6 +92,8 @@
           Tips.error('账户余额不足')
           return
         }
+        this.payDisabled = true
+        this.$apply()
         try {
           await pay.reqWithdrawApply({amount: this.money})
           Tips.success('提现申请成功')
@@ -109,6 +112,8 @@
             Tips.error('提现申请失败')
           }
         }
+        this.payDisabled = false
+        this.$apply()
       },
 
       moneyInput(e) {
