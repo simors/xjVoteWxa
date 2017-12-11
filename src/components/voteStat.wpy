@@ -47,7 +47,7 @@
     </view>
     <view class="item-view">
       <view class="tip-view">
-        <image class="tip-img" src="/asset/svg/vote_count_32.svg"/>
+        <image class="tip-img" src="/asset/svg/vote_count.svg"/>
         <text class="zan-font-12 zan-c-gray-dark zan-font-bold">累计投票</text>
       </view>
       <text class="zan-font-15 num-color">{{voteNum}}</text>
