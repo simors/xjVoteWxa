@@ -1,12 +1,21 @@
 <style lang="less">
+  .header-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 12px;
+  }
 
-  .swiper-view {
-    height: 300px;
+  .header-img {
+    width: 90rpx;
+    height: 90rpx;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 5px;
   }
 
   .slide-image {
     width: 100%;
-    height: 300px;
   }
 
   .padding-view {
@@ -23,39 +32,30 @@
 
 <template>
   <view class="container" style="background: #fff">
-    <swiper indicator-dots autoplay class="swiper-view">
-      <repeat for="{{player.album}}" key="index" index="index" item="item">
-        <swiper-item>
-          <image src="{{item}}" class="slide-image" mode="aspectFill"/>
-        </swiper-item>
-      </repeat>
-    </swiper>
-
-    <view style="margin-top: 10px">
-      <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
+    <view class="header-view">
+      <image class="header-img" src="{{player.album[0]}}" mode="aspectFill"/>
+      <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
     </view>
 
     <view class="padding-view">
-      <view>
-        <text class="zan-font-18" style="color: #ff9d4e">「参赛选手」</text>
-      </view>
-      <view>
-        <text class="zan-font-16">{{player.name}}</text>
-      </view>
-    </view>
-
-    <view class="padding-view">
-      <view>
-        <text class="zan-font-18" style="color: #ff9d4e">「参赛宣言」</text>
-      </view>
       <view>
         <text class="zan-font-16">{{player.declaration}}</text>
       </view>
     </view>
 
+    <view style="margin-top: 10px">
+      <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
+    </view>
+
+    <repeat for="{{player.album}}" key="index" index="index" item="item">
+      <view class="padding-view">
+        <image src="{{item}}" class="slide-image" mode="widthFix"/>
+      </view>
+    </repeat>
+
     <view class="padding-view">
       <view style="margin-bottom: 10px">
-        <text class="zan-font-18" style="color: #ff9d4e">「礼品列表」</text>
+        <text class="zan-font-16" style="color: #ff9d4e">「礼品列表」</text>
       </view>
       <recvGifts :playerId.sync="playerId"/>
     </view>

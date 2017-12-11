@@ -51,7 +51,7 @@
 <template>
   <view class="container">
     <view class="header-view">
-      <image class="header-img" src="{{player.album[0]}}" mode="aspectFit"/>
+      <image class="header-img" src="{{player.album[0]}}" mode="aspectFill"/>
       <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
     </view>
 
