@@ -42,7 +42,7 @@
           <view class="toolbar-fontsize">回首页</view>
         </view>
       </view>
-      <view class="flex flex-column items-center justify-center" @tap.stop="submitVote">
+      <view class="flex flex-column items-center justify-center" @tap.stop="submitVote" hover-stay-time="1500">
         <image class="big-img" src="/asset/gif/vote_active.gif" mode="aspectFill" />
       </view>
       <view class="flex flex-column items-center justify-center" @tap.stop="toPresentPage">
