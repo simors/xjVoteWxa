@@ -173,7 +173,7 @@
 
     <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
-      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm">去支付</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm" disabled="{{payDisabled}}">去支付</button>
     </view>
   </view>
 </template>
@@ -207,7 +207,8 @@
       index: 0,
       price: 80,
       showPop: false,
-      balance: 0
+      balance: 0,
+      payDisabled: false
     }
 
     events = {
@@ -311,14 +312,17 @@
       },
 
       async submitForm() {
+        this.payDisabled = true
+        this.$apply()
         let wallet = await pay.fetchWallet()
         this.balance = wallet.balance
         if (wallet.balance < this.price) {
           await this.payWithWechat()
         } else {
           this.showPop = !this.showPop
-          this.$apply()
         }
+        this.payDisabled = false
+        this.$apply()
       },
 
       async payWithSelectedChannel() {
