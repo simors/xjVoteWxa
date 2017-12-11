@@ -109,6 +109,8 @@
       'voteForPlayer': async () => {
         try {
           await vote.voteForPlayer({playerId: this.player.id})
+          this.voteNum += 1
+          this.$apply()
           Tips.success('投票成功')
           setTimeout(() => {
             this.$invoke('buyGiftTip', 'toggleDialog')
