@@ -99,8 +99,6 @@ export default class extends wepy.app {
 
   async saveVoteDraft() {
     if (this.globalData.lastVote !== JSON.stringify(this.globalData.editVote)  && this.globalData.editVote.cover) {
-      console.log('lastVote', this.globalData.lastVote)
-      console.log('editVote', this.globalData.editVote)
       this.globalData.editVote.status = vote.VOTE_STATUS.EDITING
       let voteInfo = await vote.createOrUpdateVote(this.globalData.editVote)
       this.globalData.editVote.id = voteInfo.objectId

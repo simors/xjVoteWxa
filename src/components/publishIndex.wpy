@@ -103,7 +103,6 @@
     events = {
       'initVoteData': () => {
         let globalEditVote = wepy.$instance.globalData.editVote
-        console.log('globalEditVote', globalEditVote)
         if (globalEditVote.rule !== null) {
           this.ruleContent = globalEditVote.rule
         }
