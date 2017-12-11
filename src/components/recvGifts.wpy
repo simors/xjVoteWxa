@@ -78,7 +78,6 @@
 
       async refreshRecvGifts() {
         this.gifts = await vote.fetchPlayerRecvGifts({playerId: this.playerId})
-        console.log('gifts', this.gifts)
         let size = this.gifts.length
         if (size < this.limit) {
           this.hasMore = false
