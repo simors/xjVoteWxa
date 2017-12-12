@@ -72,7 +72,6 @@ export default class extends wepy.app {
       title: null,
       cover: null,
       notice: null,
-      rule: null,
       organizer: null,
       awards: null,
       gifts: null,
@@ -127,7 +126,6 @@ export default class extends wepy.app {
     this.globalData.editVote.title = null
     this.globalData.editVote.cover = null
     this.globalData.editVote.notice = null
-    this.globalData.editVote.rule = null
     this.globalData.editVote.organizer = null
     this.globalData.editVote.awards = null
     this.globalData.editVote.gifts = null
@@ -143,7 +141,6 @@ export default class extends wepy.app {
     this.globalData.editVote.title = voteInfo.title
     this.globalData.editVote.cover = voteInfo.cover
     this.globalData.editVote.notice = voteInfo.notice
-    this.globalData.editVote.rule = voteInfo.rule
     this.globalData.editVote.organizer = voteInfo.organizer
     this.globalData.editVote.awards = voteInfo.awards
     this.globalData.editVote.startDate = voteInfo.startDate
