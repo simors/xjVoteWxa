@@ -3,12 +3,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 12px;
+    padding: 10px 12px 0 12px;
   }
 
   .header-img {
-    width: 90rpx;
-    height: 90rpx;
+    width: 60rpx;
+    height: 60rpx;
     overflow: hidden;
     border-radius: 50%;
     margin-right: 5px;
@@ -37,6 +37,12 @@
       <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
     </view>
 
+    <repeat for="{{player.album}}" key="index" index="index" item="item">
+      <view class="padding-view">
+        <image src="{{item}}" class="slide-image" mode="widthFix"/>
+      </view>
+    </repeat>
+
     <view class="padding-view">
       <view>
         <text class="zan-font-16">{{player.declaration}}</text>
@@ -47,15 +53,9 @@
       <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
     </view>
 
-    <repeat for="{{player.album}}" key="index" index="index" item="item">
-      <view class="padding-view">
-        <image src="{{item}}" class="slide-image" mode="widthFix"/>
-      </view>
-    </repeat>
-
     <view class="padding-view">
       <view style="margin-bottom: 10px">
-        <text class="zan-font-16" style="color: #ff9d4e">「礼品列表」</text>
+        <text class="zan-font-14" style="color: #ff9d4e">「礼品列表」</text>
       </view>
       <recvGifts :playerId.sync="playerId"/>
     </view>
