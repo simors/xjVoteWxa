@@ -114,6 +114,9 @@
     }
 
     async refreshPlayers() {
+      if (!this.voteId) {
+        return
+      }
       this.players = await vote.fetchVotePlayers({voteId: this.voteId, limit: this.limit})
       let dataSize = this.players.length
       if (dataSize < this.limit) {

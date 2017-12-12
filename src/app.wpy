@@ -178,5 +178,11 @@ export default class extends wepy.app {
       }
     })
   }
+
+  async reloadActiveVote() {
+    let voteId = this.globalData.activeVote.id
+    let voteInfo = await vote.fetchVoteInfoById({voteId: voteId, updateStatus: true})
+    this.globalData.activeVote = voteInfo
+  }
 }
 </script>

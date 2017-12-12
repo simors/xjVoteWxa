@@ -176,6 +176,19 @@
       this.$apply()
     }
 
+    onShow() {
+      let voteInfo = wepy.$instance.globalData.activeVote
+      if (!voteInfo) {
+        return
+      }
+      this.voteDetail = voteInfo
+      this.applyNum = voteInfo.applyNum
+      this.voteNum = voteInfo.voteNum
+      this.pv = voteInfo.pv
+      this.$invoke('votePlayers', 'refreshPlayers')
+      this.$apply()
+    }
+
     onUnload() {
       this.$invoke('timerCounterDown', 'clearTimer')
     }

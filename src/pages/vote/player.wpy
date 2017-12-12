@@ -110,6 +110,7 @@
         try {
           await vote.voteForPlayer({playerId: this.player.id})
           this.voteNum += 1
+          this.$parent.reloadActiveVote()
           this.$apply()
           Tips.success('投票成功')
           setTimeout(() => {
@@ -151,6 +152,10 @@
 
       wepy.setNavigationBarTitle({title: '给'+this.player.name+'投票'})
       this.$apply()
+    }
+
+    onShow() {
+      this.$invoke('buyGiftTip', 'hideDialog')
     }
 
     onReachBottom() {

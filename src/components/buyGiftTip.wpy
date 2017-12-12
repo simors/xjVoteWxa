@@ -82,5 +82,10 @@
         this.$emit('toPresent')
       }
     }
+
+    hideDialog() {
+      this.showDialog = false
+      this.$apply()
+    }
   }
 </script>
