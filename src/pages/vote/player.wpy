@@ -2,8 +2,8 @@
   .header-view {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 10px 12px 0 12px;
+    justify-content: flex-start;
+    padding: 10px 12px;
   }
 
   .header-img {
@@ -32,16 +32,16 @@
 
 <template>
   <view class="container" style="background: #fff">
-    <view class="header-view">
-      <image class="header-img" src="{{player.album[0]}}" mode="aspectFill"/>
-      <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
-    </view>
-
     <repeat for="{{player.album}}" key="index" index="index" item="item">
       <view class="padding-view">
         <image src="{{item}}" class="slide-image" mode="widthFix"/>
       </view>
     </repeat>
+
+    <view class="header-view">
+      <image class="header-img" src="{{player.album[0]}}" mode="aspectFill"/>
+      <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
+    </view>
 
     <view class="padding-view">
       <view>
