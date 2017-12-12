@@ -38,13 +38,6 @@ export default class vote {
     return vote
   }
 
-  static async getRuleTemplate(payload) {
-    let params = {
-      tempName: payload.tempName
-    }
-    return await AV.Cloud.run('voteGetRuleTemplate', params)
-  }
-
   static async fetchVotes(payload) {
     const params = {
     };
