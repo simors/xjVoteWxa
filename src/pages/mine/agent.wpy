@@ -1,0 +1,80 @@
+<style lang="less">
+</style>
+
+<template>
+  <view class="container">
+    <view>
+      <text>代理规则</text>
+      <text>
+        1、创建活动时缴纳1分钱，开通试用代理，可提成收益的20%；
+        2、缴纳10000元开通黄金代理，创建活动免费，同时可提成收益的35%；
+      </text>
+    </view>
+
+    <view class="zan-btns">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="payForAgent" disabled="{{payDisabled}}">开通代理</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import pay from '../../cloud/pay'
+  import * as errno from '../../utils/errno'
+  import Pingpp from '../../utils/pingpp'
+  import Tips from '../../utils/Tips'
+
+  export default class Agent extends wepy.page {
+    config = {
+      navigationBarTitleText: '我要代理',
+      enablePullDownRefresh: false
+    }
+
+    components = {
+    }
+
+    data = {
+      payDisabled: false,
+      inviterId: null
+    }
+
+    methods = {
+      async payForAgent() {
+        let currentUser = wepy.$instance.globalData.userInfo
+        if (!currentUser) {
+          Tips.error('请授权登录')
+          return
+        }
+        this.payDisabled = true
+        let charge = await pay.reqPayment({
+          openid: currentUser.openid,
+          amount: 10000,
+          metadata: {
+            'fromUser': currentUser.id,
+            'toUser': 'platform',
+            'dealType': pay.DEAL_TYPE.AGENT_PAY,
+            'inviter': this.inviterId,
+          },
+          subject: '创建投票活动'
+        })
+        Pingpp.createPayment(charge, (result, err) => {
+          this.payDisabled = false
+          if (result == "success") {
+            // 只有微信小程序 wx_lite 支付成功的结果会在这里返回
+            wx.navigateBack()
+          } else if (result == "fail") {
+            // charge 不正确或者微信小程序支付失败时会在此处返回
+            Tips.error('支付失败')
+          } else if (result == "cancel") {
+            // 微信小程序支付取消支付
+            Tips.warn('取消支付')
+          }
+        });
+      }
+    }
+
+    onLoad(option) {
+
+    }
+  }
+</script>

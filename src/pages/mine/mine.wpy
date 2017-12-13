@@ -76,6 +76,24 @@
         </view>
         <view class="zan-cell__ft"></view>
       </navigator>
+      <navigator class="zan-cell zan-cell--access" url="./agent">
+        <view class="cell_icon">
+          <image class="item-img" src="../../asset/png/agent.png"/>
+        </view>
+        <view class="zan-cell__bd">
+          我要代理
+        </view>
+        <view class="zan-cell__ft"></view>
+      </navigator>
+      <navigator class="zan-cell zan-cell--access" url="./invite">
+        <view class="cell_icon">
+          <image class="item-img" src="../../asset/png/invite.png"/>
+        </view>
+        <view class="zan-cell__bd">
+          邀请代理
+        </view>
+        <view class="zan-cell__ft"></view>
+      </navigator>
     </view>
 
     <view style="padding: 20px 12px 0 12px">

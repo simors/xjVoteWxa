@@ -1,0 +1,46 @@
+<style lang="less">
+</style>
+
+<template>
+  <view class="container">
+    <view>
+      <text>邀请好友成为代理，不仅可以提升代理分成的收益比例，而且还可以直接获得代理费的现金奖励！</text>
+      <text>将此页面分享给好友</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tips from '../../utils/Tips'
+
+  export default class Invite extends wepy.page {
+    config = {
+      navigationBarTitleText: '邀请代理',
+      enablePullDownRefresh: false
+    }
+
+    components = {
+    }
+
+    data = {
+      userInfo: null
+    }
+
+    async onLoad() {
+      this.userInfo = await this.$parent.getUserInfo()
+      this.$apply()
+    }
+
+    onShareAppMessage () {
+      if (!this.userInfo) {
+        Tips.error('未用户授权')
+        return
+      }
+      const title = this.userInfo.nickname + '邀请函';
+      const url = '/pages/mine/agent?inviter=' + this.userInfo.id;
+      return Tips.share(title, url, title);
+    }
+
+  }
+</script>

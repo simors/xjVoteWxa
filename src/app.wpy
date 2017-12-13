@@ -47,6 +47,8 @@ export default class extends wepy.app {
       'pages/mine/recharge',
       'pages/mine/withdraw',
       'pages/mine/vote',
+      'pages/mine/agent',
+      'pages/mine/invite',
       'pages/publish/publish',
       'pages/vote/index',
       'pages/vote/award',
