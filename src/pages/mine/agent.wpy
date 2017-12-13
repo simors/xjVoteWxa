@@ -73,8 +73,12 @@
       }
     }
 
-    onLoad(option) {
-
+    async onLoad(option) {
+      if (option.inviter) {
+        this.inviterId = option.inviter
+      }
+      await this.$parent.getUserInfo();
+      this.$apply()
     }
   }
 </script>
