@@ -29,4 +29,11 @@ export default class user {
       console.error('error in login', e)
     }
   }
+  
+  static async fetchUserInfo(payload) {
+    let params = {
+      userId: payload.userId
+    }
+    return await AV.Cloud.run('userFetchUserInfo', params)
+  }
 }

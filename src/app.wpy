@@ -186,5 +186,13 @@ export default class extends wepy.app {
     let voteInfo = await vote.fetchVoteInfoById({voteId: voteId, updateStatus: true})
     this.globalData.activeVote = voteInfo
   }
+
+  async reloadUserInfo() {
+    let userId = this.globalData.userInfo.id
+    if (!userId) {
+      return
+    }
+    this.globalData.userInfo = await user.fetchUserInfo({userId})
+  }
 }
 </script>

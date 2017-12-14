@@ -48,7 +48,7 @@
         this.payDisabled = true
         let charge = await pay.reqPayment({
           openid: currentUser.openid,
-          amount: 10000,
+          amount: 0.1,
           metadata: {
             'fromUser': currentUser.id,
             'toUser': 'platform',
@@ -61,7 +61,12 @@
           this.payDisabled = false
           if (result == "success") {
             // 只有微信小程序 wx_lite 支付成功的结果会在这里返回
-            wx.navigateBack()
+            let pages = this.getCurrentPages()
+            let minePage = pages[pages.length - 2]
+            minePage.updateUserInfo()
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 1000)
           } else if (result == "fail") {
             // charge 不正确或者微信小程序支付失败时会在此处返回
             Tips.error('支付失败')

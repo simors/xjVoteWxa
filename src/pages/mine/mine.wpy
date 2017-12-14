@@ -130,6 +130,11 @@
       }
     }
 
+    async updateUserInfo() {
+      this.userInfo = await this.$parent.reloadUserInfo()
+      this.$apply()
+    }
+
     async onLoad() {
       let userInfo = await this.$parent.getUserInfo()
       if (userInfo) {
