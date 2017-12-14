@@ -76,7 +76,7 @@
         </view>
         <view class="zan-cell__ft"></view>
       </navigator>
-      <navigator wx:if="{{userInfo.agentLevel < 3}}" class="zan-cell zan-cell--access" url="./agent">
+      <navigator wx:if="{{userInfo.agentLevel < 2}}" class="zan-cell zan-cell--access" url="./agent">
         <view class="cell_icon">
           <image class="item-img" src="../../asset/png/agent.png"/>
         </view>
@@ -131,7 +131,8 @@
     }
 
     async updateUserInfo() {
-      this.userInfo = await this.$parent.reloadUserInfo()
+      await this.$parent.reloadUserInfo()
+      this.userInfo = wepy.$instance.globalData.userInfo
       this.$apply()
     }
 
