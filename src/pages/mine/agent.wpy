@@ -1,13 +1,32 @@
 <style lang="less">
+  .img-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img-style {
+    margin: 10px 0;
+    width: 480rpx;
+  }
+
+  .padding-view {
+    padding: 10px 12px;
+  }
 </style>
 
 <template>
   <view class="container">
-    <view>
-      <text>代理规则</text>
-      <text>
+    <view class="img-view">
+      <image class="img-style" mode="widthFix" src="http://ac-l3cae9l7.clouddn.com/df6b6d06d3055ae0a58b.png"/>
+    </view>
+
+    <view class="padding-view">
+      <text class="zan-font-14 zan-font-bold">代理规则</text>
+      <text class="zan-font-14 zan-c-gray-darker">
         1、创建活动时缴纳1分钱，开通试用代理，可提成收益的20%；
         2、缴纳10000元开通黄金代理，创建活动免费，同时可提成收益的35%；
+        3、邀请的好友超过10个，可以获得提成收益的45%！
       </text>
     </view>
 
