@@ -56,21 +56,7 @@
   }
 
   .content-container {
-    padding: 10px 40px;
-  }
-
-  .pay-channel-view {
-    position: relative;
-    margin: 10px 0;
-    padding-top: 3px;
-  }
-
-  .rd-check {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 40rpx;
+    padding: 10px 20px;
   }
 
   .popup-btn-view {
@@ -89,18 +75,6 @@
     height: 100%;
     align-items: center;
     justify-content: center;
-  }
-
-  .pay-chanel {
-    margin-left: 80rpx;
-    display: flex;
-    align-items: center;
-  }
-
-  .pay-icon {
-    width: 48rpx;
-    height: 48rpx;
-    margin-right: 5px;
   }
 </style>
 
@@ -135,7 +109,7 @@
     </view>
 
     <view class="price-tip-view">
-      <text class="zan-font-12 zan-c-red">您选择的活动天数为{{expire}}天，需支付{{price}}元</text>
+      <text class="zan-font-12 zan-c-red">您选择的活动天数为{{expire}}天</text>
     </view>
 
     <zanToptips/>
@@ -144,36 +118,19 @@
       <view class="popup__container">
         <view class="content-container">
           <view style="margin-bottom: 10px">
-            <text class="zan-font-14 zan-c-gray-darker">选择支付方式</text>
+            <text class="zan-font-14 zan-c-gray-darker">您当前还没有开通代理权限，仅可获得活动收益的20%作为提成。建议您开通代理权限。代理不仅可以获取更高的提成比例，而且可以通关邀请好友的方式进一步提升收益！</text>
           </view>
-          <radio-group bindchange="bindPayChannelChange">
-            <view class="pay-channel-view">
-              <view class="pay-chanel">
-                <image class="pay-icon" src="/asset/png/wechat.png"/>
-                <text class="zan-font-14 zan-c-gray-darker">微信支付</text>
-              </view>
-              <radio class="rd-check" value="wechat"/>
-            </view>
-            <view class="pay-channel-view">
-              <view class="pay-chanel">
-                <image class="pay-icon" src="/asset/png/wallet.png"/>
-                <text class="zan-font-14 zan-c-gray-darker">余额支付</text>
-                <text class="zan-font-14 zan-c-red" style="margin-left: 5px">¥{{balance}}</text>
-              </view>
-              <radio class="rd-check" value="wallet"/>
-            </view>
-          </radio-group>
         </view>
         <view class="popup-btn-view">
           <view class="popup-btn" style="border-right: 1px solid rgba(0, 0, 0, 0.09)" @tap.stop="togglePopup">取消</view>
-          <view class="popup-btn" style="color: #44BB00;" @tap.stop="payWithSelectedChannel">确定</view>
+          <view class="popup-btn" style="color: #44BB00;" @tap.stop="submitVote">继续</view>
         </view>
       </view>
     </view>
 
     <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
-      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm" disabled="{{payDisabled}}">去支付</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm" disabled="{{payDisabled}}">完成</button>
     </view>
   </view>
 </template>
@@ -205,9 +162,7 @@
       expire: 5,
       validExpire: [5, 8, 10, 30],
       index: 0,
-      price: 80,
       showPop: false,
-      balance: 0,
       payDisabled: false
     }
 
@@ -285,20 +240,6 @@
         this.index = e.detail.value
         this.expire = this.validExpire[this.index]
         wepy.$instance.globalData.editVote.expire = this.expire
-        switch (this.expire) {
-          case 5:
-            this.price = 80
-            break
-          case 8:
-            this.price = 120
-            break
-          case 10:
-            this.price = 300
-            break
-          case 30:
-            this.price = 500
-            break
-        }
         this.$apply()
       },
 
@@ -314,26 +255,31 @@
       async submitForm() {
         this.payDisabled = true
         this.$apply()
-        let wallet = await pay.fetchWallet()
-        this.balance = wallet.balance
-        if (wallet.balance < this.price) {
-          await this.payWithWechat()
-        } else {
+        let userInfo = wepy.$instance.globalData.userInfo
+        if (userInfo.agentLevel === 1) {
           this.showPop = !this.showPop
+        } else {
+          Tips.loading('正在提交')
+          await this.submitVote()
         }
         this.payDisabled = false
         this.$apply()
       },
 
-      async payWithSelectedChannel() {
-        if (!this.checkedChannel) {
-          Tips.alert('未选择支付方式')
-          return
-        }
-        if (this.checkedChannel === 'wechat') {
-          await this.payWithWechat()
-        } else if (this.checkedChannel === 'wallet') {
-          await this.payWithBalance()
+      async submitVote() {
+        try {
+          Tips.loading('正在提交')
+          wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.WAITING
+          await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
+          this.$root.$parent.clearVoteInfo()
+          Tips.loaded()
+          setTimeout(() => {
+            wx.reLaunch({url: '/pages/index'})
+          }, 1000)
+        } catch (e) {
+          console.error(e)
+          Tips.loaded()
+          Tips.error('提交失败')
         }
       }
     }
@@ -346,7 +292,7 @@
       }
       let charge = await pay.reqPayment({
         openid: currentUser.openid,
-        amount: this.price * 0.001,
+        amount: 0.01,
         metadata: {
           'fromUser': currentUser.id,
           'toUser': 'platform',
@@ -358,6 +304,7 @@
       Pingpp.createPayment(charge, function (result, err) {
         if (result == "success") {
           // 只有微信小程序 wx_lite 支付成功的结果会在这里返回
+          this.$root.$parent.clearVoteInfo()
           setTimeout(() => {
             wx.reLaunch({url: '/pages/index'})
           }, 1000)
@@ -369,43 +316,6 @@
           Tips.warn('取消支付')
         }
       });
-    }
-
-    async payWithBalance() {
-      try {
-        Tips.loading('正在支付')
-        wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.PAYING
-        await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
-
-        let currentUser = wepy.$instance.globalData.userInfo
-        if (!currentUser) {
-          Tips.loaded()
-          Tips.error('请授权登录')
-          return
-        }
-        await pay.reqPayWithBalance({
-          amount: this.price * 0.001,
-          dealType: pay.DEAL_TYPE.VOTE_PAY,
-          metadata: {
-            voteId: wepy.$instance.globalData.editVote.id,
-          }
-        })
-        Tips.loaded()
-        Tips.success('创建投票成功')
-        this.$root.$parent.clearVoteInfo()
-        setTimeout(() => {
-          wx.reLaunch({url: '/pages/index'})
-        }, 1000)
-      } catch (e) {
-        Tips.loaded()
-        if (e.code === errno.ERROR_NOT_ENOUGH_MONEY) {
-          this.$invoke('zanToptips', 'showZanTopTips', { content: '余额不足！充值后在我的投票页面继续完成支付', options: 3000 })
-        } else if (e.code === errno.ERROR_PAY_INNER_PROCESS) {
-          Tips.error('支付失败')
-        } else {
-          Tips.error('操作失败')
-        }
-      }
     }
   }
 </script>
