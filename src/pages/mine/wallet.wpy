@@ -31,13 +31,13 @@
     display: flex;
     align-items: center;
     height: 100rpx;
-    border-top: 1px solid #f2f2f2;
   }
 
   .btn-style {
     display: flex;
     flex: 1;
     background: @color-primary;
+    opacity: 0.9;
     align-items: center;
     justify-content: center;
     height: 100%;
@@ -65,13 +65,9 @@
     </view>
 
     <view class="btn-group">
-      <navigator class="btn-style" style="border-right: 1px solid #f2f2f2" url="/pages/mine/recharge">
-        <image class="btn-img" src="/asset/svg/recharge.svg"/>
-        <text class="btn-text">充值</text>
-      </navigator>
       <navigator class="btn-style" url="/pages/mine/withdraw?balance={{wallet.balance}}">
         <image class="btn-img" src="/asset/svg/withdraw.svg"/>
-        <text class="btn-text">提现</text>
+        <text class="btn-text">提现到微信</text>
       </navigator>
     </view>
 
