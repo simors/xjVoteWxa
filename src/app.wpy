@@ -33,9 +33,16 @@ import AV from './utils/av-weapp-min'
 import user from './cloud/user'
 import vote from './cloud/vote'
 
+// DEV
+//AV.init({
+//  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
+//  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
+//})
+
+// PROD
 AV.init({
-  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
-  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
+  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
+  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
 })
 
 export default class extends wepy.app {
