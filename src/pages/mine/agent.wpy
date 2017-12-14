@@ -31,7 +31,7 @@
     </view>
 
     <view class="zan-btns">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="payForAgent" disabled="{{payDisabled}}">开通代理</button>
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="payForAgent" disabled="{{payDisabled}}">{{btnText}}</button>
     </view>
   </view>
 </template>
@@ -54,7 +54,9 @@
 
     data = {
       payDisabled: false,
-      inviterId: null
+      inviterId: null,
+      userInfo: null,
+      btnText: '开通代理'
     }
 
     methods = {
@@ -101,7 +103,11 @@
       if (option.inviter) {
         this.inviterId = option.inviter
       }
-      await this.$parent.getUserInfo();
+      this.userInfo = await this.$parent.getUserInfo();
+      if (this.userInfo.agentLevel > 1) {
+        this.payDisabled = true
+        this.btnText = '您已经是代理'
+      }
       this.$apply()
     }
   }
