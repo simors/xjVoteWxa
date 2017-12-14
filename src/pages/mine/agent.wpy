@@ -69,7 +69,7 @@
         this.payDisabled = true
         let charge = await pay.reqPayment({
           openid: currentUser.openid,
-          amount: 0.1,
+          amount: 10000,
           metadata: {
             'fromUser': currentUser.id,
             'toUser': 'platform',

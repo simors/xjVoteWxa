@@ -148,7 +148,7 @@
         this.$apply()
         let charge = await pay.reqPayment({
           openid: currentUser.openid,
-          amount: this.buyNum * this.checkedGift.price * 0.01,
+          amount: this.buyNum * this.checkedGift.price,
           metadata: {
             'fromUser': currentUser.id,
             'toUser': 'platform',
