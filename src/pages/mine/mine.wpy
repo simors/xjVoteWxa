@@ -38,7 +38,7 @@
   .footer {
     position: absolute;
     width: 100%;
-    bottom: 50rpx;
+    bottom: 30rpx;
   }
 
   .logo-img {
@@ -85,7 +85,7 @@
         </view>
         <view class="zan-cell__ft"></view>
       </navigator>
-      <navigator class="zan-cell zan-cell--access" url="./invite">
+      <navigator wx:if="{{userInfo.agentLevel > 1}}" class="zan-cell zan-cell--access" url="./invite">
         <view class="cell_icon">
           <image class="item-img" src="../../asset/png/invite.png"/>
         </view>
@@ -104,9 +104,6 @@
       <view style="display: flex; align-items: center; justify-content: center">
         <image class="logo-img" src="../../asset/png/logo.png" />
         <text class="zan-font-14 zan-font-bold zan-c-gray-dark">小吉互动</text>
-      </view>
-      <view style="display: flex; align-items: center; justify-content: center; margin-top: 20rpx">
-        <text class="zan-font-12 zan-c-gray">版权所有 © 长沙小吉网络科技有限公司️</text>
       </view>
     </view>
   </view>

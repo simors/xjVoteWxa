@@ -30,8 +30,7 @@
     </view>
 
     <view class="desc-view">
-      <text class="zan-font-12">票数：</text>
-      <text class="zan-font-12">{{gift.ballot}}</text>
+      <text class="zan-font-12 zan-c-red">{{gift.price}}点</text>
     </view>
   </view>
 </template>
