@@ -246,7 +246,9 @@
     data = {
       votes: [],
       loading: false,
-      moreVotes: false
+      moreVotes: false,
+      userInfo: null,
+      royalty: 0
     };
     computed = {};
     methods = {
@@ -266,7 +268,16 @@
 
     async onLoad() {
       this.loading = true;
-      await this.$parent.getUserInfo();
+      this.userInfo = await this.$parent.getUserInfo();
+      if (this.userInfo.agentLevel === 1) {
+        this.royalty = 0.2
+      } else if (this.userInfo.agentLevel === 2) {
+        this.royalty = 0.35
+      } else if (this.userInfo.agentLevel === 3) {
+        this.royalty = 0.4
+      } else if (this.userInfo.agentLevel === 4) {
+        this.royalty = 0.45
+      }
       this.votes = await this.refreshVotes();
       this.loading = false;
       this.$apply();
@@ -311,7 +322,7 @@
         const vote = {
           ...i,
           displayDate: i.createdAt.split(' ')[0],
-          profit: (i.profit * 7 / 10).toFixed(2)
+          profit: (i.profit * this.royalty).toFixed(2)
         };
         votes.push(vote);
       }
@@ -338,7 +349,7 @@
         const vote = {
           ...i,
           displayDate: i.createdAt.split(' ')[0],
-          profit: (i.profit * 7 / 10).toFixed(2)
+          profit: (i.profit * this.royalty).toFixed(2)
         };
         votes.push(vote);
       }
