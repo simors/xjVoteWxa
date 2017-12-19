@@ -139,6 +139,10 @@
       this.player = this.$parent.getGlobalPlayer(playerId)
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
+        let voteInfo = await vote.fetchVoteInfoById({voteId: this.player.voteId, updateStatus: true})
+        wepy.$instance.globalData.activeVote = voteInfo
+
+        vote.incVotePv({voteId: this.player.voteId})
       }
       this.playerId = playerId
       this.voteId = this.player.voteId

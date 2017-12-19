@@ -1,6 +1,6 @@
 <style lang="less">
   .padding-view {
-    padding: 10px 12px;
+    padding: 30px 12px;
   }
 
   .img-view {
@@ -20,11 +20,8 @@
     <view class="img-view">
       <image class="img-style" mode="widthFix" src="http://ac-l3cae9l7.clouddn.com/9b8514cffb7b4d9e2395.png"/>
     </view>
-    <view class="padding-view">
-      <text class="zan-font-14">邀请好友成为代理，不仅可以提升代理分成的收益比例，而且还可以直接获得代理费的现金奖励！</text>
-    </view>
 
-    <view class="zan-btns">
+    <view class="zan-btns" style="margin-top: 50px">
       <button open-type="share" class="zan-btn zan-btn--primary vote-btn">分享给好友</button>
     </view>
   </view>

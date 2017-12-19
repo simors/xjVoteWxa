@@ -46,6 +46,13 @@
     padding: 10px 12px;
   }
 
+  .vote-end-tip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 12px;
+  }
+
 </style>
 
 <template>
@@ -59,29 +66,34 @@
       <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
     </view>
 
-    <view class="padding-view" style="padding-bottom: 0">
-      <text class="zan-font-18" style="color: #ff9d4e">「礼品列表」</text>
-    </view>
-
-    <radio-group bindchange="checkGift">
-      <view class="gifts-view">
-        <repeat for="{{gifts}}" key="index" index="index" item="item">
-          <view style="position: relative">
-            <voteGiftItem :index="index" :gift="item"/>
-            <radio class="gift-cb" value="{{item.id}}"/>
-          </view>
-        </repeat>
+    <view wx:if="{{voteStatus <= 3}}">
+      <view class="padding-view" style="padding-bottom: 0">
+        <text class="zan-font-18" style="color: #ff9d4e">「礼品列表」</text>
       </view>
-    </radio-group>
 
-    <view class="gift-tip-view">
-      <text wx:if="{{checkedGift}}" class="zan-font-12 zan-c-red">已选择{{checkedGift.name}}，单价{{checkedGift.price}}元可抵{{checkedGift.ballot}}票</text>
-      <text wx:else class="zan-font-14 zan-c-red">未选择礼物</text>
+      <radio-group bindchange="checkGift">
+        <view class="gifts-view">
+          <repeat for="{{gifts}}" key="index" index="index" item="item">
+            <view style="position: relative">
+              <voteGiftItem :index="index" :gift="item"/>
+              <radio class="gift-cb" value="{{item.id}}"/>
+            </view>
+          </repeat>
+        </view>
+      </radio-group>
+
+      <view class="gift-tip-view">
+        <text wx:if="{{checkedGift}}" class="zan-font-12 zan-c-red">已选择{{checkedGift.name}}，单价{{checkedGift.price}}元可抵{{checkedGift.ballot}}票</text>
+        <text wx:else class="zan-font-14 zan-c-red">未选择礼物</text>
+      </view>
+
+      <view class="bug-num-view">
+        <text class="zan-font-14 zan-font-bold">购买数量：</text>
+        <zanQuantity :quantity.sync="buyNum" :min="min" :max="max" componentId="giftcomp" size="small"/>
+      </view>
     </view>
-
-    <view class="bug-num-view">
-      <text class="zan-font-14 zan-font-bold">购买数量：</text>
-      <zanQuantity :quantity.sync="buyNum" :min="min" :max="max" componentId="giftcomp" size="small"/>
+    <view wx:else class="vote-end-tip">
+      <text class="zan-font-30 zan-c-red zan-font-bold">活动已结束</text>
     </view>
 
     <view class="zan-btns">
@@ -113,6 +125,7 @@
     }
 
     data = {
+      voteStatus: null,
       player: null,
       number: null,
       voteNum: null,
@@ -199,6 +212,10 @@
       this.player = this.$parent.getGlobalPlayer(playerId)
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
+      }
+      let voteInfo = wepy.$instance.globalData.activeVote
+      if (voteInfo) {
+        this.voteStatus = voteInfo.status
       }
       this.number = this.player.number
       this.voteNum = this.player.voteNum

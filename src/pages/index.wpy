@@ -193,7 +193,7 @@
 
     async refreshVotes() {
       const payload = {
-        status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE],
+        status: [cloud.VOTE_STATUS.WAITING, cloud.VOTE_STATUS.STARTING, cloud.VOTE_STATUS.DONE, cloud.VOTE_STATUS.ACCOUNTED],
         orderedBy: 'createdAt',
         limit: 10
       };
