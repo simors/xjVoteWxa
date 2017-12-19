@@ -46,10 +46,11 @@
         <image class="big-img" src="/asset/gif/vote_active.gif" mode="aspectFill" />
       </view>
       <view class="flex flex-column items-center justify-center" @tap.stop="toPresentPage">
-        <view class="flex flex-column items-center justify-center">
+        <view wx:if="{{enablePresent}}" class="flex flex-column items-center justify-center">
           <image class="toolbar-image" src="/asset/svg/gift.svg" mode="aspectFill" />
           <view class="toolbar-fontsize">礼物</view>
         </view>
+        <view wx:else class="flex flex-column items-center justify-center"></view>
       </view>
     </view>
   </view>
@@ -61,7 +62,8 @@
   export default class PlayerToolbar extends wepy.component {
     props = {
       scene: String,
-      voteId: String
+      voteId: String,
+      enablePresent: Boolean
     }
 
     data = {

@@ -53,7 +53,7 @@
       <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
     </view>
 
-    <view class="padding-view">
+    <view wx:if="{{enablePresent}}" class="padding-view">
       <view style="margin-bottom: 10px">
         <text class="zan-font-14" style="color: #ff9d4e">「礼品列表」</text>
       </view>
@@ -64,7 +64,7 @@
 
     <view style="height: 180rpx; background: transparent"/>
 
-    <playerToolbar :voteId.sync="voteId" :scene.sync="scene"/>
+    <playerToolbar :voteId.sync="voteId" :scene.sync="scene" :enablePresent.sync="enablePresent"/>
   </view>
 </template>
 
@@ -91,7 +91,8 @@
       voteNum: null,
       giftNum: null,
       pv: null,
-      scene: null
+      scene: null,
+      enablePresent: false
     }
 
     components = {
@@ -140,9 +141,17 @@
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
         let voteInfo = await vote.fetchVoteInfoById({voteId: this.player.voteId, updateStatus: true})
-        wepy.$instance.globalData.activeVote = voteInfo
+        if (voteInfo) {
+          wepy.$instance.globalData.activeVote = voteInfo
+          this.enablePresent = !!voteInfo.enablePresent
+        }
 
         vote.incVotePv({voteId: this.player.voteId})
+      } else {
+        let voteInfo = wepy.$instance.globalData.activeVote
+        if (voteInfo) {
+          this.enablePresent = !!voteInfo.enablePresent
+        }
       }
       this.playerId = playerId
       this.voteId = this.player.voteId
