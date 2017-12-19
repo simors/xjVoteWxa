@@ -169,8 +169,8 @@
       this.pv = voteInfo.pv
       this.organizer = voteInfo.organizer
 
-      let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
-      this.counter = DateTime.minusDateTime(endDate)
+      let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire)
+      this.counter = DateTime.minusDateTime(endDate) + 21 * 3600      // 每晚9点投票结束
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
       this.$apply()
