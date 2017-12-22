@@ -71,4 +71,8 @@ export default class pay {
   static async getLastWithdrawApply() {
     return await AV.Cloud.run('payFetchUserLastWithdrawApply')
   }
+  
+  static async isAgentPayEnable() {
+    return await AV.Cloud.run('payEnableAgentPay')
+  }
 }
