@@ -1,4 +1,6 @@
 <style lang="less">
+  @import "../../styles/vars.less";
+
   .cover-view {
     display: flex;
     align-items: center;
@@ -45,6 +47,40 @@
     font-weight: bold;
     color: #fff;
   }
+
+  .search-view {
+    margin: 5px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .search-btn-view {
+    background: @color-primary;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 200rpx;
+    height: 100rpx;
+  }
+
+  .search-btn-text {
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .search-input {
+    font-size: 18px;
+    padding: 0 10px;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
 </style>
 
 <template>
@@ -66,6 +102,15 @@
 
       <view class="up-down-padding">
         <timerCounterDown :beginCounter.sync="counter"/>
+      </view>
+
+      <view class="up-down-padding">
+        <view class="search-view">
+          <input placeholder="输入选手编号或姓名搜索" class="search-input" @input="searchInput"/>
+          <view class="search-btn-view" @tap.stop="onSearch">
+            <text class="search-btn-text">搜索</text>
+          </view>
+        </view>
       </view>
 
       <view wx:if="{{status < 4}}">
@@ -132,12 +177,21 @@
       counter: 0,
       organizer: null,
       showManagerBtn: false,
+      searchKey: '',
       selectedTabName: '活动首页'
     }
 
     methods = {
       jumpToApply() {
         this.$redirect({url: './apply'})
+      },
+
+      searchInput(e) {
+        this.searchKey = e.detail.value
+      },
+
+      onSearch() {
+        wx.navigateTo({url: '/pages/vote/searchPlayer?searchKey=' + this.searchKey})
       }
     }
 

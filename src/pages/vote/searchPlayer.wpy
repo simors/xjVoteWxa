@@ -1,0 +1,80 @@
+<style lang="less">
+  .tip-view {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+</style>
+
+<template>
+  <view class="container" style="background: #fff">
+    <view wx:if="{{players.length === 0}}" class="tip-view">
+      <text class="zan-font-14 zan-c-gray">未搜索到结果</text>
+    </view>
+
+    <repeat for="{{players}}" key="index" index="index" item="item">
+      <view class="zan-panel" @tap.stop="jumpToPlayer({{item.id}})">
+        <view class="zan-card">
+          <view class="zan-card__thumb">
+            <image class="zan-card__img" src="{{item.album[0]}}" mode="widthFix"></image>
+          </view>
+          <view class="zan-card__detail">
+            <view class="zan-card__detail-row">
+              <view class="zan-card__left-col zan-ellipsis--l2">
+                {{item.number}}号, {{item.name}}
+              </view>
+            </view>
+
+            <view class="zan-card__detail-row zan-c-gray-darker">
+              <view class="zan-ellipsis--l2">
+                {{item.declaration}}
+              </view>
+            </view>
+
+            <view class="zan-card__detail-row zan-c-gray-darker">
+              <view class="zan-card__left-col zan-c-red">票数：{{item.voteNum}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tips from '../../utils/Tips'
+  import vote from '../../cloud/vote'
+
+  export default class SearchPlayer extends wepy.page {
+    config = {
+      enablePullDownRefresh: false
+    }
+
+    components = {
+    }
+
+    data = {
+      players: []
+    }
+
+    methods = {
+      jumpToPlayer(playerId) {
+        wx.redirectTo({url: '/pages/vote/player?playerId=' + playerId + '&scene=inner'})
+      }
+    }
+
+    async onLoad(option) {
+      let searchKey = option.searchKey
+      Tips.loading()
+      let voteInfo = wepy.$instance.globalData.activeVote
+      let voteId = voteInfo.id
+
+      this.players = await vote.searchPlayer({voteId, searchKey})
+      wepy.$instance.saveGlobalPlayers(this.players)
+      Tips.loaded()
+
+      this.$apply()
+    }
+  }
+</script>

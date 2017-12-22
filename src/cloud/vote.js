@@ -137,4 +137,12 @@ export default class vote {
     }
     return await AV.Cloud.run('voteSetPlayerDisable', params)
   }
+  
+  static async searchPlayer(payload) {
+    let params = {
+      voteId: payload.voteId,
+      searchKey: payload.searchKey
+    }
+    return await AV.Cloud.run('voteSearchPlayer', params)
+  }
 }
