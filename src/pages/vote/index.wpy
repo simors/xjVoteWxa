@@ -84,6 +84,8 @@
         <organizerShower :organizer.sync="organizer"/>
       </view>
 
+      <managerBtn/>
+
       <view style="height: 120rpx; background: transparent"/>
 
       <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
@@ -102,6 +104,7 @@
   import TimerCounterDown from '../../components/timerCountDown'
   import OrganizerShower from '../../components/organizerShow'
   import VotePlayers from '../../components/votePlayers'
+  import ManagerBtn from '../../components/managerBtn'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -114,7 +117,8 @@
       voteStat: VoteStat,
       timerCounterDown: TimerCounterDown,
       organizerShower: OrganizerShower,
-      votePlayers: VotePlayers
+      votePlayers: VotePlayers,
+      managerBtn: ManagerBtn
     }
 
     data = {

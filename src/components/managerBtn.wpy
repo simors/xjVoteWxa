@@ -1,0 +1,44 @@
+<style type="less">
+  .btn-view {
+    position: fixed;
+    right: 50rpx;
+    bottom: 180rpx;
+    width: 100rpx;
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F6635F;
+    opacity: 0.8;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .text-color {
+    color: #fff;
+  }
+</style>
+
+<template>
+  <view class="btn-view">
+    <view>
+      <text class="zan-font-14 text-color">管理</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class ManagerBtn extends wepy.component {
+    props = {
+    }
+
+    data = {
+    }
+
+    methods = {
+    }
+  }
+</script>
