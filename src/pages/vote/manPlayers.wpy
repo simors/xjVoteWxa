@@ -1,0 +1,197 @@
+<style lang="less">
+  .item-view {
+    position: relative;
+  }
+
+  .radio-view {
+    position: absolute;
+    top: 10rpx;
+    right: 30rpx;
+  }
+
+  .radio-style {
+    width: 300rpx;
+    height: 200rpx;
+    opacity: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+  }
+
+  .btn-view {
+    position: fixed;
+    right: 50rpx;
+    bottom: 180rpx;
+    width: 100rpx;
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F6635F;
+    opacity: 0.8;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .btn-hidden {
+    display: none;
+  }
+
+  .text-color {
+    color: #fff;
+  }
+</style>
+
+<template>
+  <view class="container">
+    <radio-group bindchange="playerChange">
+      <repeat for="{{players}}" key="index" index="index" item="item">
+        <view class="zan-panel item-view">
+          <view class="zan-card">
+            <view class="zan-card__thumb">
+              <image class="zan-card__img" src="{{item.album[0]}}" mode="widthFix"></image>
+            </view>
+            <view class="zan-card__detail">
+              <view class="zan-card__detail-row">
+                <view class="zan-card__left-col zan-ellipsis--l2">
+                  {{item.number}}号, {{item.name}}
+                </view>
+              </view>
+
+              <view class="zan-card__detail-row zan-c-gray-darker">
+                <view class="zan-ellipsis--l2">
+                  {{item.declaration}}
+                </view>
+              </view>
+
+              <view class="zan-card__detail-row zan-c-gray-darker">
+                <view class="zan-card__left-col zan-c-red">票数：{{item.voteNum}}</view>
+              </view>
+            </view>
+          </view>
+
+          <view class="radio-view">
+            <radio class="radio-style" value="{{item.id}}" checked="{{selectedPlayerId === item.id}}"/>
+          </view>
+        </view>
+      </repeat>
+    </radio-group>
+
+    <view class="{{showDelBtn ? 'btn-view' : 'btn-hidden'}}" @tap.stop="delPlayer">
+      <text class="zan-font-14 text-color">删除</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import vote from '../../cloud/vote'
+  import Tips from '../../utils/Tips'
+
+  export default class ManPlayers extends wepy.page {
+    config = {
+      navigationBarTitleText: '选手管理',
+      enablePullDownRefresh: false
+    }
+
+    components = {
+    }
+
+    data = {
+      voteDetail: null,
+      voteId: null,
+      lastNumber: null,
+      players: [],
+      hasMore: true,
+      selectedPlayerId: null,
+      showDelBtn: false
+    }
+
+    methods = {
+      playerChange(e) {
+        this.selectedPlayerId = e.detail.value
+        this.showDelBtn = true
+      },
+
+      async delPlayer() {
+        try {
+          await Tips.confirm('确定删除此选手吗？')
+          await this.execDelPlayer()
+        } catch (e) {
+
+        }
+      }
+    }
+
+    async execDelPlayer() {
+      if (!this.selectedPlayerId) {
+        return
+      }
+      await vote.disablePlayer({playerId: this.selectedPlayerId, disable: true})
+      this.delPlayerInList(this.selectedPlayerId)
+      this.selectedPlayerId = null
+      this.showDelBtn = false
+      this.$apply()
+    }
+
+    delPlayerInList(playerId) {
+      let pos = this.players.find((player) => player.id === playerId)
+      this.players.splice(pos, 1)
+      this.$apply()
+    }
+
+    async refreshPlayers() {
+      if (!this.voteId) {
+        return
+      }
+      this.players = await vote.fetchVotePlayers({voteId: this.voteId, limit: 10})
+      let dataSize = this.players.length
+      if (dataSize < this.limit) {
+        this.hasMore = false
+      }
+      if (dataSize > 0) {
+        this.lastNumber = this.players[dataSize-1].number
+        wepy.$instance.globalData.players = this.players
+      }
+      this.$apply()
+    }
+
+    async loadMorePlayers() {
+      let morePlayers = await vote.fetchVotePlayers({
+        voteId: this.voteId,
+        lastNumber: this.lastNumber,
+        limit: this.limit
+      })
+      let dataSize = morePlayers.length
+      if (dataSize < this.limit) {
+        this.hasMore = false
+      }
+      if (dataSize > 0) {
+        this.lastNumber = morePlayers[dataSize-1].number
+        this.players.push(...morePlayers)
+        wepy.$instance.saveGlobalPlayers(this.players)
+      }
+      this.$apply()
+    }
+
+    async onLoad() {
+      Tips.loading()
+      let voteInfo = wepy.$instance.globalData.activeVote
+      this.voteDetail = voteInfo
+      this.voteId = voteInfo.id
+
+      await this.refreshPlayers()
+      Tips.loaded()
+
+      this.$apply()
+    }
+
+    async onReachBottom() {
+      Tips.loading()
+      await this.loadMorePlayers()
+      Tips.loaded()
+    }
+  }
+</script>

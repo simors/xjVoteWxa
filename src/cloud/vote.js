@@ -129,4 +129,12 @@ export default class vote {
     }
     return await AV.Cloud.run('voteListPlayerGifts', params)
   }
+  
+  static async disablePlayer(payload) {
+    let params = {
+      playerId: payload.playerId,
+      disable: payload.disable
+    }
+    return await AV.Cloud.run('voteSetPlayerDisable', params)
+  }
 }

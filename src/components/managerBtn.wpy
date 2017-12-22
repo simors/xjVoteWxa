@@ -25,11 +25,9 @@
 </style>
 
 <template>
-  <view class="{{show ? 'btn-view' : 'btn-hidden'}}">
-    <view>
-      <text class="zan-font-14 text-color">管理</text>
-    </view>
-  </view>
+  <navigator class="{{show ? 'btn-view' : 'btn-hidden'}}" url="/pages/vote/manPlayers">
+    <text class="zan-font-14 text-color">管理</text>
+  </navigator>
 </template>
 
 <script>
