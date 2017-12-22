@@ -15,13 +15,17 @@
     z-index: 10;
   }
 
+  .btn-hidden {
+    display: none;
+  }
+
   .text-color {
     color: #fff;
   }
 </style>
 
 <template>
-  <view class="btn-view">
+  <view class="{{show ? 'btn-view' : 'btn-hidden'}}">
     <view>
       <text class="zan-font-14 text-color">管理</text>
     </view>
@@ -33,6 +37,7 @@
 
   export default class ManagerBtn extends wepy.component {
     props = {
+      show: Boolean
     }
 
     data = {

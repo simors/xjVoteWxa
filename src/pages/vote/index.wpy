@@ -84,7 +84,7 @@
         <organizerShower :organizer.sync="organizer"/>
       </view>
 
-      <managerBtn/>
+      <managerBtn :show.sync="showManagerBtn"/>
 
       <view style="height: 120rpx; background: transparent"/>
 
@@ -131,6 +131,7 @@
       pv: null,
       counter: 0,
       organizer: null,
+      showManagerBtn: false,
       selectedTabName: '活动首页'
     }
 
@@ -163,6 +164,7 @@
       } else {
         voteInfo = wepy.$instance.globalData.activeVote
       }
+      let userInfo = await this.$parent.getUserInfo();
       Tips.loaded()
       this.voteDetail = voteInfo
       this.voteId = voteInfo.id
@@ -172,6 +174,9 @@
       this.voteNum = voteInfo.voteNum
       this.pv = voteInfo.pv
       this.organizer = voteInfo.organizer
+      if (userInfo.id == voteInfo.creatorId) {
+        this.showManagerBtn = true
+      }
 
       let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire)
       this.counter = DateTime.minusDateTime(endDate) + 21 * 3600      // 每晚9点投票结束
