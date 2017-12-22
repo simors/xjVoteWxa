@@ -201,12 +201,6 @@
       return Tips.share(title, url, title);
     }
 
-    onShow() {
-      setTimeout(() => {
-        this.$invoke('zanNoticebar', 'initZanNoticeBarScroll')
-      }, 2000)
-    }
-
     async onLoad(option) {
       let voteInfo = null
       Tips.loading()
@@ -237,6 +231,10 @@
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
       this.$apply()
+
+      setTimeout(() => {
+        this.$invoke('zanNoticebar', 'initZanNoticeBarScroll')
+      }, 3000)
     }
 
     onShow() {
