@@ -42,14 +42,14 @@
       </text>
     </view>
 
-    <view wx:if="{{!enablePay}}" class="padding-view">
-      <text class="zan-font-14 zan-c-red">扫描下方二维码关注公众号了解详情</text>
-    </view>
-
     <view wx:if="{{enablePay}}" class="zan-btns">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="payForAgent" disabled="{{payDisabled}}">{{btnText}}</button>
     </view>
-    <view wx:else class="mp-view">
+
+    <view class="padding-view">
+      <text class="zan-font-14 zan-c-red">扫描下方二维码或搜索小吉互动公众号关注了解详情</text>
+    </view>
+    <view class="mp-view">
       <image class="mp-img" mode="widthFix" src="http://ac-l3cae9l7.clouddn.com/b17d267c395e5453ecb4.jpeg"/>
     </view>
   </view>
