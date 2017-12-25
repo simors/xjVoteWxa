@@ -114,15 +114,19 @@
           this.$parent.reloadActiveVote()
           this.$apply()
           Tips.success('投票成功')
-          setTimeout(() => {
-            this.$invoke('buyGiftTip', 'toggleDialog')
-          }, 1500)
-        } catch (e) {
-          if (e.code === errno.ERROR_VOTE_USE_UP) {
-            Tips.error('今日已投票')
+          if (this.enablePresent) {
             setTimeout(() => {
               this.$invoke('buyGiftTip', 'toggleDialog')
             }, 1500)
+          }
+        } catch (e) {
+          if (e.code === errno.ERROR_VOTE_USE_UP) {
+            Tips.error('今日已投票')
+            if (this.enablePresent) {
+              setTimeout(() => {
+                this.$invoke('buyGiftTip', 'toggleDialog')
+              }, 1500)
+            }
           } else if (e.code === errno.ERROR_VOTE_WAS_DONE) {
             Tips.error('活动已结束')
           }
