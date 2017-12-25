@@ -184,7 +184,8 @@
     }
 
     onShareAppMessage () {
-      const title = '给'+this.player.name+'投票';
+      let voteInfo = wepy.$instance.globalData.activeVote
+      const title = this.player.number + '号，' + this.player.name + '，正在参加' + voteInfo.title + '投票活动，邀请您参与投票';
       const url = '/pages/vote/player?playerId=' + this.player.id + '&scene=share';
       return Tips.share(title, url, title);
     }
