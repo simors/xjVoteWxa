@@ -75,4 +75,8 @@ export default class pay {
   static async isAgentPayEnable() {
     return await AV.Cloud.run('payEnableAgentPay')
   }
+  
+  static async fetchAgentPrice() {
+    return await AV.Cloud.run('payGetAgentPrice')
+  }
 }
