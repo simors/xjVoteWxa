@@ -75,7 +75,7 @@
 
     data = {
       money: 0,
-      balance: null,
+      balance: 0,
       lastWithdraw: null,
       steps: [],
       _true: true,
@@ -84,7 +84,7 @@
 
     methods = {
       async confirmWithdraw() {
-        if (this.money < 0) {
+        if (this.money <= 0) {
           Tips.error('提现金额有误')
           return
         }
