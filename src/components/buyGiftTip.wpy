@@ -12,7 +12,8 @@
 
   .dialog__container {
     position: fixed;
-    bottom: 300rpx;
+    bottom: 260rpx;
+    left: 85rpx;
     width: 750rpx;
     background: transparent;
     transform: translateY(100%);
@@ -34,18 +35,72 @@
   .show-img {
     width: 750rpx;
     display: block;
+    position: absolute;
+    top: -520rpx;
+    left: -85rpx;
   }
 
   .hidden-img {
     display: none;
+  }
+
+  .dialog-content-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 580rpx;
+    height: 680rpx;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 40rpx rgba(248, 99, 91, 0.5) inset;
+  }
+
+  .present-tip-text {
+    font-size: 14px;
+    color: #848383;
+    margin-top: 340rpx;
+  }
+
+  .present-view {
+    background: rgba(248,99,91,0.10);
+    border: 1px solid #F8635B;
+    border-radius: 20rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500rpx;
+    height: 96rpx;
+    margin-top: 10px;
+  }
+
+  .present-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #F8635B;
+  }
+  
+  .title-tip-text {
+    padding: 10px 12px 0px 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #453e3e;
+    text-align: center;
   }
 </style>
 <template>
   <view class="zan-dialog {{ showDialog ? 'dialog--show' : '' }}">
     <view class="dialog__mask" bindtap="toggleDialog" />
     <view animation="{{animationData}}" class="dialog__container {{showDialog ? 'show-container' : 'hidden-container'}}" @tap.stop="toPresentPage">
-      <view style="display: flex; justify-content: center">
-        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/present.png" mode="widthFix"/>
+      <view class="dialog-content-view">
+        <text class="title-tip-text">{{tip}}</text>
+        <text class="present-tip-text">给选手送礼物可以增加票数噢！</text>
+        <view class="present-view">
+          <text class="present-text">送礼品</text>
+        </view>
+      </view>
+      <view style="position: relative">
+        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/gift.png" mode="widthFix"/>
       </view>
     </view>
   </view>
@@ -54,13 +109,15 @@
   import wepy from 'wepy'
 
   export default class BuyGiftTip extends wepy.component {
-    props = {}
+    props = {
+    }
     data = {
       showDialog: false,
-      animationData: {}
+      animationData: {},
+      tip: ''
     }
     methods = {
-      toggleDialog(event) {
+      toggleDialog(tip) {
         this.showDialog = !this.showDialog
         let animation = wepy.createAnimation({
           duration: 400,
@@ -76,6 +133,7 @@
               this.animationData = animation.export()
               this.$apply()
             }).exec()
+        this.tip = tip
       },
 
       toPresentPage() {

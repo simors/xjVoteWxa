@@ -116,7 +116,7 @@
           Tips.success('投票成功')
           if (this.enablePresent) {
             setTimeout(() => {
-              this.$invoke('buyGiftTip', 'toggleDialog')
+              this.$invoke('buyGiftTip', 'toggleDialog', '投票成功！每天可以投一票，明天继续参与哦！')
             }, 1500)
           }
         } catch (e) {
@@ -124,7 +124,7 @@
             Tips.error('今日已投票')
             if (this.enablePresent) {
               setTimeout(() => {
-                this.$invoke('buyGiftTip', 'toggleDialog')
+                this.$invoke('buyGiftTip', 'toggleDialog', '今天的选票已经用完啦！尝试送个礼物吧！')
               }, 1500)
             }
           } else if (e.code === errno.ERROR_VOTE_WAS_DONE) {
