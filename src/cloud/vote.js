@@ -145,4 +145,8 @@ export default class vote {
     }
     return await AV.Cloud.run('voteSearchPlayer', params)
   }
+  
+  static async fetchCreateVotePwd() {
+    return await AV.Cloud.run('voteGetCreatePwd')
+  }
 }
