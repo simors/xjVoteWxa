@@ -27,6 +27,7 @@
           <text wx:elif="{{item.dealType === 4}}" class="zan-font-14">购买礼品</text>
           <text wx:elif="{{item.dealType === 5}}" class="zan-font-14">活动收益</text>
           <text wx:elif="{{item.dealType === 6}}" class="zan-font-14">购买代理</text>
+          <text wx:elif="{{item.dealType === 7}}" class="zan-font-14">邀请代理</text>
         </view>
         <view class="item-view">
           <text wx:if="{{item.dealType === 1}}" class="zan-font-18 zan-font-bold zan-c-green">¥{{item.cost}}</text>
@@ -35,6 +36,7 @@
           <text wx:if="{{item.dealType === 4}}" class="zan-font-18 zan-font-bold zan-c-green">¥{{item.cost}}</text>
           <text wx:if="{{item.dealType === 5}}" class="zan-font-18 zan-font-bold zan-c-red">¥{{item.cost}}</text>
           <text wx:if="{{item.dealType === 6}}" class="zan-font-18 zan-font-bold zan-c-green">¥{{item.cost}}</text>
+          <text wx:if="{{item.dealType === 7}}" class="zan-font-18 zan-font-bold zan-c-red">¥{{item.cost}}</text>
         </view>
       </view>
     </repeat>

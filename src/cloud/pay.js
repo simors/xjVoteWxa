@@ -11,6 +11,7 @@ export default class pay {
     BUY_GIFT: 4,      // 购买礼品
     VOTE_PROFIT: 5,   // 活动收益
     AGENT_PAY: 6,     // 成为代理
+    INVITE_AGENT: 7,  // 邀请代理收益
   }
   
   static WALLET_PROCESS_TYPE = {
