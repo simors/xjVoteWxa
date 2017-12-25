@@ -33,24 +33,14 @@
     </view>
 
     <view class="padding-view">
-      <text class="zan-font-14 zan-font-bold">代理规则</text>
-      <text class="zan-font-14 zan-c-gray-darker">
-        1、创建活动时缴纳1分钱，开通试用代理，可提成收益的20%；
-        2、缴纳10000元开通黄金代理，创建活动免费，同时可提成收益的35%；
-        3、邀请的代理超过5个，可以获得提成收益的40%；
-        4、邀请的代理超过10个，可以获得提成收益的45%！
-      </text>
-    </view>
-
-    <view wx:if="{{enablePay}}" class="zan-btns">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="payForAgent" disabled="{{payDisabled}}">{{btnText}}</button>
-    </view>
-
-    <view class="padding-view">
-      <text class="zan-font-14 zan-c-red">扫描下方二维码或搜索小吉互动公众号关注了解详情</text>
+      <text class="zan-font-14 zan-c-red">扫描二维码或搜索小吉互动公众号关注了解详情</text>
     </view>
     <view class="mp-view">
       <image class="mp-img" mode="widthFix" src="http://ac-l3cae9l7.clouddn.com/b17d267c395e5453ecb4.jpeg"/>
+    </view>
+
+    <view wx:if="{{enablePay}}" class="zan-btns" style="margin-bottom: 30px">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="payForAgent" disabled="{{payDisabled}}">{{btnText}}</button>
     </view>
   </view>
 </template>
