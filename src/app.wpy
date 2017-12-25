@@ -34,16 +34,16 @@ import user from './cloud/user'
 import vote from './cloud/vote'
 
 // DEV
-//AV.init({
-//  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
-//  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
-//})
+AV.init({
+  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
+  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
+})
 
 // PROD
-AV.init({
-  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
-  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
-})
+//AV.init({
+//  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
+//  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
+//})
 
 export default class extends wepy.app {
   config = {
@@ -104,6 +104,7 @@ export default class extends wepy.app {
   async onLaunch() {
     this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
     this.saveVoteTimer()
+    this.calVoteCounter()
   }
 
   async saveVoteDraft() {
@@ -113,6 +114,15 @@ export default class extends wepy.app {
       this.globalData.editVote.id = voteInfo.objectId
       this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
     }
+  }
+
+  calVoteCounter() {
+    setInterval(() => {
+      let activeVote = this.globalData.activeVote
+      if (activeVote && activeVote.counter && activeVote.counter > 0) {
+        this.globalData.activeVote.counter--
+      }
+    }, 1000)
   }
 
   saveVoteTimer() {

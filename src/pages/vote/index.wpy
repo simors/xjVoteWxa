@@ -226,8 +226,7 @@
         this.showManagerBtn = true
       }
 
-      let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire)
-      this.counter = DateTime.minusDateTime(endDate) + 21 * 3600      // 每晚9点投票结束
+      this.counter = voteInfo.counter
       wepy.setNavigationBarTitle({title: voteInfo.title})
 
       this.$apply()

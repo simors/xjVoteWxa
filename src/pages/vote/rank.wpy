@@ -56,8 +56,7 @@
       let voteInfo = wepy.$instance.globalData.activeVote
       this.rank = await vote.fetchVoteRank({voteId: voteInfo.id})
       Tips.loaded()
-      let endDate = DateTime.addDateWithBegin(voteInfo.startDate, voteInfo.expire+1)
-      this.counter = DateTime.minusDateTime(endDate)
+      this.counter = voteInfo.counter
 
       this.voteDetail = voteInfo
       this.status = voteInfo.status
