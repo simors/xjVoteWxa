@@ -160,7 +160,7 @@
         this.payDisabled = true
         this.$apply()
         let charge = await pay.reqPayment({
-          openid: currentUser.openid,
+          openid: currentUser.weappOpenid,
           amount: this.buyNum * this.checkedGift.price,
           metadata: {
             'fromUser': currentUser.id,

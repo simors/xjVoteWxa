@@ -63,6 +63,7 @@ export default class pay {
   static async reqWithdrawApply(payload) {
     let params = {
       amount: payload.amount,
+      channel: 'wx_lite',
       applyType: pay.WITHDRAW_APPLY_TYPE.PROFIT
     }
     return await AV.Cloud.run('payCreateWithdrawApply', params)

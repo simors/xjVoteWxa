@@ -342,7 +342,7 @@
         return
       }
       let charge = await pay.reqPayment({
-        openid: currentUser.openid,
+        openid: currentUser.weappOpenid,
         amount: 0.01,
         metadata: {
           'fromUser': currentUser.id,

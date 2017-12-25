@@ -80,7 +80,7 @@
         try {
           let agentPrice = await pay.fetchAgentPrice()
           let charge = await pay.reqPayment({
-            openid: currentUser.openid,
+            openid: currentUser.weappOpenid,
             amount: Number(agentPrice),
             metadata: {
               'fromUser': currentUser.id,

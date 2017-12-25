@@ -6,10 +6,20 @@ import wepy from 'wepy'
 import 'wepy-async-function'
 
 export default class user {
+  static weappConfig = {
+    appId: 'wx7855adf2ff1b5e29',
+    appSecret: 'c3763503690b51b9e42ac29c77d19717'
+  }
   
   static async userLogin() {
     try {
-      await AV.User.loginWithWeapp()
+      let wxUser = await wepy.login()
+      let authData = await AV.Cloud.run('weappGetAuthData', {
+        appid: user.weappConfig.appId,
+        secret: user.weappConfig.appSecret,
+        code: wxUser.code
+      })
+      await AV.User.signUpOrlogInWithAuthData(authData, 'lc_weapp_union')
       let wepyUser = await wepy.getUserInfo({lang: 'zh_CN'})
       let wepyUserInfo = wepyUser.userInfo
       if (!wepyUserInfo) {
