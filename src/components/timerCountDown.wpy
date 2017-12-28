@@ -56,11 +56,11 @@
         <text class="zan-font-12 zan-c-gray-dark tip-text">秒</text>
       </view>
     </view>
-    <view wx:elif="{{beginCounter == 0}}" class="counter-down">
-      <text class="zan-font-30 zan-c-red zan-font-bold">正在加载</text>
+    <view wx:elif="{{beginCounter < 0}}" class="counter-down">
+      <text class="zan-font-30 zan-c-red zan-font-bold">活动已结束</text>
     </view>
     <view wx:else class="counter-down">
-      <text class="zan-font-30 zan-c-red zan-font-bold">活动已结束</text>
+      <text class="zan-font-30 zan-c-red zan-font-bold">正在加载</text>
     </view>
   </view>
 </template>
@@ -77,7 +77,12 @@
     }
 
     data = {
-      counter: {},
+      counter: {
+        days: 0,
+        hours: 0,
+        mins: 0,
+        secs: 0
+      },
       timer: null
     }
 
