@@ -14,13 +14,15 @@ export default class user {
   static async userLogin() {
     try {
       let wxUser = await wepy.login()
+      let wepyUser = await wepy.getUserInfo({lang: 'zh_CN', withCredentials: true})
       let authData = await AV.Cloud.run('weappGetAuthData', {
         appid: user.weappConfig.appId,
         secret: user.weappConfig.appSecret,
-        code: wxUser.code
+        code: wxUser.code,
+        encryptedData: wepyUser.encryptedData,
+        iv: wepyUser.iv
       })
       await AV.User.signUpOrlogInWithAuthData(authData, 'lc_weapp_union')
-      let wepyUser = await wepy.getUserInfo({lang: 'zh_CN'})
       let wepyUserInfo = wepyUser.userInfo
       if (!wepyUserInfo) {
         return undefined
