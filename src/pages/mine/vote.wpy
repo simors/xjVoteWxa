@@ -218,6 +218,8 @@
       </view>
     </view>
 
+    <zanToptips/>
+
     <view class="loadmore">
       <view wx:if="{{loading}}" class="loadmore__wrap">
         <image class="loadmore__loading-icon" src="../../asset/png/loading.png"></image>
@@ -238,12 +240,15 @@
   import DateTime from '@/utils/dateTime';
   import cloud from '@/cloud/vote';
   import vote from '../../cloud/vote'
+  import zanToptips from '../../components/zan-toptips'
 
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '我的投票'
     };
-    components = {};
+    components = {
+      zanToptips
+    };
     data = {
       votes: [],
       loading: false,
@@ -293,6 +298,10 @@
       this.votes = await this.refreshVotes();
       this.loading = false;
       this.$apply();
+
+      setTimeout(() => {
+        this.$invoke('zanToptips', 'showZanTopTips', { content: '长按可删除投票活动', options: 3000 })
+      }, 1000)
     }
 
     delVoteInList(voteId) {
