@@ -97,7 +97,7 @@
     </view>
 
     <view style="padding: 20px 12px 0 12px">
-      <text class="zan-font-14 zan-c-gray-dark">小吉互动是一款专业的互联网投票软件，用户可自主创建投票活动，自主运营，并且运营过程中产生的收益可以直接提现到微信钱包！</text>
+      <text class="zan-font-14 zan-c-gray-dark">小吉互动是一款专业的互联网投票软件，人人可以简单地自主创建投票活动，扩大公司知名度并进行宣传推广，要做投票的个人和单位可关注公众号"小吉互动"咨询相关事宜！</text>
     </view>
 
     <view class="footer">
