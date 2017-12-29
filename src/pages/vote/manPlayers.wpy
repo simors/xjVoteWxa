@@ -137,7 +137,7 @@
     }
 
     delPlayerInList(playerId) {
-      let pos = this.players.find((player) => player.id === playerId)
+      let pos = this.players.findIndex((player) => player.id === playerId)
       this.players.splice(pos, 1)
       this.$apply()
     }

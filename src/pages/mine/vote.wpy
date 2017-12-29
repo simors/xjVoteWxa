@@ -180,7 +180,7 @@
   <view class="container has-toolbar">
     <view class="list--wrap">
       <view wx:key="id" wx:for="{{votes}}" wx:for-item="vote" class="list-item--wrap">
-        <view class="card" @tap.stop="showVoteDetail({{vote.id}}, {{vote.status}})">
+        <view class="card" @tap.stop="showVoteDetail({{vote.id}}, {{vote.status}})" @longpress="deleteVote({{vote.id}}, {{vote.title}})">
           <view class="card__thumb">
             <image class="card__img"
                    src="{{vote.cover}}"
@@ -237,6 +237,7 @@
   import Tips from '@/utils/Tips';
   import DateTime from '@/utils/dateTime';
   import cloud from '@/cloud/vote';
+  import vote from '../../cloud/vote'
 
   export default class Index extends wepy.page {
     config = {
@@ -262,8 +263,19 @@
             url: '../vote/index?voteId=' + id
           })
         }
+      },
+
+      async deleteVote(id, title) {
+        try {
+          await Tips.confirm('确定要删除《'+title+"》吗？")
+          await vote.setVoteDisable({voteId: id, disable: true})
+          this.delVoteInList(id)
+        } catch (e) {
+
+        }
       }
     };
+
     events = {};
 
     async onLoad() {
@@ -281,6 +293,12 @@
       this.votes = await this.refreshVotes();
       this.loading = false;
       this.$apply();
+    }
+
+    delVoteInList(voteId) {
+      let pos = this.votes.findIndex((vote) => vote.id === voteId)
+      this.votes.splice(pos, 1)
+      this.$apply()
     }
 
     onShareAppMessage() {

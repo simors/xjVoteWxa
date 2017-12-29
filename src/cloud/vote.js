@@ -149,4 +149,12 @@ export default class vote {
   static async fetchCreateVotePwd() {
     return await AV.Cloud.run('voteGetCreatePwd')
   }
+  
+  static async setVoteDisable(payload) {
+    let params = {
+      voteId: payload.voteId,
+      disable: payload.disable
+    }
+    return await AV.Cloud.run('voteSetVoteDisable', params)
+  }
 }
