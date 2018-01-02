@@ -15,6 +15,23 @@
     z-index: 10;
   }
 
+  .dlg-btn-view {
+    position: fixed;
+    right: 50rpx;
+    bottom: 180rpx;
+    width: 80rpx;
+    height: 80rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F6635F;
+    opacity: 0.8;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    overflow: hidden;
+    z-index: 10;
+  }
+
   .btn-hidden {
     display: none;
   }
@@ -22,26 +39,89 @@
   .text-color {
     color: #fff;
   }
+
+  .hidden-menu {
+    display: none;
+  }
+
+  .man-menu {
+    position: fixed;
+    background: #F6635F;
+    opacity: 0.8;
+    z-index: 20;
+    overflow: hidden;
+    right: 50rpx;
+    bottom: 258rpx;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  .menu-item {
+    padding: 0 0 10px 0;
+    border-bottom-color: rgba(255, 255, 255, 0.7);
+  }
 </style>
 
 <template>
-  <navigator class="{{show ? 'btn-view' : 'btn-hidden'}}" url="/pages/vote/manPlayers">
-    <text class="zan-font-14 text-color">管理</text>
-  </navigator>
+  <view style="position: relative">
+    <view class="{{show ? (showMenu ? 'dlg-btn-view' : 'btn-view') : 'btn-hidden'}}" @tap.stop="toggleMenu">
+      <text class="zan-font-14 text-color">{{showMenu ? 'M' : '管理'}}</text>
+    </view>
+
+    <view class="{{showMenu ? 'man-menu' : 'hidden-menu'}}">
+      <navigator class="menu-item" url="/pages/vote/manPlayers">
+        <text class="zan-font-16 text-color">选手管理</text>
+      </navigator>
+      <view wx:if="{{status === 3 || status === 4}}" class="menu-item" @tap.stop="enableApply">
+        <text class="zan-font-16 text-color">{{status === 3 ? '关闭报名' : '开启报名'}}</text>
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import vote from '../cloud/vote'
+  import Tips from '../utils/Tips'
 
   export default class ManagerBtn extends wepy.component {
     props = {
-      show: Boolean
+      show: Boolean,
+      voteId: String,
+      status: Number
     }
 
     data = {
+      showMenu: false
     }
 
     methods = {
+      toggleMenu() {
+        this.showMenu = !this.showMenu
+      },
+
+      async enableApply() {
+        try {
+          if (this.status === vote.VOTE_STATUS.WAITING) {
+            await vote.enablePlayerApply({voteId: this.voteId, enable: false})
+            Tips.success('关闭报名成功')
+          } else if (this.status === vote.VOTE_STATUS.STARTING) {
+            await vote.enablePlayerApply({voteId: this.voteId, enable: true})
+            Tips.success('开启报名成功')
+          }
+          setTimeout(() => {this.$emit('voteReload')}, 1000)
+        } catch (e) {
+          Tips.error('操作失败')
+        }
+        this.showMenu = !this.showMenu
+        this.$apply()
+      }
     }
   }
 </script>

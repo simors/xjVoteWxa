@@ -157,4 +157,12 @@ export default class vote {
     }
     return await AV.Cloud.run('voteSetVoteDisable', params)
   }
+  
+  static async enablePlayerApply(payload) {
+    let params = {
+      voteId: payload.voteId,
+      enable: payload.enable
+    }
+    return await AV.Cloud.run('voteEnablePlayerApply', params)
+  }
 }
