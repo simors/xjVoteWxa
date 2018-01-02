@@ -66,6 +66,12 @@
           <textarea class="zan-form__input zan-cell__bd notice-text" value="{{noticeContent}}" placeholder="输入滚动公告栏的内容" @input="noticeContentInput"/>
         </view>
       </view>
+      <view class="zan-cell zan-form__item zan-cell--last-child">
+        <view class="notice-view">
+          <text class="notice-tip">活动规则</text>
+          <textarea class="zan-form__input zan-cell__bd rule-text" value="{{ruleContent}}" placeholder="编辑活动规则" auto-height maxlength="-1" @input="ruleInput"/>
+        </view>
+      </view>
     </view>
 
     <view class="zan-btns" style="text-align: right">
@@ -87,7 +93,8 @@
     data = {
       coverPath: null,
       voteTitle: null,
-      noticeContent: null
+      noticeContent: null,
+      ruleContent: null
     }
 
     events = {
@@ -102,6 +109,9 @@
         }
         if (globalEditVote.notice !== null) {
           this.noticeContent = globalEditVote.notice
+        }
+        if (globalEditVote.rule !== null) {
+          this.ruleContent = globalEditVote.rule
         }
         this.$apply()
       }
@@ -131,6 +141,11 @@
         wepy.$instance.globalData.editVote.notice = this.noticeContent
       },
 
+      ruleInput(e) {
+        this.ruleContent = e.detail.value
+        wepy.$instance.globalData.editVote.rule = this.ruleContent
+      },
+
       jumpNext() {
         if (!this.validate()) {
           return
@@ -152,6 +167,11 @@
 
       if (!this.noticeContent) {
         Tips.alert('未输入公告')
+        return false
+      }
+
+      if (!this.ruleContent) {
+        Tips.alert('未输入活动规则')
         return false
       }
 
