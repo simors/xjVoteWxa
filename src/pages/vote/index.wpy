@@ -1,6 +1,11 @@
 <style lang="less">
   @import "../../styles/vars.less";
 
+  .placeholder-view {
+    height: 86rpx;
+    background: @color-primary;
+  }
+
   .cover-view {
     display: flex;
     align-items: center;
@@ -86,6 +91,7 @@
 <template>
   <view class="container" style="background: #fff">
     <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
+      <view class="placeholder-view"/>
       <zanNoticebar :text.sync="notice"/>
 
       <view class="cover-view">

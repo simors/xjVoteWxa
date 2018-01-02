@@ -1,10 +1,14 @@
 <style lang="less">
   .zan-noticebar {
-    color:#f60;
+    color:#fff;
     padding:9px 10px;
     font-size:12px;
     line-height:1.5;
-    background-color:#fff7cc;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
 </style>
 
