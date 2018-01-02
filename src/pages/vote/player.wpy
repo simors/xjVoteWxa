@@ -54,13 +54,14 @@
     </view>
 
     <view wx:if="{{enablePresent}}" class="padding-view">
-      <view style="margin-bottom: 10px">
-        <text class="zan-font-14" style="color: #ff9d4e">「礼品列表」</text>
-      </view>
       <recvGifts :playerId.sync="playerId"/>
     </view>
 
     <buyGiftTip/>
+
+    <view class="zan-btns" style="margin-top: 50px">
+      <button open-type="share" class="zan-btn zan-btn--primary vote-btn">为TA拉票</button>
+    </view>
 
     <view style="height: 180rpx; background: transparent"/>
 

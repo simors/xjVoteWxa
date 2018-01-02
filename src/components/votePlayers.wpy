@@ -30,7 +30,7 @@
 
   .vote-num-view {
     position: relative;
-    top: -490rpx;
+    top: -470rpx;
     left: 200rpx;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
@@ -39,6 +39,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .loadmore-tip {
+    display: flex;
+    align-items: center;
   }
 
 </style>
@@ -50,9 +55,9 @@
         <image src="{{item.album[0]}}" class="player-img" mode="aspectFill"/>
         <view style="width: 100%">
           <view class="player-text-view">
-            <view style="display: flex; flex-direction: column;">
+            <view style="display: flex; flex-direction: column;width: 144rpx">
               <text class="zan-font-12" style="margin-bottom: 2px">{{item.number}}号</text>
-              <text class="zan-font-12 zan-font-bold">{{item.name}}</text>
+              <text class="zan-font-12 zan-font-bold zan-ellipsis">{{item.name}}</text>
             </view>
             <view>
               <button class="zan-btn zan-btn--small zan-btn--primary">投票</button>
@@ -65,8 +70,8 @@
       </navigator>
     </repeat>
 
-    <view wx:if="{{hasMore}}" class="zan-btns" style="width: 100%">
-      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="loadMorePlayers">加载更多</button>
+    <view wx:if="{{hasMore}}" class="loadmore-tip" @tap.stop="loadMorePlayers">
+      <text class="zan-font-14 zan-c-gray-dark">--- 加载更多 ---</text>
     </view>
   </view>
 </template>
@@ -84,7 +89,7 @@
       lastNumber: null,
       players: [],
       hasMore: true,
-      limit: 10
+      limit: 8
     }
 
     methods = {
