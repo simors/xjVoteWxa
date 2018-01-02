@@ -10,7 +10,7 @@
       <timerCounterDown :beginCounter.sync="counter"/>
     </view>
 
-    <view class="up-down-padding">
+    <view>
       <repeat for="{{rank}}" key="index" index="index" item="item">
         <rankItem :rank="index" :player="item" />
       </repeat>

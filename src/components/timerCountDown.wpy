@@ -1,42 +1,41 @@
 <style type="less">
   .counter-down {
-    height: 80px;
     background: #fff;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 10px 12px;
+    margin: 5px 12px;
+    padding: 5px 0;
   }
 
   .counter-view {
     display: flex;
+    justify-content: center;
   }
 
   .num-vew {
     background: #37c6c0;
     border-radius: 2px;
     color: #fff;
-    padding: 1px 5px;
-    min-width: 18px;
+    padding: 2px 4px;
+    min-width: 14px;
     margin-left: 5px;
     margin-right: 5px;
     text-align: center;
+    line-height: 1;
   }
 
   .tip-text {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
   }
 </style>
 
 <template>
   <view>
     <view wx:if="{{beginCounter > 0}}" class="counter-down">
-      <view style="margin-bottom: 10px">
-        <text class="zan-font-16 zan-c-gray-dark zan-font-bold">活动结束倒计时</text>
-      </view>
+      <text class="zan-font-12 zan-c-red zan-font-bold">活动于</text>
       <view class="counter-view">
         <view class="num-vew">
           {{counter.days}}
@@ -55,12 +54,13 @@
         </view>
         <text class="zan-font-12 zan-c-gray-dark tip-text">秒</text>
       </view>
+      <text class="zan-font-12 zan-c-red zan-font-bold">后结束</text>
     </view>
     <view wx:elif="{{beginCounter < 0}}" class="counter-down">
-      <text class="zan-font-30 zan-c-red zan-font-bold">活动已结束</text>
+      <text class="zan-font-20 zan-c-red zan-font-bold">活动已结束</text>
     </view>
     <view wx:else class="counter-down">
-      <text class="zan-font-30 zan-c-red zan-font-bold">正在加载</text>
+      <text class="zan-font-20 zan-c-red zan-font-bold">正在加载</text>
     </view>
   </view>
 </template>
@@ -86,6 +86,21 @@
       timer: null
     }
 
+    watch = {
+      'beginCounter': (newValue, oldValue) => {
+        if (this.timer) {
+          clearInterval(this.timer)
+        }
+        if (this.beginCounter > 0) {
+          this.timer = setInterval(() => {
+            newValue--
+            this.counter = this.calCounter(newValue)
+            this.$apply()
+          }, 1000)
+        }
+      }
+    }
+
     methods = {
       clearTimer() {
         if (this.timer) {
@@ -98,11 +113,13 @@
       if (this.timer) {
         clearInterval(this.timer)
       }
-      this.timer = setInterval(() => {
-        this.beginCounter--
-        this.counter = this.calCounter(this.beginCounter)
-        this.$apply()
-      }, 1000)
+      if (this.beginCounter > 0) {
+        this.timer = setInterval(() => {
+          this.beginCounter--
+          this.counter = this.calCounter(this.beginCounter)
+          this.$apply()
+        }, 1000)
+      }
     }
 
     onUnload() {

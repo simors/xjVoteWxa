@@ -2,7 +2,7 @@
   @import "../../styles/vars.less";
 
   .placeholder-view {
-    height: 86rpx;
+    height: 72rpx;
     background: @color-primary;
   }
 
@@ -74,13 +74,12 @@
   }
 
   .search-btn-text {
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
-    font-weight: bold;
   }
 
   .search-input {
-    font-size: 18px;
+    font-size: 16px;
     padding: 0 10px;
     margin: 0;
     height: 100%;
@@ -92,6 +91,7 @@
   <view class="container" style="background: #fff">
     <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
       <view class="placeholder-view"/>
+
       <zanNoticebar :text.sync="notice"/>
 
       <view class="cover-view">
@@ -102,20 +102,14 @@
         <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
       </view>
 
-      <view class="up-down-padding">
-        <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
-      </view>
+      <timerCounterDown :beginCounter.sync="counter"/>
 
-      <view class="up-down-padding">
-        <timerCounterDown :beginCounter.sync="counter"/>
-      </view>
+      <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
 
-      <view class="up-down-padding">
-        <view class="search-view">
-          <input placeholder="输入选手编号或姓名搜索" class="search-input" @input="searchInput"/>
-          <view class="search-btn-view" @tap.stop="onSearch">
-            <text class="search-btn-text">搜索</text>
-          </view>
+      <view class="search-view">
+        <input placeholder="输入选手编号或姓名搜索" class="search-input" @input="searchInput"/>
+        <view class="search-btn-view" @tap.stop="onSearch">
+          <text class="search-btn-text">搜索</text>
         </view>
       </view>
 

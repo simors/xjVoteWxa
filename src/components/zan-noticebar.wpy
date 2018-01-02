@@ -1,7 +1,7 @@
 <style lang="less">
   .zan-noticebar {
     color:#fff;
-    padding:9px 10px;
+    height: 72rpx;
     font-size:12px;
     line-height:1.5;
     background-color: rgba(0, 0, 0, 0.2);
@@ -10,11 +10,18 @@
     left: 0;
     width: 100%;
   }
+
+  .barcontent-style {
+    padding:9px 10px;
+    height: 18px;
+    overflow: hidden;
+    position: relative;
+  }
 </style>
 
 <template>
   <view class="zan-noticebar">
-    <view id="barcontent-wrap" style="height: 18px; overflow: hidden; position: relative;">
+    <view id="barcontent-wrap" class="barcontent-style">
       <view animation="{{animationData}}" id="barcontent" style="position: absolute; white-space: nowrap;">
         {{text}}
       </view>
