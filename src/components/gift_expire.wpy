@@ -106,25 +106,13 @@
 
     <view class="zan-form" style="margin-top: 50rpx">
       <view class="zan-cell zan-form__item">
-        <text class="zan-form__title">起始日期</text>
-        <picker class="picker-style" mode="date" value="{{startDate}}" start="{{startDateInput}}" end="{{endDateInput}}" bindchange="bindDateChange">
+        <text class="zan-form__title">结束日期</text>
+        <picker class="picker-style" mode="date" value="{{endDate}}" start="{{startDateInput}}" end="{{endDateInput}}" bindchange="bindDateChange">
           <view class="picker">
-            {{startDate}}
+            {{endDate}}
           </view>
         </picker>
       </view>
-      <view class="zan-cell zan-form__item zan-cell--last-child">
-        <text class="zan-form__title">投票天数</text>
-        <picker class="picker-style" mode="selector" range="{{validExpire}}" value="{{index}}" bindchange="bindExpireChange">
-          <view class="picker">
-            {{validExpire[index]}}
-          </view>
-        </picker>
-      </view>
-    </view>
-
-    <view class="price-tip-view">
-      <text class="zan-font-12 zan-c-red">您选择的活动天数为{{expire}}天</text>
     </view>
 
     <zanToptips/>
@@ -183,11 +171,9 @@
       gifts: [],
       selectedGifts: [],
       checkedChannel: null,
-      startDate: null,
+      endDate: null,
       startDateInput: null,
       endDateInput: null,
-      expire: 5,
-      validExpire: [5, 8, 10, 30],
       index: 0,
       showPop: false,
       payDisabled: false,
@@ -210,7 +196,7 @@
 
       'initVoteData': async () => {
         this.startDateInput = DateTime.addDate(1)
-        this.endDateInput = DateTime.addDate(10)
+        this.endDateInput = DateTime.addDate(60)
         Tips.loading()
         this.gifts = await vote.fetchGifts()
         Tips.loaded()
@@ -236,19 +222,12 @@
           })
         }
 
-        if (wepy.$instance.globalData.editVote.startDate === null) {
-          this.startDate = DateTime.addDate(5)
-          wepy.$instance.globalData.editVote.startDate = this.startDate
+        if (wepy.$instance.globalData.editVote.endDate === null) {
+          this.endDate = DateTime.addDate(5)
+          wepy.$instance.globalData.editVote.endDate = this.endDate
         } else {
-          this.startDate = wepy.$instance.globalData.editVote.startDate
+          this.endDate = wepy.$instance.globalData.editVote.endDate
         }
-
-        if (wepy.$instance.globalData.editVote.expire === null) {
-          wepy.$instance.globalData.editVote.expire = this.expire
-        } else {
-          this.expire = wepy.$instance.globalData.editVote.expire
-        }
-        this.index = this.validExpire.indexOf(this.expire)
         this.$apply()
       }
     }
@@ -259,15 +238,8 @@
       },
 
       bindDateChange(e) {
-        this.startDate = e.detail.value
-        wepy.$instance.globalData.editVote.startDate = this.startDate
-        this.$apply()
-      },
-
-      bindExpireChange(e) {
-        this.index = e.detail.value
-        this.expire = this.validExpire[this.index]
-        wepy.$instance.globalData.editVote.expire = this.expire
+        this.endDate = e.detail.value
+        wepy.$instance.globalData.editVote.endDate = this.endDate
         this.$apply()
       },
 

@@ -34,16 +34,16 @@ import user from './cloud/user'
 import vote from './cloud/vote'
 
 // DEV
-//AV.init({
-//  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
-//  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
-//})
+AV.init({
+  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
+  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
+})
 
 // PROD
-AV.init({
-  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
-  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
-})
+//AV.init({
+//  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
+//  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
+//})
 
 export default class extends wepy.app {
   config = {
@@ -86,8 +86,7 @@ export default class extends wepy.app {
       organizer: null,
       awards: null,
       gifts: null,
-      startDate: null,
-      expire: null,
+      endDate: null,
       status: null
     },
     lastVote: '',
@@ -147,6 +146,7 @@ export default class extends wepy.app {
     this.globalData.editVote.title = null
     this.globalData.editVote.cover = null
     this.globalData.editVote.notice = null
+    this.globalData.editVote.rule = null
     this.globalData.editVote.organizer = null
     this.globalData.editVote.awards = null
     this.globalData.editVote.gifts = null
@@ -162,6 +162,7 @@ export default class extends wepy.app {
     this.globalData.editVote.title = voteInfo.title
     this.globalData.editVote.cover = voteInfo.cover
     this.globalData.editVote.notice = voteInfo.notice
+    this.globalData.editVote.rule = voteInfo.rule
     this.globalData.editVote.organizer = voteInfo.organizer
     this.globalData.editVote.awards = voteInfo.awards
     this.globalData.editVote.startDate = voteInfo.startDate
