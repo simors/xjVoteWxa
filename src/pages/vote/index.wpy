@@ -124,7 +124,7 @@
         </view>
       </view>
 
-      <view wx:if="{{status < 4}}">
+      <view wx:if="{{status === 3}}">
         <view class="zan-btns">
           <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpToApply">我要报名</button>
         </view>

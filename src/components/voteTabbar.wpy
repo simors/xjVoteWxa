@@ -27,6 +27,7 @@
 
 <script>
   import wepy from 'wepy';
+  import vote from '../cloud/vote'
 
   export default class VoteTabbar extends wepy.component {
     props = {
@@ -84,7 +85,7 @@
 
     watch = {
       status (newValue, oldValue) {
-        if (newValue > 3) {
+        if (newValue === vote.VOTE_STATUS.STARTING || newValue === vote.VOTE_STATUS.DONE || newValue === vote.VOTE_STATUS.ACCOUNTED) {
           this.tabbarItems.splice(1, 1)
           this.$apply()
         }
@@ -92,7 +93,7 @@
     }
 
     onLoad() {
-      if (this.status > 3) {
+      if (this.status === vote.VOTE_STATUS.STARTING || this.status === vote.VOTE_STATUS.DONE || this.status === vote.VOTE_STATUS.ACCOUNTED) {
         this.tabbarItems.splice(1, 1)
       }
       this.tabbarItems.map((item) => {
