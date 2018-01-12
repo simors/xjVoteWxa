@@ -57,7 +57,7 @@
       <recvGifts :playerId.sync="playerId"/>
     </view>
 
-    <buyGiftTip/>
+    <buyGiftTip :number.sync="number" :playerId.sync="playerId" :playerName.sync="playerName"/>
 
     <view class="zan-btns" style="margin-top: 50px">
       <button open-type="share" class="zan-btn zan-btn--primary vote-btn">为TA拉票</button>
@@ -89,6 +89,7 @@
       playerId: null,
       player: null,
       number: null,
+      playerName: null,
       voteNum: null,
       giftNum: null,
       pv: null,
@@ -161,6 +162,7 @@
       this.playerId = playerId
       this.voteId = this.player.voteId
       this.number = this.player.number
+      this.playerName = this.player.name
       this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
       this.pv = this.player.pv

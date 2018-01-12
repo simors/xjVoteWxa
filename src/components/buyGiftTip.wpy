@@ -36,7 +36,7 @@
     width: 750rpx;
     display: block;
     position: absolute;
-    top: -520rpx;
+    top: -780rpx;
     left: -85rpx;
   }
 
@@ -98,20 +98,28 @@
     color: #453e3e;
     text-align: center;
   }
+
+  .share-btn {
+    background: #fff;
+    position: static;
+    border: none;
+  }
 </style>
 <template>
   <view class="zan-dialog {{ showDialog ? 'dialog--show' : '' }}">
     <view class="dialog__mask" @tap.stop="toggleDialog" />
-    <view animation="{{animationData}}" class="dialog__container {{showDialog ? 'show-container' : 'hidden-container'}}" @tap.stop="toPresentPage">
+    <view animation="{{animationData}}" class="dialog__container {{showDialog ? 'show-container' : 'hidden-container'}}">
       <view class="dialog-content-view">
         <text class="title-tip-text">{{tip}}</text>
-        <text class="present-tip-text">给选手送礼物可以增加票数噢！</text>
-        <view class="present-view">
-          <text class="present-text">送礼品</text>
-        </view>
+        <text class="present-tip-text">一次可以转发9个群哦！</text>
+        <button open-type="share" class="share-btn">
+          <view class="present-view">
+            <text class="present-text">帮TA拉票</text>
+          </view>
+        </button>
       </view>
       <view style="position: relative">
-        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/gift.png" mode="widthFix"/>
+        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/popup_help.png" mode="widthFix"/>
       </view>
       <view class="close-view" @tap.stop="toggleDialog">
         <image class="{{showDialog ? 'show-close' : 'hidden-img'}}" src="/asset/png/close.png" mode="widthFix"/>
@@ -121,10 +129,15 @@
 </template>
 <script>
   import wepy from 'wepy'
+  import Tips from '../utils/Tips'
 
   export default class BuyGiftTip extends wepy.component {
     props = {
+      playerName: String,
+      playerId: String,
+      number: Number
     }
+
     data = {
       showDialog: false,
       animationData: {},
@@ -148,11 +161,14 @@
               this.$apply()
             }).exec()
         this.tip = tip
-      },
-
-      toPresentPage() {
-        this.$emit('toPresent')
       }
+    }
+
+    onShareAppMessage () {
+      let voteInfo = wepy.$instance.globalData.activeVote
+      const title = this.number + '号 ' + this.playerName + ' ' + voteInfo.title + '，邀请您参与投票';
+      const url = '/pages/vote/player?playerId=' + this.playerId + '&scene=share';
+      return Tips.share(title, url, title);
     }
 
     hideDialog() {
