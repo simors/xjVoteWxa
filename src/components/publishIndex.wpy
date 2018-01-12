@@ -45,7 +45,16 @@
 
   .rule-text {
     width: 100%;
-    height: 80px;
+    min-height: 80px;
+  }
+
+  .picker-style {
+    display: flex;
+    flex: 1;
+  }
+
+  .picker {
+    width: 200px;
   }
 
 </style>
@@ -64,6 +73,14 @@
       <view class="zan-cell zan-form__item">
         <text class="zan-form__title">活动名称</text>
         <input class="zan-form__input zan-cell__bd" value="{{voteTitle}}" placeholder="请输入活动的名称" @input="titleInput"/>
+      </view>
+      <view class="zan-cell zan-form__item">
+        <text class="zan-form__title">结束日期</text>
+        <picker class="picker-style" mode="date" value="{{endDate}}" start="{{startDateInput}}" end="{{endDateInput}}" bindchange="bindDateChange">
+          <view class="picker">
+            {{endDate}}
+          </view>
+        </picker>
       </view>
       <view class="zan-cell zan-form__item">
         <view class="notice-view">
@@ -89,6 +106,7 @@
   import wepy from 'wepy'
   import ImageUtils from '../utils/imageUtils'
   import Tips from '../utils/Tips'
+  import DateTime from '../utils/dateTime'
 
   export default class PublishIndex extends wepy.component {
     props = {
@@ -99,7 +117,10 @@
       coverPath: null,
       voteTitle: null,
       noticeContent: null,
-      ruleContent: null
+      ruleContent: null,
+      endDate: null,
+      startDateInput: null,
+      endDateInput: null
     }
 
     events = {
@@ -118,6 +139,16 @@
         if (globalEditVote.rule !== null) {
           this.ruleContent = globalEditVote.rule
         }
+
+        this.startDateInput = DateTime.addDate(1)
+        this.endDateInput = DateTime.addDate(60)
+        if (wepy.$instance.globalData.editVote.endDate === null) {
+          this.endDate = DateTime.addDate(5)
+          wepy.$instance.globalData.editVote.endDate = this.endDate
+        } else {
+          this.endDate = wepy.$instance.globalData.editVote.endDate
+        }
+
         this.$apply()
       }
     }
@@ -156,6 +187,12 @@
           return
         }
         this.$emit('changeStep', 2)
+      },
+
+      bindDateChange(e) {
+        this.endDate = e.detail.value
+        wepy.$instance.globalData.editVote.endDate = this.endDate
+        this.$apply()
       }
     }
 

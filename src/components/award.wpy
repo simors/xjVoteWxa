@@ -36,9 +36,13 @@
       <image class="add-btn-img" src="/asset/png/add.png" />
       <text class="add-btn-text">添加奖项</text>
     </view>
+
+    <publishModel/>
+
     <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
-      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
+      <button wx:if="{{type == 1}}" class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
+      <button wx:else class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm" disabled="{{payDisabled}}">完成</button>
     </view>
   </view>
 </template>
@@ -47,11 +51,14 @@
   import wepy from 'wepy'
   import Tips from '../utils/Tips'
   import AwardInput from './awardInput'
+  import PublishModel from './publishModel'
+  import vote from '../cloud/vote'
 
   export default class Award extends wepy.component {
 
     components = {
-      awardInput: AwardInput
+      awardInput: AwardInput,
+      publishModel: PublishModel
     }
 
     events = {
@@ -65,6 +72,15 @@
         if (wepy.$instance.globalData.editVote.awards != null) {
           this.awards = wepy.$instance.globalData.editVote.awards
         }
+        if (wepy.$instance.globalData.editVote.type != null) {
+          this.type = wepy.$instance.globalData.editVote.type
+        }
+        this.$apply()
+      },
+
+      'deleteAward': (index) => {
+        this.awards.splice(index, 1)
+        wepy.$instance.globalData.editVote.awards = this.awards
         this.$apply()
       }
     }
@@ -73,11 +89,13 @@
       awards: [
         {
           awardPhoto: null,
-          awardName: null,
-          winnerNum: null,
-          description: null
+          awardName: '',
+          winnerNum: '',
+          description: ''
         }
-      ]
+      ],
+      type: null,
+      payDisabled: false
     }
 
     methods = {
@@ -95,10 +113,27 @@
       addAward() {
         this.awards.push({
           awardPhoto: null,
-          awardName: null,
-          winnerNum: null,
-          description: null
+          awardName: '',
+          winnerNum: '',
+          description: ''
         })
+        this.$apply()
+      },
+
+      async submitForm() {
+        if (!this.validate()) {
+          return
+        }
+        this.payDisabled = true
+        this.$apply()
+        let userInfo = wepy.$instance.globalData.userInfo
+        if (userInfo.agentLevel === 1) {
+          this.$invoke('publishModel', 'togglePopup')
+        } else {
+          Tips.loading('正在提交')
+          await this.submitVote()
+        }
+        this.payDisabled = false
         this.$apply()
       }
     }
@@ -109,20 +144,25 @@
           Tips.alert('未上传图片')
           return false
         }
-        if (!item.awardName) {
-          Tips.alert('未设置奖品名')
-          return false
-        }
-        if (!item.winnerNum) {
-          Tips.alert('未设置获奖人数')
-          return false
-        }
-        if (!item.description) {
-          Tips.alert('未填写奖品描述')
-          return false
-        }
       }
       return true
+    }
+
+    async submitVote() {
+      try {
+        Tips.loading('正在提交')
+        wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.WAITING
+        await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
+        this.$root.$parent.clearVoteInfo()
+        Tips.loaded()
+        setTimeout(() => {
+          wx.reLaunch({url: '/pages/index'})
+        }, 1000)
+      } catch (e) {
+        console.error(e)
+        Tips.loaded()
+        Tips.error('提交失败')
+      }
     }
   }
 </script>

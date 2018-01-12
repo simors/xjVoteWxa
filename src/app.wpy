@@ -34,16 +34,16 @@ import user from './cloud/user'
 import vote from './cloud/vote'
 
 // DEV
-//AV.init({
-//  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
-//  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
-//})
+AV.init({
+  appId: 'AeOiTsPVUSMd8jfNqungDRq1-gzGzoHsz',
+  appKey: '973RYHKEl1oFwbC2VMJXuQ4X',
+})
 
 // PROD
-AV.init({
-  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
-  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
-})
+//AV.init({
+//  appId: 'L3Cae9l7aornoukXME6ycMFD-gzGzoHsz',
+//  appKey: 'lH7LPYtJJLJjMnz2MHWrCmKz',
+//})
 
 export default class extends wepy.app {
   config = {
@@ -56,6 +56,7 @@ export default class extends wepy.app {
       'pages/mine/agent',
       'pages/mine/invite',
       'pages/publish/publish',
+      'pages/publish/publishType',
       'pages/vote/index',
       'pages/vote/award',
       'pages/vote/apply',
@@ -72,13 +73,14 @@ export default class extends wepy.app {
       backgroundColor: '#F8F8F8',
       enablePullDownRefresh: true
     },
-    debug: false
+    debug: true
   }
 
   globalData = {
     userInfo: null,
     editVote: {
       id: null,
+      type: null,
       title: null,
       cover: null,
       notice: null,
@@ -143,6 +145,7 @@ export default class extends wepy.app {
 
   clearVoteInfo() {
     this.globalData.editVote.id = null
+    this.globalData.editVote.type = null
     this.globalData.editVote.title = null
     this.globalData.editVote.cover = null
     this.globalData.editVote.notice = null
@@ -159,6 +162,7 @@ export default class extends wepy.app {
 
   initVoteInfo(voteInfo) {
     this.globalData.editVote.id = voteInfo.id
+    this.globalData.editVote.type = voteInfo.type
     this.globalData.editVote.title = voteInfo.title
     this.globalData.editVote.cover = voteInfo.cover
     this.globalData.editVote.notice = voteInfo.notice

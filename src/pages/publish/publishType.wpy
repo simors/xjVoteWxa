@@ -1,0 +1,57 @@
+<style lang="less">
+</style>
+
+<template>
+  <view class="container">
+    <text>选择投票类型</text>
+    <radio-group bindchange="typeChange">
+      <view>
+        <radio value="1"/>有礼品投票
+      </view>
+      <view>
+        <radio value="2"/>无礼品投票
+      </view>
+    </radio-group>
+
+    <view class="zan-btns">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class PublishType extends wepy.page {
+    config = {
+      enablePullDownRefresh: false,
+      navigationBarTitleText: '活动类型'
+    }
+
+    data = {
+      type: null
+    }
+
+    components = {
+    }
+
+    methods = {
+      typeChange(e) {
+        this.type = e.detail.value
+        wepy.$instance.globalData.editVote.type = Number(this.type)
+        this.$apply()
+      },
+
+      jumpNext() {
+        wx.redirectTo({
+          url: '/pages/publish/publish'
+        })
+      }
+    }
+
+    async onLoad(option) {
+      this.$parent.clearVoteInfo()
+      this.$apply()
+    }
+  }
+</script>

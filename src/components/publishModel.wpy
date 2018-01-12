@@ -1,0 +1,163 @@
+<style lang="less">
+  .popup__mask {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+  }
+
+  .popup--show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 5px;
+    padding: 0;
+    margin: 20px 12px;
+    overflow: hidden;
+  }
+
+  .content-container {
+    padding: 10px 20px;
+  }
+
+  .popup-btn-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100rpx;
+    border-top: 1px solid rgba(0, 0, 0, 0.09);
+    width: 100%;
+  }
+
+  .popup-btn {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mp-view {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .mp-img {
+    width: 300rpx;
+    text-align: center;
+  }
+
+  .tip-view {
+    padding: 10px 0px;
+  }
+</style>
+
+<template>
+  <view>
+    <view class="popup__mask {{showPop ? 'popup--show' : ''}}">
+      <view class="popup__container">
+        <view class="content-container">
+          <view style="margin-bottom: 10px">
+            <text class="zan-font-14 zan-c-gray-darker">您当前还没有开通代理权限！扫描下方二维码或搜索小吉互动微信公众号了解详情！</text>
+          </view>
+          <view class="mp-view">
+            <image class="mp-img" mode="widthFix" src="http://ac-l3cae9l7.clouddn.com/b17d267c395e5453ecb4.jpeg"/>
+          </view>
+        </view>
+        <view class="zan-form">
+          <view class="zan-cell zan-form__item">
+            <text class="zan-form__title">口令</text>
+            <input class="zan-form__input zan-cell__bd" placeholder="请输入口令" @input="votePwdInput"/>
+          </view>
+        </view>
+        <view class="tip-view">
+          <text class="zan-font-12 zan-c-red">口令可以向代理获取或关注上方公众号获取</text>
+        </view>
+        <view class="popup-btn-view">
+          <view class="popup-btn" style="border-right: 1px solid rgba(0, 0, 0, 0.09)" @tap.stop="togglePopup">取消</view>
+          <view class="popup-btn" style="color: #44BB00;" @tap.stop="nonAgentSubmit">继续</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tips from '../utils/Tips'
+  import vote from '../cloud/vote'
+  import * as errno from '../utils/errno'
+
+  export default class PublishModel extends wepy.component {
+    props = {
+    }
+
+    data = {
+      showPop: false,
+      password: null
+    }
+
+    events = {
+    }
+
+    methods = {
+      togglePopup() {
+        this.showPop = !this.showPop
+        this.$apply()
+      },
+
+      votePwdInput(e) {
+        this.password = e.detail.value
+      },
+
+      async nonAgentSubmit() {
+        try {
+          if (!this.password || this.password.length === 0) {
+            Tips.error('请输入口令')
+            return
+          }
+          let pwd = await vote.fetchCreateVotePwd()
+          if (pwd === this.password) {
+            await this.submitVote()
+          } else {
+            Tips.error('口令错误')
+            return
+          }
+        } catch (e) {
+          console.error(e)
+          Tips.error('请检查网络')
+        }
+      }
+    }
+
+    async submitVote() {
+      try {
+        Tips.loading('正在提交')
+        wepy.$instance.globalData.editVote.status = vote.VOTE_STATUS.WAITING
+        await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
+        this.$root.$parent.clearVoteInfo()
+        Tips.loaded()
+        setTimeout(() => {
+          wx.reLaunch({url: '/pages/index'})
+        }, 1000)
+      } catch (e) {
+        console.error(e)
+        Tips.loaded()
+        Tips.error('提交失败')
+      }
+    }
+  }
+</script>

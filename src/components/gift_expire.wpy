@@ -12,85 +12,6 @@
   .gift-cb {
     display: none;
   }
-
-  .picker-style {
-    display: flex;
-    flex: 1;
-  }
-
-  .picker {
-    width: 200px;
-  }
-
-  .price-tip-view {
-    margin: 10px 12px;
-    padding: 10px;
-  }
-
-  .popup__mask {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
-  }
-
-  .popup--show {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .popup__container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #fff;
-    border-radius: 5px;
-    padding: 0;
-    margin: 20px 12px;
-    overflow: hidden;
-  }
-
-  .content-container {
-    padding: 10px 20px;
-  }
-
-  .popup-btn-view {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100rpx;
-    border-top: 1px solid rgba(0, 0, 0, 0.09);
-    width: 100%;
-  }
-
-  .popup-btn {
-    display: flex;
-    flex: 1;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .mp-view {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
-  .mp-img {
-    width: 300rpx;
-    text-align: center;
-  }
-
-  .tip-view {
-    padding: 10px 0px;
-  }
 </style>
 
 <template>
@@ -104,44 +25,9 @@
       </view>
     </checkbox-group>
 
-    <view class="zan-form" style="margin-top: 50rpx">
-      <view class="zan-cell zan-form__item">
-        <text class="zan-form__title">结束日期</text>
-        <picker class="picker-style" mode="date" value="{{endDate}}" start="{{startDateInput}}" end="{{endDateInput}}" bindchange="bindDateChange">
-          <view class="picker">
-            {{endDate}}
-          </view>
-        </picker>
-      </view>
-    </view>
-
     <zanToptips/>
 
-    <view class="popup__mask {{showPop ? 'popup--show' : ''}}">
-      <view class="popup__container">
-        <view class="content-container">
-          <view style="margin-bottom: 10px">
-            <text class="zan-font-14 zan-c-gray-darker">您当前还没有开通代理权限！扫描下方二维码或搜索小吉互动微信公众号了解详情！</text>
-          </view>
-          <view class="mp-view">
-            <image class="mp-img" mode="widthFix" src="http://ac-l3cae9l7.clouddn.com/b17d267c395e5453ecb4.jpeg"/>
-          </view>
-        </view>
-        <view class="zan-form">
-          <view class="zan-cell zan-form__item">
-            <text class="zan-form__title">口令</text>
-            <input class="zan-form__input zan-cell__bd" placeholder="请输入口令" @input="votePwdInput"/>
-          </view>
-        </view>
-        <view class="tip-view">
-          <text class="zan-font-12 zan-c-red">口令可以向代理获取或关注上方公众号获取</text>
-        </view>
-        <view class="popup-btn-view">
-          <view class="popup-btn" style="border-right: 1px solid rgba(0, 0, 0, 0.09)" @tap.stop="togglePopup">取消</view>
-          <view class="popup-btn" style="color: #44BB00;" @tap.stop="nonAgentSubmit">继续</view>
-        </view>
-      </view>
-    </view>
+    <publishModel/>
 
     <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
@@ -155,27 +41,21 @@
   import Tips from '../utils/Tips'
   import vote from '../cloud/vote'
   import GiftItem from './giftItem'
-  import DateTime from '../utils/dateTime'
   import zanToptips from './zan-toptips'
-  import pay from '../cloud/pay'
   import * as errno from '../utils/errno'
-  import Pingpp from '../utils/pingpp'
+  import PublishModel from './publishModel'
 
   export default class GiftAndExpire extends wepy.component {
     components = {
       giftItem: GiftItem,
-      zanToptips
+      zanToptips,
+      publishModel: PublishModel
     }
 
     data = {
       gifts: [],
       selectedGifts: [],
-      checkedChannel: null,
-      endDate: null,
-      startDateInput: null,
-      endDateInput: null,
       index: 0,
-      showPop: false,
       payDisabled: false,
       password: null
     }
@@ -195,8 +75,6 @@
       },
 
       'initVoteData': async () => {
-        this.startDateInput = DateTime.addDate(1)
-        this.endDateInput = DateTime.addDate(60)
         Tips.loading()
         this.gifts = await vote.fetchGifts()
         Tips.loaded()
@@ -222,12 +100,6 @@
           })
         }
 
-        if (wepy.$instance.globalData.editVote.endDate === null) {
-          this.endDate = DateTime.addDate(5)
-          wepy.$instance.globalData.editVote.endDate = this.endDate
-        } else {
-          this.endDate = wepy.$instance.globalData.editVote.endDate
-        }
         this.$apply()
       }
     }
@@ -237,56 +109,18 @@
         this.$emit('changeStep', 3)
       },
 
-      bindDateChange(e) {
-        this.endDate = e.detail.value
-        wepy.$instance.globalData.editVote.endDate = this.endDate
-        this.$apply()
-      },
-
-      bindPayChannelChange(e) {
-        this.checkedChannel = e.detail.value
-      },
-
-      togglePopup() {
-        this.showPop = !this.showPop
-        this.$apply()
-      },
-
-      votePwdInput(e) {
-        this.password = e.detail.value
-      },
-
       async submitForm() {
         this.payDisabled = true
         this.$apply()
         let userInfo = wepy.$instance.globalData.userInfo
         if (userInfo.agentLevel === 1) {
-          this.showPop = !this.showPop
+          this.$invoke('publishModel', 'togglePopup')
         } else {
           Tips.loading('正在提交')
           await this.submitVote()
         }
         this.payDisabled = false
         this.$apply()
-      },
-
-      async nonAgentSubmit() {
-        try {
-          if (!this.password || this.password.length === 0) {
-            Tips.error('请输入口令')
-            return
-          }
-          let pwd = await vote.fetchCreateVotePwd()
-          if (pwd === this.password) {
-            await this.submitVote()
-          } else {
-            Tips.error('口令错误')
-            return
-          }
-        } catch (e) {
-          console.error(e)
-          Tips.error('请检查网络')
-        }
       }
     }
 
@@ -305,40 +139,6 @@
         Tips.loaded()
         Tips.error('提交失败')
       }
-    }
-
-    async payWithWechat() {
-      let currentUser = wepy.$instance.globalData.userInfo
-      if (!currentUser) {
-        Tips.error('请授权登录')
-        return
-      }
-      let charge = await pay.reqPayment({
-        openid: currentUser.weappOpenid,
-        amount: 0.01,
-        metadata: {
-          'fromUser': currentUser.id,
-          'toUser': 'platform',
-          'dealType': pay.DEAL_TYPE.VOTE_PAY,
-          'voteId': wepy.$instance.globalData.editVote.id,
-        },
-        subject: '创建投票活动'
-      })
-      Pingpp.createPayment(charge, function (result, err) {
-        if (result == "success") {
-          // 只有微信小程序 wx_lite 支付成功的结果会在这里返回
-          this.$root.$parent.clearVoteInfo()
-          setTimeout(() => {
-            wx.reLaunch({url: '/pages/index'})
-          }, 1000)
-        } else if (result == "fail") {
-          // charge 不正确或者微信小程序支付失败时会在此处返回
-          Tips.error('支付失败')
-        } else if (result == "cancel") {
-          // 微信小程序支付取消支付
-          Tips.warn('取消支付')
-        }
-      });
     }
   }
 </script>

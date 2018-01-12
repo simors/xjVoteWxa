@@ -69,11 +69,7 @@
     }
 
     async onLoad(option) {
-      if (!option.voteId) {
-        Tips.loading()
-        this.$parent.clearVoteInfo()
-        Tips.loaded()
-      } else {
+      if (option.voteId) {
         Tips.loading()
         this.voteId = option.voteId
         let voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId, updateStatus: false})

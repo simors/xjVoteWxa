@@ -51,6 +51,14 @@
     color: #CD853F;
     margin-top: 20rpx;
   }
+
+  .del-view {
+    background: #fff;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    padding-right: 12px;
+  }
 </style>
 
 <template>
@@ -79,6 +87,11 @@
         </view>
       </view>
     </view>
+
+    <view class="del-view">
+      <button class="zan-btn zan-btn--mini zan-btn--danger" @tap.stop="deleteAward">删除</button>
+    </view>
+
   </view>
 </template>
 
@@ -115,6 +128,10 @@
         let newAward = this.award
         newAward['description'] = e.detail.value
         this.$emit('updateAwards', this.index, newAward)
+      },
+
+      deleteAward() {
+        this.$emit('deleteAward', this.index)
       },
 
       async chooseAwardPhoto() {
