@@ -65,7 +65,8 @@ export default class extends wepy.app {
       'pages/vote/player',
       'pages/vote/present',
       'pages/vote/manPlayers',
-      'pages/vote/searchPlayer'
+      'pages/vote/searchPlayer',
+      'pages/vote/contact'
     ],
     window: {
       navigationBarTitleText: '小吉互动',

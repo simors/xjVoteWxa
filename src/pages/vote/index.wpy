@@ -149,7 +149,7 @@
 
       <managerBtn :voteId.sync="voteId" :show.sync="showManagerBtn" :status.sync="status"/>
 
-      <navigator class="footer" url="/pages/publish/publish">
+      <navigator class="footer" url="/pages/vote/contact">
         <view style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px">
           <image class="logo-img" src="/asset/png/logo.png" />
           <text class="zan-font-14 zan-font-bold zan-c-gray-dark">小吉互动</text>

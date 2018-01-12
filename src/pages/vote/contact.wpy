@@ -1,0 +1,90 @@
+<style lang="less">
+  @import "../../styles/vars.less";
+
+  .img-view {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .tip-view {
+    margin-top: 10px;
+    padding: 0 50px;
+    text-align: center;
+  }
+
+  .tip-text {
+    font-size: 14px;
+    color: #696668;
+  }
+
+  .btn-biew {
+    padding: 30px 12px 20px 12px;
+  }
+
+  .contact-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    border: none;
+    background: #fff;
+    position: static;
+  }
+
+  .img-style {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  .contact-text {
+    font-size: 14px;
+    color: #848383;
+  }
+</style>
+
+<template>
+  <view class="container" style="background: #fff">
+    <view class="img-view">
+      <image src="/asset/png/about_xiaojie.png" style="width: 90%" mode="widthFix"/>
+    </view>
+
+    <view class="tip-view">
+      <text class="tip-text">政企评选、才艺比拼、萌宝自拍、人气之星、摄影大赛…</text>
+    </view>
+
+    <view class="btn-biew">
+      <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="createVote">创建投票</button>
+    </view>
+
+    <button open-type="contact" class="contact-view">
+      <image class="img-style" src="/asset/png/service.png"/>
+      <text class="contact-text">联系客服</text>
+    </button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tips from '../../utils/Tips'
+
+  export default class VotePage extends wepy.page {
+    config = {
+      navigationBarTitleText: '关于我们',
+      enablePullDownRefresh: false
+    }
+
+    components = {
+    }
+
+    data = {
+    }
+
+    methods = {
+      createVote() {
+        this.$navigate({url: '/pages/publish/publishType'})
+      }
+    }
+  }
+</script>
