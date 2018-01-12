@@ -31,18 +31,18 @@
 
 <template>
   <view class="award">
-    <view class="name-view">
+    <view wx:if="{{award.awardName}}" class="name-view">
       <text class="zan-font-18 zan-c-red">{{award.awardName}}</text>
     </view>
     <view class="content-img-view">
       <image class="content-img" src="{{award.awardPhoto}}" mode="widthFix"/>
     </view>
-    <view class="padding-view">
-      <text class="zan-font-16" style="margin-right: 5px">中奖人数</text>
+    <view wx:if="{{award.winnerNum}}" class="padding-view">
+      <text class="zan-font-16" style="margin-right: 5px">获奖人数</text>
       <text class="zan-font-16 zan-c-red zan-font-bold" style="margin-right: 5px">{{award.winnerNum}}</text>
       <text class="zan-font-16">人</text>
     </view>
-    <view class="padding-view">
+    <view wx:if="{{award.description}}" class="padding-view">
       <text class="zan-font-16" style="line-height: 1.4">{{award.description}}</text>
     </view>
   </view>
