@@ -28,14 +28,49 @@
   }
 
   .title-view {
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.05);
+    width: 100%;
+  }
+
+  .title-text-view {
+    display: flex;
+    flex: 1;
     padding: 10px 12px;
+  }
+
+  .title-share-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0px;
+    position: static;
+    border: none;
+    background: transparent;
+  }
+
+  .title-share-arraw {
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-right: 16px solid rgba(255,255,255,0.50);
+    border-bottom: 16px solid transparent;
+  }
+
+  .title-btn-view {
+    background: rgba(255,255,255,0.50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    height: 32px;
+  }
+
+  .share-logo {
+    width: 28px;
+    height: 28px;
   }
 
   .item-tip-view {
@@ -115,7 +150,15 @@
       </view>
 
       <view class="title-view">
-        <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
+        <view class="title-text-view">
+          <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
+        </view>
+        <button class="title-share-view" open-type="share">
+          <view class="title-share-arraw"></view>
+          <view class="title-btn-view">
+            <image class="share-logo" src="/asset/png/share.png" />
+          </view>
+        </button>
       </view>
 
       <view class="up-down-padding">
