@@ -1,12 +1,18 @@
 <style type="less">
   .counter-down {
-    background: #fff;
+    background: #fafafa;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 5px 12px;
-    padding: 5px 0;
+    margin-top: 10px;
+    padding: 10px 0;
+    background-image:-webkit-gradient(linear,50% 0,0 100%,from(transparent), color-stop(.5,transparent),color-stop(.5,rgba(0, 0, 0, 0.05)),to(rgba(0, 0, 0, 0.05))),
+    -webkit-gradient(linear,50% 0,100% 100%,from(transparent), color-stop(.5,transparent),color-stop(.5,rgba(0, 0, 0, 0.05)),to(rgba(0, 0, 0, 0.05)));
+    background-size:10px 5px;
+    background-repeat:repeat-x;
+    background-position:0 100%;
   }
 
   .counter-view {
@@ -15,15 +21,15 @@
   }
 
   .num-vew {
-    background: #37c6c0;
-    border-radius: 2px;
-    color: #fff;
+    background: transparent;
+    color: #f8635b;
     padding: 2px 4px;
     min-width: 14px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
     text-align: center;
     line-height: 1;
+    font-size: 17px;
   }
 
   .tip-text {
@@ -35,7 +41,7 @@
 <template>
   <view>
     <view wx:if="{{beginCounter > 0}}" class="counter-down">
-      <text class="zan-font-12 zan-c-red zan-font-bold">活动于</text>
+      <text class="zan-font-14" style="color: #59534e; margin-bottom: 8px">距投票活动结束剩</text>
       <view class="counter-view">
         <view class="num-vew">
           {{counter.days}}
@@ -54,7 +60,6 @@
         </view>
         <text class="zan-font-12 zan-c-gray-dark tip-text">秒</text>
       </view>
-      <text class="zan-font-12 zan-c-red zan-font-bold">后结束</text>
     </view>
     <view wx:elif="{{beginCounter < 0}}" class="counter-down">
       <text class="zan-font-20 zan-c-red zan-font-bold">活动已结束</text>

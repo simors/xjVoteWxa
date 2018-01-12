@@ -21,8 +21,9 @@
   }
 
   .vote-btn {
-    background: @color-secondary;
     border-color: @color-primary;
+    background-image: linear-gradient(136deg, #FF9087 0%, #F8635B 100%);
+    border-radius: 10rpx;
   }
 </style>
 

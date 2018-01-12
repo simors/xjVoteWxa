@@ -2,8 +2,8 @@
   .players-view {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 10px 0;
+    justify-content: space-between;
+    padding: 10px 12px;
   }
 
   .player-item-view {
@@ -42,8 +42,10 @@
   }
 
   .loadmore-tip {
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
 </style>
@@ -60,7 +62,7 @@
               <text class="zan-font-12 zan-font-bold zan-ellipsis">{{item.name}}</text>
             </view>
             <view>
-              <button class="zan-btn zan-btn--small zan-btn--primary">投票</button>
+              <button class="zan-btn zan-btn--small zan-btn--primary vote-btn">投票</button>
             </view>
           </view>
         </view>
