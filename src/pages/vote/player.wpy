@@ -137,6 +137,10 @@
 
       'toPresent': () => {
         this.$navigate({url: '/pages/vote/present?playerId=' + this.player.id})
+      },
+
+      'toAbout': () => {
+        this.$navigate({url: '/pages/vote/contact'})
       }
     }
 

@@ -45,12 +45,15 @@
       <view class="flex flex-column items-center justify-center" @tap.stop="submitVote" hover-stay-time="1500">
         <image class="big-img" src="/asset/gif/vote_active.gif" mode="aspectFill" />
       </view>
-      <view class="flex flex-column items-center justify-center" @tap.stop="toPresentPage">
-        <view wx:if="{{enablePresent}}" class="flex flex-column items-center justify-center">
+      <view class="flex flex-column items-center justify-center" @tap.stop="judgeJump">
+        <view wx:if="{{enablePresent && voteType == 1}}" class="flex flex-column items-center justify-center">
           <image class="toolbar-image" src="/asset/svg/gift.svg" mode="aspectFill" />
           <view class="toolbar-fontsize">礼物</view>
         </view>
-        <view wx:else class="flex flex-column items-center justify-center"></view>
+        <view wx:else class="flex flex-column items-center justify-center">
+          <image class="toolbar-image" src="/asset/png/about.png" mode="aspectFill" />
+          <view class="toolbar-fontsize">关于</view>
+        </view>
       </view>
     </view>
   </view>
@@ -67,6 +70,7 @@
     }
 
     data = {
+      voteType: null
     }
 
     methods = {
@@ -78,8 +82,12 @@
         }
       },
 
-      toPresentPage() {
-        this.$emit('toPresent')
+      judgeJump() {
+        if (this.enablePresent && this.voteType == 1) {
+          this.$emit('toPresent')
+        } else {
+          this.$emit('toAbout')
+        }
       },
 
       submitVote() {
@@ -88,6 +96,8 @@
     }
 
     onLoad() {
+      let voteInfo = wepy.$instance.globalData.activeVote
+      this.voteType = voteInfo.type
     }
   }
 </script>
