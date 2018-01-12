@@ -170,7 +170,7 @@
             'playerId': this.player.id,
             'giftId': this.checkedGift.id,
             'giftNum': this.buyNum,
-            'ballot': this.checkedGift.ballot
+            'ballot': Number(this.checkedGift.ballot) * Number(this.buyNum)
           },
           subject: '赠送礼品'
         })
