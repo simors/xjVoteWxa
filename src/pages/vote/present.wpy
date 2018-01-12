@@ -87,6 +87,10 @@
         <text wx:else class="zan-font-14 zan-c-red">未选择礼物</text>
       </view>
 
+      <view style="padding: 10px 12px;">
+        <text class="zan-font-12 zan-c-red">温馨提示：本商品为即时生效的虚拟商品，不支持退款。请不要攀比！</text>
+      </view>
+
       <view class="bug-num-view">
         <text class="zan-font-14 zan-font-bold">购买数量：</text>
         <zanQuantity :quantity.sync="buyNum" :min="min" :max="max" componentId="giftcomp" size="small"/>
