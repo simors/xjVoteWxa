@@ -106,7 +106,7 @@
       voteDetail: null,
       status: null,
       applyName: null,
-      declaration: null,
+      declaration: "",
       album: [],
       selectedTabName: '报名'
     }
@@ -178,10 +178,6 @@
     inputValidation() {
       if (!this.applyName || this.applyName.length === 0) {
         Tips.alert('请填写姓名')
-        return false
-      }
-      if (!this.declaration || this.declaration.length === 0) {
-        Tips.alert('请填写参赛宣言')
         return false
       }
       if (this.album.length === 0) {
