@@ -33,12 +33,13 @@
     justify-content: center;
     background: rgba(0, 0, 0, 0.05);
     width: 100%;
+    min-height: 40px;
   }
 
   .title-text-view {
     display: flex;
     flex: 1;
-    padding: 10px 12px;
+    padding: 5px 5px 5px 12px;
   }
 
   .title-share-view {
@@ -49,6 +50,7 @@
     position: static;
     border: none;
     background: transparent;
+    padding: 0;
   }
 
   .title-share-arraw {
@@ -123,7 +125,7 @@
 
   .apply-btn-biew {
     background: rgba(0, 0, 0, 0.06);
-    padding: 30px 12px 20px 12px;
+    padding: 16px 12px 20px 12px;
   }
 
   .footer {
