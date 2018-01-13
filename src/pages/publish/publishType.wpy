@@ -1,19 +1,65 @@
 <style lang="less">
+  .img-view {
+    display: flex;
+    justify-content: center;
+  }
+
+  .img-style {
+    width: 60%;
+  }
+
+  .vote-type-view {
+    margin: 10px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tip-text {
+    font-size: 17px;
+    color: #696668;
+    padding: 10px 0 15px 0;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    text-align: center;
+  }
+
+  .tip-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    text-align: center;
+  }
+
+  .tip-item-text {
+    font-size: 17px;
+    color: #080808;
+  }
 </style>
 
 <template>
   <view class="container">
-    <text>选择投票类型</text>
-    <radio-group bindchange="typeChange">
-      <view>
-        <radio value="1"/>有礼品投票
-      </view>
-      <view>
-        <radio value="2"/>无礼品投票
-      </view>
-    </radio-group>
+    <view class="img-view">
+      <image class="img-style" src="/asset/png/select_vote.png" mode="widthFix"/>
+    </view>
+    <view class="vote-type-view">
+      <text class="tip-text">选择投票类型</text>
+      <radio-group style="width: 100%" bindchange="typeChange">
+        <view class="tip-item">
+          <radio value="1">
+            <text class="tip-item-text">有礼品投票</text>
+          </radio>
+        </view>
+        <view class="tip-item">
+          <radio value="2">
+            <text class="tip-item-text">无礼品投票</text>
+          </radio>
+        </view>
+      </radio-group>
+    </view>
 
-    <view class="zan-btns">
+    <view class="zan-btns" style="margin-top: 30px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
   </view>
@@ -21,6 +67,7 @@
 
 <script>
   import wepy from 'wepy'
+  import Tips from '../../utils/Tips'
 
   export default class PublishType extends wepy.page {
     config = {
@@ -43,6 +90,10 @@
       },
 
       jumpNext() {
+        if (!this.type) {
+          Tips.alert('请选择类型')
+          return
+        }
         wx.redirectTo({
           url: '/pages/publish/publish'
         })
