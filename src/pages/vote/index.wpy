@@ -47,10 +47,13 @@
     align-items: center;
     justify-content: center;
     margin-right: 0px;
-    position: static;
     border: none;
     background: transparent;
     padding: 0;
+  }
+
+  button::after{
+    border: none;
   }
 
   .title-share-arraw {

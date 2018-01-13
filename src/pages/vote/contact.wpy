@@ -22,14 +22,18 @@
     padding: 30px 12px 20px 12px;
   }
 
+  button::after{
+    border: none;
+  }
+
   .contact-view {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+    margin-bottom: 20px;
     border: none;
     background: #fff;
-    position: static;
   }
 
   .img-style {
