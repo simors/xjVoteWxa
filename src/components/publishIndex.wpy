@@ -62,6 +62,7 @@
 
   .picker {
     width: 200px;
+    min-height: 20px;
   }
 
 </style>
@@ -85,7 +86,7 @@
         <text class="zan-form__title">结束日期</text>
         <picker class="picker-style" mode="date" value="{{endDate}}" start="{{startDateInput}}" end="{{endDateInput}}" bindchange="bindDateChange">
           <view class="picker">
-            {{endDate}}
+            {{endDate === '' ? '请选择结束日期' : endDate}}
           </view>
         </picker>
       </view>
@@ -125,7 +126,7 @@
       voteTitle: null,
       noticeContent: null,
       ruleContent: null,
-      endDate: null,
+      endDate: '',
       startDateInput: null,
       endDateInput: null
     }
@@ -149,10 +150,7 @@
 
         this.startDateInput = DateTime.addDate(1)
         this.endDateInput = DateTime.addDate(60)
-        if (wepy.$instance.globalData.editVote.endDate === null) {
-          this.endDate = DateTime.addDate(5)
-          wepy.$instance.globalData.editVote.endDate = this.endDate
-        } else {
+        if (wepy.$instance.globalData.editVote.endDate !== null) {
           this.endDate = wepy.$instance.globalData.editVote.endDate
         }
 
@@ -211,6 +209,11 @@
 
       if (!this.voteTitle) {
         Tips.alert('未输入活动名称')
+        return false
+      }
+
+      if (!this.endDate || this.endDate === '') {
+        Tips.alert('未设置结束日期')
         return false
       }
 
