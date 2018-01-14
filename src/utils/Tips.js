@@ -181,11 +181,12 @@ export default class Tips {
     })
   }
 
-  static share (title, url, desc) {
+  static share (title, url, desc, imageUrl) {
     return {
       title: title,
       path: url,
       desc: desc,
+      imageUrl: imageUrl,
       success: function (res) {
         Tips.toast('分享成功')
       }

@@ -135,15 +135,17 @@
     props = {
       playerName: String,
       playerId: String,
-      number: Number
+      number: Number,
+      cover: String
     }
 
     data = {
       showDialog: false,
       animationData: {},
+      tip: ''
     }
     methods = {
-      toggleDialog() {
+      toggleDialog(tip) {
         this.showDialog = !this.showDialog
         let animation = wepy.createAnimation({
           duration: 400,
@@ -159,6 +161,7 @@
               this.animationData = animation.export()
               this.$apply()
             }).exec()
+        this.tip = tip
       }
     }
 
@@ -166,7 +169,8 @@
       let voteInfo = wepy.$instance.globalData.activeVote
       const title = this.number + '号 ' + this.playerName + ' ' + voteInfo.title + '，邀请您参与投票';
       const url = '/pages/vote/player?playerId=' + this.playerId + '&scene=share';
-      return Tips.share(title, url, title);
+      const imageUrl = this.cover
+      return Tips.share(title, url, title, imageUrl);
     }
 
     hideDialog() {
