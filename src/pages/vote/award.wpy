@@ -1,6 +1,6 @@
 <style lang="less">
-  .padding-view {
-    padding: 10px 12px;
+  .rule-view {
+    padding: 20px 12px;
   }
 
   .up-down-padding {
@@ -97,8 +97,8 @@
       <awardShow :award.sync="item"/>
     </repeat>
 
-    <view class="padding-view">
-      <text class="zan-font-14 zan-font-bold">
+    <view class="rule-view">
+      <text class="zan-font-14 zan-font-bold" style="display: inline-block;">
         活动须知：
       </text>
       <text class="zan-font-12 zan-c-gray-darker">
