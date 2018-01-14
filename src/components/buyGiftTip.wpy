@@ -141,10 +141,9 @@
     data = {
       showDialog: false,
       animationData: {},
-      tip: ''
     }
     methods = {
-      toggleDialog(tip) {
+      toggleDialog() {
         this.showDialog = !this.showDialog
         let animation = wepy.createAnimation({
           duration: 400,
@@ -160,7 +159,6 @@
               this.animationData = animation.export()
               this.$apply()
             }).exec()
-        this.tip = tip
       }
     }
 
