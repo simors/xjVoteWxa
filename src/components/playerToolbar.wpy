@@ -47,7 +47,7 @@
       </view>
       <view class="flex flex-column items-center justify-center" @tap.stop="judgeJump">
         <view wx:if="{{enablePresent && voteType == 1}}" class="flex flex-column items-center justify-center">
-          <image class="toolbar-image" src="/asset/svg/gift.svg" mode="aspectFill" />
+          <image class="toolbar-image" src="/asset/gif/gift.gif" mode="aspectFill" />
           <view class="toolbar-fontsize">礼物</view>
         </view>
         <view wx:else class="flex flex-column items-center justify-center">
