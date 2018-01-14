@@ -197,10 +197,6 @@
       this.$invoke('buyGiftTip', 'hideDialog')
     }
 
-    onReachBottom() {
-      this.$invoke('recvGifts', 'moreRecvGifts')
-    }
-
     onPullDownRefresh() {
       this.refreshPlayerGifts()
     }
