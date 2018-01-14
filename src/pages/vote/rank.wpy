@@ -2,13 +2,94 @@
   .up-down-padding {
     padding: 10px 0 0 0;
   }
+
+  .cover-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 700rpx;
+    overflow: hidden;
+  }
+
+  .cover-img {
+    width: 100%;
+  }
+
+  .title-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .title-text-view {
+    display: flex;
+    flex: 1;
+    padding: 5px 5px 5px 12px;
+  }
+
+  .title-share-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0px;
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+
+  button::after{
+    border: none;
+  }
+
+  .title-share-arraw {
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-right: 16px solid rgba(255,255,255,0.50);
+    border-bottom: 16px solid transparent;
+  }
+
+  .title-btn-view {
+    background: rgba(255,255,255,0.50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    height: 32px;
+  }
+
+  .share-logo {
+    width: 28px;
+    height: 28px;
+  }
 </style>
 
 <template>
   <view class="container">
-    <view class="up-down-padding">
-      <timerCounterDown :beginCounter.sync="counter"/>
+    <view class="cover-view">
+      <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
     </view>
+
+    <view class="title-view">
+      <view class="title-text-view">
+        <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
+      </view>
+      <button class="title-share-view" open-type="share">
+        <view class="title-share-arraw"></view>
+        <view class="title-btn-view">
+          <image class="share-logo" src="/asset/png/share.png" />
+        </view>
+      </button>
+    </view>
+
+    <view class="up-down-padding">
+      <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
+    </view>
+
+    <timerCounterDown :beginCounter.sync="counter"/>
 
     <view>
       <repeat for="{{rank}}" key="index" index="index" item="item">
@@ -30,6 +111,7 @@
   import Tips from '../../utils/Tips'
   import TimerCounterDown from '../../components/timerCountDown'
   import RankItem from '../../components/rankItem'
+  import VoteStat from '../../components/voteStat'
 
   export default class RankPage extends wepy.page {
     config = {
@@ -40,7 +122,8 @@
     components = {
       voteTabbar: VoteTabbar,
       timerCounterDown: TimerCounterDown,
-      rankItem: RankItem
+      rankItem: RankItem,
+      voteStat: VoteStat
     }
 
     data = {
@@ -48,7 +131,10 @@
       counter: 0,
       status: null,
       rank: null,
-      selectedTabName: '榜单'
+      selectedTabName: '榜单',
+      applyNum: null,
+      voteNum: null,
+      pv: null
     }
 
     async onLoad() {
@@ -60,11 +146,20 @@
 
       this.voteDetail = voteInfo
       this.status = voteInfo.status
+      this.applyNum = voteInfo.applyNum
+      this.voteNum = voteInfo.voteNum
+      this.pv = voteInfo.pv
       this.$apply()
     }
 
     onUnload() {
       this.$invoke('timerCounterDown', 'clearTimer')
+    }
+
+    onShareAppMessage () {
+      const title = this.voteDetail.title;
+      const url = '/pages/vote/index?voteId=' + this.voteDetail.id;
+      return Tips.share(title, url, title);
     }
   }
 </script>

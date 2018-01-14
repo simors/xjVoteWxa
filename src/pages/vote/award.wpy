@@ -2,10 +2,97 @@
   .padding-view {
     padding: 10px 12px;
   }
+
+  .up-down-padding {
+    padding: 10px 0 0 0;
+  }
+
+  .cover-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 700rpx;
+    overflow: hidden;
+  }
+
+  .cover-img {
+    width: 100%;
+  }
+
+  .title-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .title-text-view {
+    display: flex;
+    flex: 1;
+    padding: 5px 5px 5px 12px;
+  }
+
+  .title-share-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0px;
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+
+  button::after{
+    border: none;
+  }
+
+  .title-share-arraw {
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-right: 16px solid rgba(255,255,255,0.50);
+    border-bottom: 16px solid transparent;
+  }
+
+  .title-btn-view {
+    background: rgba(255,255,255,0.50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    height: 32px;
+  }
+
+  .share-logo {
+    width: 28px;
+    height: 28px;
+  }
 </style>
 
 <template>
   <view class="container">
+    <view class="cover-view">
+      <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
+    </view>
+
+    <view class="title-view">
+      <view class="title-text-view">
+        <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
+      </view>
+      <button class="title-share-view" open-type="share">
+        <view class="title-share-arraw"></view>
+        <view class="title-btn-view">
+          <image class="share-logo" src="/asset/png/share.png" />
+        </view>
+      </button>
+    </view>
+
+    <view class="up-down-padding">
+      <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
+    </view>
+
     <repeat for="{{voteDetail.awards}}" key="index" index="index" item="item">
       <awardShow :award.sync="item"/>
     </repeat>
@@ -30,6 +117,7 @@
   import VoteTabbar from '../../components/voteTabbar'
   import Tips from '../../utils/Tips'
   import AwardShow from '../../components/awardShow'
+  import VoteStat from '../../components/voteStat'
 
   export default class AwardPage extends wepy.page {
     config = {
@@ -39,14 +127,18 @@
 
     components = {
       voteTabbar: VoteTabbar,
-      awardShow: AwardShow
+      awardShow: AwardShow,
+      voteStat: VoteStat
     }
 
     data = {
       voteDetail: null,
       status: null,
       ruleContent: null,
-      selectedTabName: '奖品'
+      selectedTabName: '奖品',
+      applyNum: null,
+      voteNum: null,
+      pv: null
     }
 
     onLoad() {
@@ -59,7 +151,16 @@
       if (!this.ruleContent || this.ruleContent.length == 0) {
         this.ruleContent = '1，活动期间每个微信号每天在同一个投票活动中可投一票。\n2，请选手积极分享微信群，为扩大单位知名度出力。\n3，比赛成绩按照票数评选，票数最多，排名第一。\n4，活动严禁刷票，投票系统一旦检测出刷票行为，将取消比赛资格。\n5，虚拟礼物为用户自愿赠送，独自承担责任，请不要蓄意攀比，恶意竞争，购买后概不退款。\n6，平台只承载为活动单位的广告功能，不负任何法律责任。'
       }
+      this.applyNum = voteInfo.applyNum
+      this.voteNum = voteInfo.voteNum
+      this.pv = voteInfo.pv
       this.$apply()
+    }
+
+    onShareAppMessage () {
+      const title = this.voteDetail.title;
+      const url = '/pages/vote/index?voteId=' + this.voteDetail.id;
+      return Tips.share(title, url, title);
     }
   }
 </script>

@@ -22,16 +22,28 @@
     padding: 10px 12px;
   }
 
-  .number-tip-view {
-    background: #ff9d4e;
-    padding: 1px 5px;
-    border-radius: 5px;
-    margin-right: 5px;
+  .cover-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 700rpx;
+    overflow: hidden;
   }
+
+  .cover-img {
+    width: 100%;
+  }
+
 </style>
 
 <template>
   <view class="container" style="background: #fff">
+    <view class="cover-view">
+      <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
+    </view>
+
+    <timerCounterDown :beginCounter.sync="counter"/>
+
     <repeat for="{{player.album}}" key="index" index="index" item="item">
       <view class="padding-view">
         <image src="{{item}}" class="slide-image" mode="widthFix"/>
@@ -74,6 +86,7 @@
   import * as errno from '../../utils/errno'
   import BuyGiftTip from '../../components/buyGiftTip'
   import RecvGifts from '../../components/recvGifts'
+  import TimerCounterDown from '../../components/timerCountDown'
 
   export default class PlayerPage extends wepy.page {
     config = {
@@ -82,6 +95,7 @@
 
     data = {
       voteId: null,
+      voteDetail: null,
       playerId: null,
       player: null,
       cover: null,
@@ -91,14 +105,16 @@
       giftNum: null,
       pv: null,
       scene: null,
-      enablePresent: false
+      enablePresent: false,
+      counter: 0
     }
 
     components = {
       playerStat: PlayerStat,
       playerToolbar: PlayerToolbar,
       buyGiftTip: BuyGiftTip,
-      recvGifts: RecvGifts
+      recvGifts: RecvGifts,
+      timerCounterDown: TimerCounterDown
     }
 
     methods = {
@@ -147,17 +163,17 @@
       this.player = this.$parent.getGlobalPlayer(playerId)
       if (!this.player) {
         this.player = await vote.fetchPlayerById({playerId: playerId})
-        let voteInfo = await vote.fetchVoteInfoById({voteId: this.player.voteId, updateStatus: true})
-        if (voteInfo) {
-          wepy.$instance.globalData.activeVote = voteInfo
-          this.enablePresent = !!voteInfo.enablePresent
+        this.voteDetail = await vote.fetchVoteInfoById({voteId: this.player.voteId, updateStatus: true})
+        if (this.voteDetail) {
+          wepy.$instance.globalData.activeVote = this.voteDetail
+          this.enablePresent = !!this.voteDetail.enablePresent
         }
 
         vote.incVotePv({voteId: this.player.voteId})
       } else {
-        let voteInfo = wepy.$instance.globalData.activeVote
-        if (voteInfo) {
-          this.enablePresent = !!voteInfo.enablePresent
+        this.voteDetail = wepy.$instance.globalData.activeVote
+        if (this.voteDetail) {
+          this.enablePresent = !!this.voteDetail.enablePresent
         }
       }
       this.playerId = playerId
@@ -168,6 +184,7 @@
       this.voteNum = this.player.voteNum
       this.giftNum = this.player.giftNum
       this.pv = this.player.pv
+      this.counter = this.voteDetail.counter
 
       await this.$parent.getUserInfo();
       vote.incPlayerPv({playerId: playerId})
