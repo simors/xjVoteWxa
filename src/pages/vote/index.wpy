@@ -186,7 +186,7 @@
 
       <votePlayers :voteId.sync="voteId"/>
 
-      <view class="item-tip-view" style="background-image: url('/asset/png/bg_tittle_org.png');">
+      <view class="item-tip-view" style="background-image: url('http://ac-l3cae9l7.clouddn.com/531efb20f6531c168151.png');">
         <text class="item-tip-text">主办方介绍</text>
       </view>
 
