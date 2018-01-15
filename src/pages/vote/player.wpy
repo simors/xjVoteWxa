@@ -241,5 +241,9 @@
       this.$invoke('recvGifts', 'refreshRecvGifts')
       this.$apply()
     }
+
+    onUnload() {
+      this.$invoke('timerCounterDown', 'clearTimer')
+    }
   }
 </script>
