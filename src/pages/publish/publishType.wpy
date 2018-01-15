@@ -4,8 +4,8 @@
     justify-content: center;
   }
 
-  .img-style {
-    width: 60%;
+  .header-img-style {
+    width: 50%;
   }
 
   .vote-type-view {
@@ -36,12 +36,37 @@
     font-size: 17px;
     color: #080808;
   }
+
+  button::after{
+    border: none;
+  }
+
+  .contact-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: none;
+    background: #fff;
+  }
+
+  .img-style {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  .contact-text {
+    font-size: 14px;
+    color: #848383;
+  }
 </style>
 
 <template>
   <view class="container">
     <view class="img-view">
-      <image class="img-style" src="/asset/png/select_vote.png" mode="widthFix"/>
+      <image class="header-img-style" src="/asset/png/select_vote.png" mode="widthFix"/>
     </view>
     <view class="vote-type-view">
       <text class="tip-text">选择投票类型</text>
@@ -62,6 +87,15 @@
     <view class="zan-btns" style="margin-top: 30px">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="jumpNext">下一步</button>
     </view>
+
+    <view style="padding: 20px 12px">
+      <text class="zan-font-14 zan-c-gray-dark">提示：有礼品投票需要通过授权才能开通，详情请咨询客服；无礼品投票可免费创建。所有投票活动都必须保证真实合法！两种模式都全程提供免费人工协助！</text>
+    </view>
+
+    <button open-type="contact" class="contact-view">
+      <image class="img-style" src="/asset/png/service.png"/>
+      <text class="contact-text">联系客服</text>
+    </button>
   </view>
 </template>
 
