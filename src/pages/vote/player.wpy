@@ -162,7 +162,7 @@
             Tips.error('今日已投票')
             if (this.enablePresent) {
               setTimeout(() => {
-                this.$invoke('buyGiftTip', 'toggleDialog', '今天的选票已经用完啦！尝试送个礼物吧！')
+                this.$invoke('buyGiftTip', 'toggleDialog', '今天的选票已经用完啦！分享给其他小伙伴来支持我吧！')
               }, 1500)
             }
           } else if (e.code === errno.ERROR_VOTE_WAS_DONE) {

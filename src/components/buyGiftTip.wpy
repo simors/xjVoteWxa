@@ -117,7 +117,7 @@
         <text class="present-tip-text">一次可以转发9个群哦！</text>
         <button open-type="share" class="share-btn">
           <view class="present-view">
-            <text class="present-text">帮TA拉票</text>
+            <text class="present-text">为我拉票</text>
           </view>
         </button>
       </view>
