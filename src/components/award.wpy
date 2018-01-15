@@ -37,8 +37,6 @@
       <text class="add-btn-text">添加奖项</text>
     </view>
 
-    <publishModel/>
-
     <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
       <button wx:if="{{type == 1}}" class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpNext">下一步</button>
@@ -51,14 +49,12 @@
   import wepy from 'wepy'
   import Tips from '../utils/Tips'
   import AwardInput from './awardInput'
-  import PublishModel from './publishModel'
   import vote from '../cloud/vote'
 
   export default class Award extends wepy.component {
 
     components = {
-      awardInput: AwardInput,
-      publishModel: PublishModel
+      awardInput: AwardInput
     }
 
     events = {
@@ -126,13 +122,8 @@
         }
         this.payDisabled = true
         this.$apply()
-        let userInfo = wepy.$instance.globalData.userInfo
-        if (userInfo.agentLevel === 1) {
-          this.$invoke('publishModel', 'togglePopup')
-        } else {
-          Tips.loading('正在提交')
-          await this.submitVote()
-        }
+        Tips.loading('正在提交')
+        await this.submitVote()
         this.payDisabled = false
         this.$apply()
       }
