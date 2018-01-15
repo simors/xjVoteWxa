@@ -101,7 +101,10 @@
 
   .share-btn {
     background: #fff;
-    position: static;
+    border: none;
+  }
+
+  button::after{
     border: none;
   }
 </style>
@@ -166,6 +169,10 @@
     }
 
     onShareAppMessage () {
+      if (!this.playerId) {
+        Tips.error('分享失败')
+        return
+      }
       let voteInfo = wepy.$instance.globalData.activeVote
       const title = this.number + '号 ' + this.playerName + ' ' + voteInfo.title + '，邀请您参与投票';
       const url = '/pages/vote/player?playerId=' + this.playerId + '&scene=share';

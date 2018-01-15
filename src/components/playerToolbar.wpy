@@ -61,6 +61,7 @@
 
 <script>
   import wepy from 'wepy';
+  import vote from '../cloud/vote'
 
   export default class PlayerToolbar extends wepy.component {
     props = {
@@ -70,7 +71,18 @@
     }
 
     data = {
-      voteType: null
+      voteType: 2
+    }
+
+    watch = {
+      'voteId': async (newValue, oldValue) => {
+        if (newValue) {
+          let voteInfo = undefined
+          voteInfo = await vote.fetchVoteInfoById({voteId: newValue})
+          wepy.$instance.globalData.activeVote = voteInfo
+          this.voteType = voteInfo.type
+        }
+      }
     }
 
     methods = {
@@ -95,9 +107,17 @@
       }
     }
 
-    onLoad() {
+    async onLoad() {
       let voteInfo = wepy.$instance.globalData.activeVote
-      this.voteType = voteInfo.type
+      if (voteInfo) {
+        this.voteType = voteInfo.type
+      } else {
+        if (this.voteId) {
+          voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId})
+          wepy.$instance.globalData.activeVote = voteInfo
+          this.voteType = voteInfo.type
+        }
+      }
     }
   }
 </script>
