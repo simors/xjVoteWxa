@@ -49,52 +49,54 @@
 
 <template>
   <view class="container" style="background: #fff">
-    <view class="cover-view">
-      <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
-    </view>
+    <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
+      <view class="cover-view">
+        <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
+      </view>
 
-    <timerCounterDown :beginCounter.sync="counter"/>
+      <timerCounterDown :beginCounter.sync="counter"/>
 
-    <repeat for="{{player.album}}" key="index" index="index" item="item">
+      <repeat for="{{player.album}}" key="index" index="index" item="item">
+        <view class="padding-view">
+          <image lazy-load src="{{item}}" class="slide-image" mode="widthFix"/>
+        </view>
+      </repeat>
+
+      <view class="header-view">
+        <image lazy-load class="header-img" src="{{player.album[0]}}" mode="aspectFill"/>
+        <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
+      </view>
+
       <view class="padding-view">
-        <image src="{{item}}" class="slide-image" mode="widthFix"/>
+        <view>
+          <text class="zan-font-16">{{player.declaration}}</text>
+        </view>
       </view>
-    </repeat>
 
-    <view class="header-view">
-      <image class="header-img" src="{{player.album[0]}}" mode="aspectFill"/>
-      <text class="zan-font-18 zan-font-bold">{{player.name}}</text>
-    </view>
-
-    <view class="padding-view">
-      <view>
-        <text class="zan-font-16">{{player.declaration}}</text>
+      <view style="margin-top: 10px">
+        <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
       </view>
-    </view>
 
-    <view style="margin-top: 10px">
-      <playerStat :number.sync="number" :voteNum.sync="voteNum" :giftNum.sync="giftNum" :pv.sync="pv"/>
-    </view>
-
-    <view wx:if="{{enablePresent}}" class="padding-view">
-      <recvGifts :playerId.sync="playerId"/>
-    </view>
-
-    <buyGiftTip :number.sync="number" :playerId.sync="playerId" :playerName.sync="playerName" :cover.sync="cover"/>
-
-    <navigator class="footer" url="/pages/vote/contact">
-      <view style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px">
-        <image class="logo-img" src="/asset/png/logo.png" />
-        <text class="zan-font-14 zan-font-bold zan-c-gray-dark">小吉互动</text>
+      <view wx:if="{{enablePresent}}" class="padding-view">
+        <recvGifts :playerId.sync="playerId"/>
       </view>
-      <view style="display: flex; align-items: center; justify-content: center">
-        <text class="zan-font-14 zan-c-gray-dark">本活动由小吉互动提供技术支持</text>
-      </view>
-    </navigator>
 
-    <view style="height: 180rpx; background: transparent"/>
+      <buyGiftTip :number.sync="number" :playerId.sync="playerId" :playerName.sync="playerName" :cover.sync="cover"/>
 
-    <playerToolbar :voteId.sync="voteId" :scene.sync="scene" :enablePresent.sync="enablePresent"/>
+      <navigator class="footer" url="/pages/vote/contact">
+        <view style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px">
+          <image lazy-load class="logo-img" src="/asset/png/logo.png" />
+          <text class="zan-font-14 zan-font-bold zan-c-gray-dark">小吉互动</text>
+        </view>
+        <view style="display: flex; align-items: center; justify-content: center">
+          <text class="zan-font-14 zan-c-gray-dark">本活动由小吉互动提供技术支持</text>
+        </view>
+      </navigator>
+
+      <view style="height: 180rpx; background: transparent"/>
+
+      <playerToolbar :voteId.sync="voteId" :scene.sync="scene" :enablePresent.sync="enablePresent"/>
+    </scroll-view>
   </view>
 </template>
 

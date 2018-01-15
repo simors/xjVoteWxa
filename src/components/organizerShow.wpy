@@ -23,7 +23,7 @@
         <text class="zan-font-16 content-text" style="line-height: 1.4">{{item.content}}</text>
       </view>
       <view wx:elif="{{item.type==='image'}}">
-        <image class="content-img" src="{{item.url}}" mode="widthFix"/>
+        <image lazy-load class="content-img" src="{{item.url}}" mode="widthFix"/>
       </view>
     </repeat>
   </view>

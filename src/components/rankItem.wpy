@@ -6,7 +6,7 @@
   <view class="zan-panel">
     <navigator class="zan-card" url="/pages/vote/player?playerId={{player.id}}&scene=inner">
       <view class="zan-card__thumb">
-        <image class="zan-card__img" src="{{player.album[0]}}" mode="widthFix"></image>
+        <image lazy-load class="zan-card__img" src="{{player.album[0]}}" mode="widthFix"></image>
       </view>
       <view class="zan-card__detail">
         <view class="zan-card__detail-row">

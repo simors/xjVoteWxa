@@ -54,7 +54,7 @@
   <view class="players-view">
     <repeat for="{{players}}" key="index" index="index" item="item">
       <navigator class="player-item-view" url="/pages/vote/player?playerId={{item.id}}&scene=inner">
-        <image src="{{item.album[0]}}" class="player-img" mode="aspectFill"/>
+        <image lazy-load src="{{item.album[0]}}" class="player-img" mode="aspectFill"/>
         <view style="width: 100%">
           <view class="player-text-view">
             <view style="display: flex; flex-direction: column;width: 144rpx">

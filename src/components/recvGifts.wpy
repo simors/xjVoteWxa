@@ -27,7 +27,7 @@
   <view>
     <repeat for="{{gifts}}" key="index" index="index" item="item">
       <view class="gift-item">
-        <image class="avatar-img" src="{{item.user.avatar}}" mode="aspectFit"/>
+        <image lazy-load class="avatar-img" src="{{item.user.avatar}}" mode="aspectFit"/>
         <view style="display: flex; flex-direction: column; justify-content: center">
           <text class="zan-font-12">{{item.user.nickname}}送了{{item.giftNum}}个{{item.gift.name}}</text>
           <text class="zan-font-12 zan-c-gray" style="margin-top: 8px">{{item.createdAt}}</text>

@@ -80,47 +80,49 @@
 
 <template>
   <view class="container">
-    <view class="cover-view">
-      <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
-    </view>
-
-    <view class="title-view">
-      <view class="title-text-view">
-        <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
+    <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
+      <view class="cover-view">
+        <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
       </view>
-      <button class="title-share-view" open-type="share">
-        <view class="title-share-arraw"></view>
-        <view class="title-btn-view">
-          <image class="share-logo" src="/asset/png/share.png" />
+
+      <view class="title-view">
+        <view class="title-text-view">
+          <text class="zan-font-16 zan-font-bold zan-ellipsis--l2">{{voteDetail.title}}</text>
         </view>
-      </button>
-    </view>
-
-    <view class="up-down-padding">
-      <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
-    </view>
-
-    <timerCounterDown :beginCounter.sync="counter"/>
-
-    <view>
-      <repeat for="{{rank}}" key="index" index="index" item="item">
-        <rankItem :rank="index" :player="item" />
-      </repeat>
-    </view>
-
-    <navigator class="footer" url="/pages/vote/contact">
-      <view style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px">
-        <image class="logo-img" src="/asset/png/logo.png" />
-        <text class="zan-font-14 zan-font-bold zan-c-gray-dark">小吉互动</text>
+        <button class="title-share-view" open-type="share">
+          <view class="title-share-arraw"></view>
+          <view class="title-btn-view">
+            <image lazy-load class="share-logo" src="/asset/png/share.png" />
+          </view>
+        </button>
       </view>
-      <view style="display: flex; align-items: center; justify-content: center">
-        <text class="zan-font-14 zan-c-gray-dark">本活动由小吉互动提供技术支持</text>
+
+      <view class="up-down-padding">
+        <voteStat :applyNum.sync="applyNum" :voteNum.sync="voteNum" :pv.sync="pv"/>
       </view>
-    </navigator>
 
-    <view style="height: 120rpx; background: transparent"/>
+      <timerCounterDown :beginCounter.sync="counter"/>
 
-    <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
+      <view>
+        <repeat for="{{rank}}" key="index" index="index" item="item">
+          <rankItem :rank="index" :player="item" />
+        </repeat>
+      </view>
+
+      <navigator class="footer" url="/pages/vote/contact">
+        <view style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px">
+          <image lazy-load class="logo-img" src="/asset/png/logo.png" />
+          <text class="zan-font-14 zan-font-bold zan-c-gray-dark">小吉互动</text>
+        </view>
+        <view style="display: flex; align-items: center; justify-content: center">
+          <text class="zan-font-14 zan-c-gray-dark">本活动由小吉互动提供技术支持</text>
+        </view>
+      </navigator>
+
+      <view style="height: 120rpx; background: transparent"/>
+
+      <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
+    </scroll-view>
   </view>
 </template>
 

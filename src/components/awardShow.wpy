@@ -35,7 +35,7 @@
       <text class="zan-font-18 zan-c-red">{{award.awardName}}</text>
     </view>
     <view class="content-img-view">
-      <image class="content-img" src="{{award.awardPhoto}}" mode="widthFix"/>
+      <image lazy-load class="content-img" src="{{award.awardPhoto}}" mode="widthFix"/>
     </view>
     <view wx:if="{{award.winnerNum}}" class="padding-view">
       <text class="zan-font-16" style="margin-right: 5px">获奖人数</text>
