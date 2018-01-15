@@ -16,6 +16,10 @@
 
 <template>
   <view class="page-view">
+    <view style="padding: 10px 12px">
+      <text class="zan-font-14 zan-c-red">提示：选择下方礼品，最多选择6个！</text>
+    </view>
+
     <checkbox-group>
       <view class="gifts-view">
         <repeat for="{{gifts}}" key="index" index="index" item="item">
@@ -63,6 +67,10 @@
     events = {
       'checkGift': (index) => {
         let isChecked = this.gifts[index].checked !== undefined ? !!this.gifts[index].checked : false
+        if (!isChecked && this.selectedGifts.length == 6) {
+          Tips.alert('最多6个礼品')
+          return
+        }
         this.gifts[index].checked = !isChecked
         if (this.gifts[index].checked) {
           this.selectedGifts.push(this.gifts[index].id)
@@ -79,10 +87,9 @@
         this.gifts = await vote.fetchGifts()
         Tips.loaded()
         if (wepy.$instance.globalData.editVote.gifts === null) {
-          // 默认全部选中
+          // 默认不选中
           this.gifts = this.gifts.map((gift) => {
-            this.selectedGifts.push(gift.id)
-            gift.checked = true
+            gift.checked = false
             return gift
           })
 
@@ -110,6 +117,10 @@
       },
 
       async submitForm() {
+        if (!this.validateGifts()) {
+          Tips.alert('没有选择礼品')
+          return
+        }
         this.payDisabled = true
         this.$apply()
         let userInfo = wepy.$instance.globalData.userInfo
@@ -122,6 +133,13 @@
         this.payDisabled = false
         this.$apply()
       }
+    }
+
+    validateGifts() {
+      if (this.selectedGifts.length <= 0) {
+        return false
+      }
+      return true
     }
 
     async submitVote() {

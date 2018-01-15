@@ -155,8 +155,7 @@ export default class extends wepy.app {
     this.globalData.editVote.organizer = null
     this.globalData.editVote.awards = null
     this.globalData.editVote.gifts = null
-    this.globalData.editVote.startDate = null
-    this.globalData.editVote.expire = null
+    this.globalData.editVote.endDate = null
     this.globalData.editVote.status = null
 
     this.globalData.lastVote = JSON.stringify(this.globalData.editVote)
@@ -171,8 +170,7 @@ export default class extends wepy.app {
     this.globalData.editVote.rule = voteInfo.rule
     this.globalData.editVote.organizer = voteInfo.organizer
     this.globalData.editVote.awards = voteInfo.awards
-    this.globalData.editVote.startDate = voteInfo.startDate
-    this.globalData.editVote.expire = voteInfo.expire
+    this.globalData.editVote.endDate = voteInfo.endDate
     this.globalData.editVote.status = voteInfo.status
     if (voteInfo.gifts.length > 0) {
       this.globalData.editVote.gifts = []
