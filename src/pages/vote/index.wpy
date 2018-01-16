@@ -11,7 +11,14 @@
     align-items: center;
     justify-content: center;
     max-height: 700rpx;
+    min-height: 300rpx;
     overflow: hidden;
+  }
+
+  .cover-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .cover-img {
@@ -152,13 +159,15 @@
       <view wx:if="{{voteDetail.cover}}" class="cover-view">
         <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
       </view>
-      <swiper wx:if="{{voteDetail.coverSet}}" style="height: 250px" autoplay indicator-dots circular>
-        <repeat for="{{voteDetail.coverSet}}" key="index" index="index" item="item">
-          <swiper-item class="cover-view">
-            <image lazy-load class="cover-img" src="{{item}}" mode="widthFix"/>
-          </swiper-item>
-        </repeat>
-      </swiper>
+      <view wx:if="{{voteDetail.coverSet}}" class="cover-view" style="height: {{coverHeight}}px">
+        <swiper style="height: 100%; width: 100%" autoplay indicator-dots circular>
+          <repeat for="{{voteDetail.coverSet}}" key="index" index="index" item="item">
+            <swiper-item class="cover-img-container">
+              <image lazy-load class="cover-img" src="{{item}}" mode="widthFix"/>
+            </swiper-item>
+          </repeat>
+        </swiper>
+      </view>
 
       <view class="title-view">
         <view class="title-text-view">
@@ -232,6 +241,7 @@
   import OrganizerShower from '../../components/organizerShow'
   import VotePlayers from '../../components/votePlayers'
   import ManagerBtn from '../../components/managerBtn'
+  import ImageUtils from '../../utils/imageUtils'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -260,7 +270,8 @@
       organizer: null,
       showManagerBtn: false,
       searchKey: '',
-      selectedTabName: '活动首页'
+      selectedTabName: '活动首页',
+      coverHeight: 250
     }
 
     methods = {
@@ -316,6 +327,11 @@
 
       this.counter = voteInfo.counter
       wepy.setNavigationBarTitle({title: voteInfo.title})
+
+      if (this.voteDetail.coverSet && this.voteDetail.minImgMeta) {
+        let minImgMeta = this.voteDetail.minImgMeta
+        this.coverHeight = ImageUtils.scaleImageHeight(minImgMeta[0], minImgMeta[1])
+      }
 
       this.$apply()
 

@@ -18,7 +18,14 @@
     align-items: center;
     justify-content: center;
     max-height: 700rpx;
+    min-height: 300rpx;
     overflow: hidden;
+  }
+
+  .cover-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .cover-img {
@@ -69,13 +76,15 @@
 
 <template>
   <view class="page-view">
-    <swiper wx:if="{{coverPath}}" style="height: 250px" autoplay indicator-dots circular @tap.stop="chooseCover">
-      <repeat for="{{coverPath}}" key="index" index="index" item="item">
-        <swiper-item class="cover-full-view">
-          <image class="cover-img" src="{{item}}" mode="widthFix"/>
-        </swiper-item>
-      </repeat>
-    </swiper>
+    <view wx:if="{{coverPath}}" class="cover-full-view" style="height: {{coverHeight}}px" @tap.stop="chooseCover">
+      <swiper style="height: 100%; width: 100%" autoplay indicator-dots circular>
+        <repeat for="{{coverPath}}" key="index" index="index" item="item">
+          <swiper-item class="cover-img-container">
+            <image class="cover-img" src="{{item}}" mode="widthFix"/>
+          </swiper-item>
+        </repeat>
+      </swiper>
+    </view>
     <view wx:else class="cover-view" @tap.stop="chooseCover">
       <image class="cover-tip-img" src="/asset/png/photo.png"/>
       <text class="cover-text">添加封面，最多3张</text>
@@ -132,7 +141,8 @@
       ruleContent: null,
       endDate: '',
       startDateInput: null,
-      endDateInput: null
+      endDateInput: null,
+      coverHeight: 250,
     }
 
     events = {
@@ -172,7 +182,10 @@
         Tips.loading('正在上传图片')
         let netCover = await ImageUtils.uploadBatchImages(tempFilesPaths)
         Tips.loaded()
+        let minImgMeta = await ImageUtils.getMinHeightOfImgs(tempFilesPaths)
         wepy.$instance.globalData.editVote.coverSet = netCover
+        wepy.$instance.globalData.editVote.minImgMeta = minImgMeta
+        this.coverHeight = ImageUtils.scaleImageHeight(minImgMeta[0], minImgMeta[1])
         this.$apply()
       },
 

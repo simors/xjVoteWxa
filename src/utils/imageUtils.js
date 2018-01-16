@@ -89,4 +89,33 @@ export default class ImageUtils{
     }
     return upimgs
   }
+  
+  /**
+   * 获取一组图片中高度最新图片的高度值
+   * @param imgs
+   * @returns {Array}
+   */
+  static async getMinHeightOfImgs(imgs) {
+    let minHeight = 10000
+    let minWidth = 0
+    for (let img of imgs) {
+      let result = await wepy.getImageInfo({src: img})
+      if (minHeight > result.height) {
+        minHeight = result.height
+        minWidth = result.width
+      }
+    }
+    return [minHeight, minWidth]
+  }
+  
+  /**
+   * 根据图片的尺寸，以及与屏幕宽度的比例获得图片的缩放高度
+   * @param imageHeight
+   * @param imageWidth
+   * @returns {number}
+   */
+  static scaleImageHeight(imageHeight, imageWidth) {
+    let screenWidth = wepy.getSystemInfoSync().windowWidth
+    return (imageHeight*screenWidth) / imageWidth
+  }
 }

@@ -75,7 +75,7 @@ export default class extends wepy.app {
       backgroundColor: '#F8F8F8',
       enablePullDownRefresh: true
     },
-    debug: false
+    debug: true
   }
 
   globalData = {
@@ -85,6 +85,7 @@ export default class extends wepy.app {
       type: null,
       title: null,
       coverSet: null,
+      minImgMeta: null,
       notice: null,
       rule: null,
       organizer: null,
