@@ -182,10 +182,8 @@
       <view wx:key="id" wx:for="{{votes}}" wx:for-item="vote" class="list-item--wrap">
         <view class="card" @tap.stop="showVoteDetail({{vote.id}}, {{vote.status}})" @longpress="deleteVote({{vote.id}}, {{vote.title}})">
           <view class="card__thumb">
-            <image class="card__img"
-                   src="{{vote.cover}}"
-                   mode="aspectFill"
-            ></image>
+            <image wx:if="{{vote.cover}}" class="card__img" src="{{vote.cover}}" mode="aspectFill"/>
+            <image wx:if="{{vote.coverSet[0]}}" class="card__img" src="{{vote.coverSet[0]}}" mode="aspectFill"/>
           </view>
           <view class="card__detail">
             <view class="card__detail-row">

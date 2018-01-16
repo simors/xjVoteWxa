@@ -84,7 +84,7 @@ export default class extends wepy.app {
       id: null,
       type: null,
       title: null,
-      cover: null,
+      coverSet: null,
       notice: null,
       rule: null,
       organizer: null,
@@ -112,7 +112,7 @@ export default class extends wepy.app {
   }
 
   async saveVoteDraft() {
-    if (this.globalData.lastVote !== JSON.stringify(this.globalData.editVote)  && this.globalData.editVote.cover) {
+    if (this.globalData.lastVote !== JSON.stringify(this.globalData.editVote)  && this.globalData.editVote.coverSet) {
       this.globalData.editVote.status = vote.VOTE_STATUS.EDITING
       let voteInfo = await vote.createOrUpdateVote(this.globalData.editVote)
       this.globalData.editVote.id = voteInfo.objectId
@@ -149,7 +149,7 @@ export default class extends wepy.app {
     this.globalData.editVote.id = null
     this.globalData.editVote.type = null
     this.globalData.editVote.title = null
-    this.globalData.editVote.cover = null
+    this.globalData.editVote.coverSet = null
     this.globalData.editVote.notice = null
     this.globalData.editVote.rule = null
     this.globalData.editVote.organizer = null
@@ -165,7 +165,7 @@ export default class extends wepy.app {
     this.globalData.editVote.id = voteInfo.id
     this.globalData.editVote.type = voteInfo.type
     this.globalData.editVote.title = voteInfo.title
-    this.globalData.editVote.cover = voteInfo.cover
+    this.globalData.editVote.coverSet = voteInfo.coverSet
     this.globalData.editVote.notice = voteInfo.notice
     this.globalData.editVote.rule = voteInfo.rule
     this.globalData.editVote.organizer = voteInfo.organizer

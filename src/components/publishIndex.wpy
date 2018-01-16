@@ -69,12 +69,16 @@
 
 <template>
   <view class="page-view">
-    <view wx:if="{{coverPath}}" class="cover-full-view" @tap.stop="chooseCover">
-      <image class="cover-img" src="{{coverPath}}" mode="aspectFill"/>
-    </view>
+    <swiper wx:if="{{coverPath}}" style="height: 250px" autoplay indicator-dots circular @tap.stop="chooseCover">
+      <repeat for="{{coverPath}}" key="index" index="index" item="item">
+        <swiper-item class="cover-full-view">
+          <image class="cover-img" src="{{item}}" mode="widthFix"/>
+        </swiper-item>
+      </repeat>
+    </swiper>
     <view wx:else class="cover-view" @tap.stop="chooseCover">
       <image class="cover-tip-img" src="/asset/png/photo.png"/>
-      <text class="cover-text">添加封面</text>
+      <text class="cover-text">添加封面，最多3张</text>
     </view>
 
     <view class="zan-form">
@@ -135,8 +139,8 @@
       'initVoteData': () => {
         let globalEditVote = wepy.$instance.globalData.editVote
 
-        if (globalEditVote.cover !== null) {
-          this.coverPath = globalEditVote.cover
+        if (globalEditVote.coverSet !== null) {
+          this.coverPath = globalEditVote.coverSet
         }
         if (globalEditVote.title !== null) {
           this.voteTitle = globalEditVote.title
@@ -160,15 +164,15 @@
 
     methods = {
       async chooseCover() {
-        let tempFilesPaths = await ImageUtils.chooseImage({count: 1, sizeType: ['compressed']})
+        let tempFilesPaths = await ImageUtils.chooseImage({count: 3, sizeType: ['compressed']})
         if (tempFilesPaths.length === 0) {
           return
         }
-        this.coverPath = tempFilesPaths[0]
+        this.coverPath = tempFilesPaths
         Tips.loading('正在上传图片')
-        let netCover = await ImageUtils.uploadImage(tempFilesPaths[0])
+        let netCover = await ImageUtils.uploadBatchImages(tempFilesPaths)
         Tips.loaded()
-        wepy.$instance.globalData.editVote.cover = netCover
+        wepy.$instance.globalData.editVote.coverSet = netCover
         this.$apply()
       },
 

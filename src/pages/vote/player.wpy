@@ -50,9 +50,16 @@
 <template>
   <view class="container" style="background: #fff">
     <scroll-view scroll-y enable-back-to-top style="height: 100vh;">
-      <view class="cover-view">
+      <view wx:if="{{voteDetail.cover}}" class="cover-view">
         <image lazy-load class="cover-img" src="{{voteDetail.cover}}" mode="widthFix"/>
       </view>
+      <swiper wx:if="{{voteDetail.coverSet}}" style="height: 250px" autoplay indicator-dots circular>
+        <repeat for="{{voteDetail.coverSet}}" key="index" index="index" item="item">
+          <swiper-item class="cover-view">
+            <image lazy-load class="cover-img" src="{{item}}" mode="widthFix"/>
+          </swiper-item>
+        </repeat>
+      </swiper>
 
       <timerCounterDown :beginCounter.sync="counter"/>
 
