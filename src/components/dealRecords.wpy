@@ -70,7 +70,7 @@
         }
         if (size > 0) {
           this.deals.push(...deals)
-          this.lastTime = this.deals[size-1].dealTime
+          this.lastTime = deals[size-1].dealTime
         }
         this.$apply()
       }
