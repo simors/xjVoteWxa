@@ -224,6 +224,8 @@
 
       <view style="height: 120rpx; background: transparent"/>
 
+      <authModel/>
+
       <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
     </scroll-view>
   </view>
@@ -242,6 +244,7 @@
   import VotePlayers from '../../components/votePlayers'
   import ManagerBtn from '../../components/managerBtn'
   import ImageUtils from '../../utils/imageUtils'
+  import AuthModel from '../../components/authModel'
 
   export default class VotePage extends wepy.page {
     config = {
@@ -255,7 +258,8 @@
       timerCounterDown: TimerCounterDown,
       organizerShower: OrganizerShower,
       votePlayers: VotePlayers,
-      managerBtn: ManagerBtn
+      managerBtn: ManagerBtn,
+      authModel: AuthModel
     }
 
     data = {
@@ -291,6 +295,47 @@
     events = {
       'voteReload': () => {
         this.$redirect({url: '/pages/vote/index?voteId=' + this.voteDetail.id})
+      },
+
+      'userAuth': async () => {
+        let voteInfo = null
+        Tips.loading('正在登录')
+        let userInfo = await this.$parent.getUserInfo()
+        Tips.loaded()
+        Tips.loading()
+        if (this.voteId) {
+          voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId, updateStatus: true})
+          wepy.$instance.globalData.activeVote = voteInfo
+
+          vote.incVotePv({voteId: this.voteId})
+        } else {
+          voteInfo = wepy.$instance.globalData.activeVote
+        }
+        Tips.loaded()
+        this.voteDetail = voteInfo
+        this.voteId = voteInfo.id
+        this.notice = voteInfo.notice
+        this.status = voteInfo.status
+        this.applyNum = voteInfo.applyNum
+        this.voteNum = voteInfo.voteNum
+        this.pv = voteInfo.pv
+        this.organizer = voteInfo.organizer
+        if (userInfo.id == voteInfo.creatorId) {
+          this.showManagerBtn = true
+        }
+
+        this.counter = voteInfo.counter
+        wepy.setNavigationBarTitle({title: voteInfo.title})
+
+        if (this.voteDetail.coverSet && this.voteDetail.minImgMeta) {
+          let minImgMeta = this.voteDetail.minImgMeta
+          this.coverHeight = ImageUtils.scaleImageHeight(minImgMeta[0], minImgMeta[1])
+        }
+
+        setTimeout(() => {
+          this.$invoke('zanNoticebar', 'initZanNoticeBarScroll')
+        }, 3000)
+        this.$apply()
       }
     }
 
@@ -302,6 +347,17 @@
 
     async onLoad(option) {
       let voteInfo = null
+      this.voteId = option.voteId
+      Tips.loading('正在登录')
+      let userInfo = await this.$parent.getUserInfo();
+      Tips.loaded()
+      if (!userInfo) {
+        setTimeout(() => {
+          this.$invoke('authModel', 'toggleDialog')
+        }, 500)
+        this.$apply()
+        return
+      }
       Tips.loading()
       if (option.voteId) {
         voteInfo = await vote.fetchVoteInfoById({voteId: option.voteId, updateStatus: true})
@@ -311,7 +367,6 @@
       } else {
         voteInfo = wepy.$instance.globalData.activeVote
       }
-      let userInfo = await this.$parent.getUserInfo();
       Tips.loaded()
       this.voteDetail = voteInfo
       this.voteId = voteInfo.id
