@@ -100,6 +100,8 @@
       <text class="zan-font-14 zan-c-gray-dark">小吉互动是一款专业的互联网投票软件，人人可以简单地自主创建投票活动，扩大公司知名度并进行宣传推广，要做投票的个人和单位可关注公众号"小吉互动"咨询相关事宜！</text>
     </view>
 
+    <authModel/>
+
     <view class="footer">
       <view style="display: flex; align-items: center; justify-content: center">
         <image class="logo-img" src="../../asset/png/logo.png" />
@@ -111,6 +113,8 @@
 
 <script>
   import wepy from 'wepy'
+  import AuthModel from '../../components/authModel'
+  import Tips from '../../utils/Tips'
 
   export default class Mine extends wepy.page {
     config = {
@@ -119,11 +123,21 @@
     }
 
     components = {
+      authModel: AuthModel
     }
 
     data = {
       userInfo: {
         nickname: '加载中...'
+      }
+    }
+
+    events = {
+      'userAuth': async () => {
+        Tips.loading('正在登录')
+        this.userInfo = await this.$parent.getUserInfo()
+        Tips.loaded()
+        this.$apply()
       }
     }
 
@@ -137,6 +151,10 @@
       let userInfo = await this.$parent.getUserInfo()
       if (userInfo) {
         this.userInfo = userInfo
+      } else {
+        setTimeout(() => {
+          this.$invoke('authModel', 'toggleDialog')
+        }, 500)
       }
       this.$apply()
     }
