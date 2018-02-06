@@ -104,6 +104,8 @@
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="buyGift" disabled="{{payDisabled}}">微信支付</button>
     </view>
 
+    <authModel/>
+
   </view>
 </template>
 
@@ -116,6 +118,7 @@
   import pay from '../../cloud/pay'
   import VoteGiftItem from '../../components/voteGiftItem'
   import zanQuantity from '../../components/zan-quantity'
+  import AuthModel from '../../components/authModel'
 
   export default class PresentPage extends wepy.page {
     config = {
@@ -125,7 +128,8 @@
     components = {
       playerStat: PlayerStat,
       voteGiftItem: VoteGiftItem,
-      zanQuantity
+      zanQuantity,
+      authModel: AuthModel
     }
 
     data = {
@@ -147,6 +151,12 @@
       zanQuantityChange({ componentId, quantity }, event) {
         this.buyNum = quantity
         this.$apply()
+      },
+
+      'userAuth': async () => {
+        Tips.loading('正在登录')
+        await this.$parent.getUserInfo()
+        Tips.loaded()
       }
     }
 
@@ -159,6 +169,10 @@
         let currentUser = wepy.$instance.globalData.userInfo
         if (!currentUser) {
           Tips.error('请授权登录')
+          this.payDisabled = false
+          setTimeout(() => {
+            this.$invoke('authModel', 'toggleDialog')
+          }, 500)
           return
         }
         this.payDisabled = true
