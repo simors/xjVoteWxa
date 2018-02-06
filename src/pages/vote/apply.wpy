@@ -81,6 +81,8 @@
 
     <view style="height: 120rpx; background: transparent"/>
 
+    <authModel/>
+
     <voteTabbar :status.sync="status" :selectedTabName="selectedTabName"/>
   </view>
 </template>
@@ -91,6 +93,7 @@
   import Tips from '../../utils/Tips'
   import ImageUtils from '../../utils/imageUtils'
   import vote from '../../cloud/vote'
+  import AuthModel from '../../components/authModel'
 
   export default class ApplyPage extends wepy.page {
     config = {
@@ -99,7 +102,8 @@
     }
 
     components = {
-      voteTabbar: VoteTabbar
+      voteTabbar: VoteTabbar,
+      authModel: AuthModel
     }
 
     data = {
@@ -111,8 +115,25 @@
       selectedTabName: '报名'
     }
 
+    events = {
+      'userAuth': async () => {
+        Tips.loading('正在登录')
+        await this.$parent.getUserInfo()
+        Tips.loaded()
+      }
+    }
+
     methods = {
       async submitApply() {
+        let currentUser = wepy.$instance.globalData.userInfo
+        if (!currentUser) {
+          Tips.error('请授权登录')
+          this.payDisabled = false
+          setTimeout(() => {
+            this.$invoke('authModel', 'toggleDialog')
+          }, 500)
+          return
+        }
         if (!this.inputValidation()) {
           return
         }

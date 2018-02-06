@@ -111,6 +111,8 @@
 
       <view style="height: 180rpx; background: transparent"/>
 
+      <authModel/>
+
       <playerToolbar :voteId.sync="voteId" :scene.sync="scene" :enablePresent.sync="enablePresent"/>
     </scroll-view>
   </view>
@@ -127,6 +129,7 @@
   import RecvGifts from '../../components/recvGifts'
   import TimerCounterDown from '../../components/timerCountDown'
   import ImageUtils from '../../utils/imageUtils'
+  import AuthModel from '../../components/authModel'
 
   export default class PlayerPage extends wepy.page {
     config = {
@@ -155,7 +158,8 @@
       playerToolbar: PlayerToolbar,
       buyGiftTip: BuyGiftTip,
       recvGifts: RecvGifts,
-      timerCounterDown: TimerCounterDown
+      timerCounterDown: TimerCounterDown,
+      authModel: AuthModel
     }
 
     methods = {
@@ -164,6 +168,15 @@
 
     events = {
       'voteForPlayer': async () => {
+        let currentUser = wepy.$instance.globalData.userInfo
+        if (!currentUser) {
+          Tips.error('请授权登录')
+          this.payDisabled = false
+          setTimeout(() => {
+            this.$invoke('authModel', 'toggleDialog')
+          }, 500)
+          return
+        }
         try {
           await vote.voteForPlayer({playerId: this.player.id})
           this.voteNum += 1
@@ -195,6 +208,12 @@
 
       'toAbout': () => {
         this.$navigate({url: '/pages/vote/contact'})
+      },
+
+      'userAuth': async () => {
+        Tips.loading('正在登录')
+        await this.$parent.getUserInfo()
+        Tips.loaded()
       }
     }
 
