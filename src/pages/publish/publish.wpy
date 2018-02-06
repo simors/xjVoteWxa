@@ -15,6 +15,8 @@
     <view wx:elif="{{step===4}}">
       <giftAndExpire/>
     </view>
+
+    <authModel/>
   </view>
 </template>
 
@@ -26,6 +28,7 @@
   import Organizer from '../../components/organizer'
   import Award from '../../components/award'
   import GiftAndExpire from '../../components/gift_expire'
+  import AuthModel from '../../components/authModel'
 
   export default class Publish extends wepy.page {
     config = {
@@ -41,7 +44,8 @@
       publishIndex: PublishIndex,
       organizer: Organizer,
       award: Award,
-      giftAndExpire: GiftAndExpire
+      giftAndExpire: GiftAndExpire,
+      authModel: AuthModel
     }
 
     events = {
@@ -62,6 +66,13 @@
             break
         }
         this.$apply()
+      },
+
+      'userAuth': async () => {
+        Tips.loading('正在登录')
+        this.userInfo = await this.$parent.getUserInfo()
+        Tips.loaded()
+        this.$apply()
       }
     }
 
@@ -78,6 +89,14 @@
       }
       this.$broadcast('initVoteData')
       wepy.setNavigationBarTitle({title: '创建活动'})
+      let userInfo = wepy.$instance.globalData.userInfo
+      if (!userInfo) {
+        setTimeout(() => {
+          this.$invoke('authModel', 'toggleDialog')
+        }, 500)
+        this.$apply()
+        return
+      }
       this.$apply()
     }
   }
