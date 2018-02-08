@@ -144,7 +144,14 @@
 
       <authModel/>
 
-      <playerToolbar :voteId.sync="voteId" :scene.sync="scene" :enablePresent.sync="enablePresent"/>
+      <playerToolbar :voteId.sync="voteId"
+                     :scene.sync="scene"
+                     :enablePresent.sync="enablePresent"
+                     :playerName.sync="playerName"
+                     :playerId.sync="playerId"
+                     :number.sync="number"
+                     :cover.sync="cover"
+      />
     </scroll-view>
   </view>
 </template>

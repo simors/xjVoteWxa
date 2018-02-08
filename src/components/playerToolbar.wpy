@@ -31,6 +31,35 @@
     position: relative;
     top: -15px;
   }
+
+  .player-share-btn {
+    position: relative;
+    background-color: transparent;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 0;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    height: 280rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .player-share-btn::after {
+    display: none;
+  }
+
+  .share-tip {
+    font-size: 8px;
+    color: #f20d2d;
+    position: relative;
+    top: -46rpx;
+  }
 </style>
 
 <template>
@@ -42,8 +71,14 @@
           <view class="toolbar-fontsize">回首页</view>
         </view>
       </view>
-      <view class="flex flex-column items-center justify-center" @tap.stop="submitVote" hover-stay-time="1500">
+      <view wx:if="{{voteAllowed}}" class="flex flex-column items-center justify-center" @tap.stop="submitVote" hover-stay-time="1500">
         <image class="big-img" src="/asset/gif/vote_active.gif" mode="aspectFill" />
+      </view>
+      <view wx:else class="flex flex-column items-center justify-center" hover-stay-time="1500">
+        <button class="player-share-btn" open-type="share">
+          <image class="big-img" style="top: -46rpx" src="/asset/gif/share_active.gif" mode="aspectFill" />
+          <text class="share-tip">今日已投票</text>
+        </button>
       </view>
       <view class="flex flex-column items-center justify-center" @tap.stop="judgeJump">
         <view wx:if="{{enablePresent && voteType == 1}}" class="flex flex-column items-center justify-center">
@@ -67,20 +102,27 @@
     props = {
       scene: String,
       voteId: String,
-      enablePresent: Boolean
+      enablePresent: Boolean,
+      playerName: String,
+      playerId: String,
+      number: Number,
+      cover: String
     }
 
     data = {
-      voteType: 2
+      voteType: 2,
+      voteAllowed: true
     }
 
     watch = {
       'voteId': async (newValue, oldValue) => {
         if (newValue) {
           let voteInfo = undefined
+          this.voteAllowed = await vote.isVoteAllowed({voteId: this.voteId})
           voteInfo = await vote.fetchVoteInfoById({voteId: newValue})
           wepy.$instance.globalData.activeVote = voteInfo
           this.voteType = voteInfo.type
+          this.$apply()
         }
       }
     }
@@ -113,11 +155,25 @@
         this.voteType = voteInfo.type
       } else {
         if (this.voteId) {
+          this.voteAllowed = await vote.isVoteAllowed({voteId: this.voteId})
           voteInfo = await vote.fetchVoteInfoById({voteId: this.voteId})
           wepy.$instance.globalData.activeVote = voteInfo
           this.voteType = voteInfo.type
         }
       }
+      this.$apply()
+    }
+
+    onShareAppMessage () {
+      if (!this.playerId) {
+        Tips.error('分享失败')
+        return
+      }
+      let voteInfo = wepy.$instance.globalData.activeVote
+      const title = this.number + '号 ' + this.playerName + ' ' + voteInfo.title + '，邀请您参与投票';
+      const url = '/pages/vote/player?playerId=' + this.playerId + '&scene=share';
+      const imageUrl = this.cover
+      return Tips.share(title, url, title, imageUrl);
     }
   }
 </script>
