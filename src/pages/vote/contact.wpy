@@ -15,8 +15,8 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    height: 346px;
-    background-image: url("http://ac-l3cae9l7.clouddn.com/07c93934b4ce7f88db69.png");
+    height: 690rpx;
+    background-image: url("http://ac-l3cae9l7.clouddn.com/4f025debbd761a549924.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position-y: bottom;
@@ -24,12 +24,12 @@
 
   .head-img {
     width: 450rpx;
-    margin-top: 66px;
+    margin-top: 60px;
   }
 
   .sologn-img {
     width: 660rpx;
-    margin-bottom: 100rpx;
+    margin-bottom: 30rpx;
   }
 
   .title-view {
@@ -81,7 +81,7 @@
       <image class="sologn-img" src="http://ac-l3cae9l7.clouddn.com/58a4047010e3f57e8c47.png" mode="widthFix"/>
     </view>
 
-    <view class="title-view">
+    <view class="title-view" style="margin-top: 32rpx;">
       <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/3fe7ded1d22890835c39.png"/>
     </view>
 
@@ -120,14 +120,20 @@
       <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/1a95bc5554a978003efe.png"/>
     </view>
 
-    <view class="title-view">
-      <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/1a95bc5554a978003efe.png"/>
+    <view style="margin: 32rpx 0; padding: 0 48rpx;">
+      <image style="width: 100%;" src="http://ac-l3cae9l7.clouddn.com/ea471f0477f645630492.png" mode="widthFix"/>
     </view>
 
-    <view style="padding: 24rpx 20rpx">
-      <text style="font-size: 12px; color: #fff;">
-        长沙小吉网络科技有限公司是一家专注于互联网营销推广的科技型公司，为客户提供专业的推广渠道和网络推广工具。小吉互动是本公司旗下的一款专业的投票小程序，此工具具有创建简单、功能完善、使用免费等特点。
-      </text>
+    <view class="title-view">
+      <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/5382fbfcb4947bb68806.png"/>
+    </view>
+
+    <view style="padding: 24rpx 30rpx">
+      <view style="font-size: 12px; color: #fff;">
+        <text style="display: block">长沙小吉网络科技有限公司是一家专注于互联网营销推广的公司，为客户提供专业的推广渠道和互联网推广工具。小吉互动是本公司旗下的一款专业的投票小程序，这款工具创建投票简单、功能完善。主办方拥有宣传展示、报名管理、选手管理、评选周期等权限，让主办方的活动效果和影响力最大化。</text>
+        <text style="display: block">目前我们已为众多行业做过活动支持，在行业中处于领先地位。</text>
+        <text style="display: block">我们以诚信为本，以用户体验至上。我们秉承开放合作的态度，期待与您合作共赢。</text>
+      </view>
     </view>
 
     <view class="btn-biew">
