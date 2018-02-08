@@ -1,71 +1,138 @@
 <style lang="less">
   @import "../../styles/vars.less";
+  
+  .contact-container {
+    background-image: url("http://ac-l3cae9l7.clouddn.com/1eec49677e74041d8198.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
 
-  .img-view {
+  .head-img-view {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    height: 346px;
+    background-image: url("http://ac-l3cae9l7.clouddn.com/07c93934b4ce7f88db69.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: bottom;
+  }
+
+  .head-img {
+    width: 450rpx;
+    margin-top: 66px;
+  }
+
+  .sologn-img {
+    width: 660rpx;
+    margin-bottom: 100rpx;
+  }
+
+  .title-view {
     display: flex;
     justify-content: center;
-    padding: 0 20px;
+    align-items: center;
   }
 
-  .tip-view {
-    margin-top: 10px;
-    padding: 0 50px;
-    text-align: center;
+  .title-img {
+    width: 500rpx;
+    height: 100rpx;
   }
 
-  .tip-text {
-    font-size: 14px;
-    color: #696668;
+  .application-view {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .application-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .application-img {
+    width: 340rpx;
+    height: 125rpx;
   }
 
   .btn-biew {
-    padding: 30px 12px 20px 12px;
+    padding: 10px 16px 20px 16px;
   }
 
   button::after{
     border: none;
   }
-
-  .contact-view {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    border: none;
-    background: #fff;
-  }
-
-  .img-style {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-  }
-
-  .contact-text {
-    font-size: 14px;
-    color: #848383;
-  }
 </style>
 
 <template>
-  <view class="container" style="background: #fff">
-    <view class="img-view">
-      <image src="/asset/png/about_xiaojie.png" style="width: 90%" mode="widthFix"/>
+  <view class="contact-container">
+
+    <view class="head-img-view">
+      <image class="head-img" src="http://ac-l3cae9l7.clouddn.com/6dfd86182889e33b399c.png" mode="widthFix"/>
+      <image class="sologn-img" src="http://ac-l3cae9l7.clouddn.com/58a4047010e3f57e8c47.png" mode="widthFix"/>
     </view>
 
-    <view class="tip-view">
-      <text class="tip-text">政企评选、才艺比拼、萌宝自拍、人气之星、摄影大赛…</text>
+    <view class="title-view">
+      <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/3fe7ded1d22890835c39.png"/>
+    </view>
+
+    <view class="application-view">
+      <view class="application-item">
+        <image class="application-img" src="http://ac-l3cae9l7.clouddn.com/e35b0765a14bc65da5c9.png" mode="widthFix"/>
+        <text style="font-size: 16px; color: #fff; margin-top: 16rpx">政企评选</text>
+      </view>
+      <view class="application-item">
+        <image class="application-img" src="http://ac-l3cae9l7.clouddn.com/5ecdc52bfcef3f63aa12.png" mode="widthFix"/>
+        <text style="font-size: 16px; color: #fff; margin-top: 16rpx">萌宝自拍</text>
+      </view>
+      <view class="application-item">
+        <image class="application-img" src="http://ac-l3cae9l7.clouddn.com/cf2a76b6087cd8f72623.png" mode="widthFix"/>
+        <text style="font-size: 16px; color: #fff; margin-top: 16rpx">才艺比拼</text>
+      </view>
+      <view class="application-item">
+        <image class="application-img" src="http://ac-l3cae9l7.clouddn.com/89de1f61838163148cca.png" mode="widthFix"/>
+        <text style="font-size: 16px; color: #fff; margin-top: 16rpx">摄影大赛</text>
+      </view>
+      <view class="application-item">
+        <image class="application-img" src="http://ac-l3cae9l7.clouddn.com/8eefc561adf674841256.png" mode="widthFix"/>
+        <text style="font-size: 16px; color: #fff; margin-top: 16rpx">人气之星</text>
+      </view>
+      <view class="application-item">
+        <image class="application-img" src="http://ac-l3cae9l7.clouddn.com/7b78d8cb46081fda2797.png" mode="widthFix"/>
+        <text style="font-size: 16px; color: #fff; margin-top: 16rpx">民主决策</text>
+      </view>
     </view>
 
     <view class="btn-biew">
       <button class="zan-btn zan-btn--primary vote-btn" @tap.stop="createVote">创建投票</button>
     </view>
 
-    <button open-type="contact" class="contact-view">
-      <image class="img-style" src="/asset/png/service.png"/>
-      <text class="contact-text">联系客服</text>
-    </button>
+    <view class="title-view">
+      <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/1a95bc5554a978003efe.png"/>
+    </view>
+
+    <view class="title-view">
+      <image class="title-img" src="http://ac-l3cae9l7.clouddn.com/1a95bc5554a978003efe.png"/>
+    </view>
+
+    <view style="padding: 24rpx 20rpx">
+      <text style="font-size: 12px; color: #fff;">
+        长沙小吉网络科技有限公司是一家专注于互联网营销推广的科技型公司，为客户提供专业的推广渠道和网络推广工具。小吉互动是本公司旗下的一款专业的投票小程序，此工具具有创建简单、功能完善、使用免费等特点。
+      </text>
+    </view>
+
+    <view class="btn-biew">
+      <button open-type="contact" class="zan-btn zan-btn--primary vote-btn">联系客服</button>
+    </view>
   </view>
 </template>
 
