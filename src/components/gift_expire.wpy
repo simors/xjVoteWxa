@@ -35,6 +35,7 @@
 
     <view class="zan-btns" style="text-align: right">
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="jumpPre">上一步</button>
+      <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="preview">预览</button>
       <button class="zan-btn zan-btn--primary zan-btn--small vote-btn" @tap.stop="submitForm" disabled="{{payDisabled}}">完成</button>
     </view>
   </view>
@@ -132,6 +133,24 @@
         }
         this.payDisabled = false
         this.$apply()
+      },
+      async preview(){
+        try {
+          if (!this.validateGifts()) {
+            Tips.alert('没有选择礼品')
+            return
+          }
+          Tips.loading('正在预览')
+          await vote.createOrUpdateVote(wepy.$instance.globalData.editVote)
+          Tips.loaded()
+            wx.navigateTo({
+              url: '../vote/index?voteId=' + wepy.$instance.globalData.editVote.id + '&&showType=preview'
+            })
+        } catch (e) {
+          console.error(e)
+          Tips.loaded()
+          Tips.error('提交失败')
+        }
       }
     }
 
