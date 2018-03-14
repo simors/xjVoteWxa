@@ -122,7 +122,7 @@
         </button>
       </view>
       <view style="position: relative">
-        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="/asset/png/popup_help.png" mode="widthFix"/>
+        <image class="{{showDialog ? 'show-img' : 'hidden-img'}}" src="http://lc-l3cae9l7.cn-n1.lcfile.com/14ad506f0551ae0de1b6.png" mode="widthFix"/>
       </view>
       <view class="close-view" @tap.stop="toggleDialog">
         <image class="{{showDialog ? 'show-close' : 'hidden-img'}}" src="/asset/png/close.png" mode="widthFix"/>

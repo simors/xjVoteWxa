@@ -72,17 +72,17 @@
         </view>
       </view>
       <view wx:if="{{voteAllowed}}" class="flex flex-column items-center justify-center" @tap.stop="submitVote" hover-stay-time="1500">
-        <image class="big-img" src="/asset/gif/vote_active.gif" mode="aspectFill" />
+        <image class="big-img" src="http://lc-l3cae9l7.cn-n1.lcfile.com/bc86edc31a0f177c0db9.gif" mode="aspectFill" />
       </view>
       <view wx:else class="flex flex-column items-center justify-center" hover-stay-time="1500">
         <button class="player-share-btn" open-type="share">
-          <image class="big-img" style="top: -46rpx" src="/asset/gif/share_active.gif" mode="aspectFill" />
+          <image class="big-img" style="top: -46rpx" src="http://lc-l3cae9l7.cn-n1.lcfile.com/1b808ac7919c5c31192a.gif" mode="aspectFill" />
           <text class="share-tip">今日已投票</text>
         </button>
       </view>
       <view class="flex flex-column items-center justify-center" @tap.stop="judgeJump">
         <view wx:if="{{enablePresent && voteType == 1}}" class="flex flex-column items-center justify-center">
-          <image class="toolbar-image" src="/asset/gif/gift.gif" mode="aspectFill" />
+          <image class="toolbar-image" src="http://lc-l3cae9l7.cn-n1.lcfile.com/88cdc569eab5b69ab739.gif" mode="aspectFill" />
           <view class="toolbar-fontsize">礼物</view>
         </view>
         <view wx:else class="flex flex-column items-center justify-center">

@@ -66,6 +66,29 @@ export default class Tips {
     })
   }
 
+  /**
+   * 弹出确认窗口
+   */
+  static confirmWithoutCancel (text, payload = {}, title = '提示') {
+    return new Promise((resolve, reject) => {
+      wx.showModal({
+        title: title,
+        content: text,
+        showCancel: false,
+        success: res => {
+          if (res.confirm) {
+            resolve(payload)
+          } else if (res.cancel) {
+            reject(payload)
+          }
+        },
+        fail: res => {
+          reject(payload)
+        }
+      })
+    })
+  }
+
   static toast (title, onHide, icon = 'success') {
     wx.showToast({
       title: title,
