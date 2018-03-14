@@ -118,7 +118,7 @@
 
       <view style="margin-top: 10px; position: relative;">
         <button class="xj-share-btn" open-type="share">
-          <image style="width: 100%" src="/asset/png/bg_share.png" mode="widthFix"/>
+          <image style="width: 100%" src="http://lc-l3cae9l7.cn-n1.lcfile.com/87176f3a7a7e3885e779.png" mode="widthFix"/>
           <view class="share-tip-view">
             <text style="display: block; font-size: 17px; color: #fff">觉得不错，就为TA拉票吧！</text>
             <text style="display: block; font-size: 12px; color: #c6f3fc; margin-top: 8rpx;">分享到微信，一次可以转发九个群</text>
