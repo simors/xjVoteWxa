@@ -342,7 +342,12 @@
 
     onShareAppMessage () {
       const title = this.voteDetail.title;
-      const url = '/pages/vote/index?voteId=' + this.voteDetail.id + '&&showType=preview';
+      let url = null;
+      if(this.showType=='preview'){
+        url = '/pages/vote/index?voteId=' + this.voteDetail.id + '&&showType=preview';
+      } else {
+        url = '/pages/vote/index?voteId=' + this.voteDetail.id;
+      }
       return Tips.share(title, url, title);
     }
 
